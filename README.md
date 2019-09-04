@@ -1,0 +1,2 @@
+# shopnow
+Shopnow theme.
