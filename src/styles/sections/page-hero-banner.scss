@@ -1,0 +1,14 @@
+.page__hero__banner--section {
+  .page-hero {
+    position: relative;
+    height: 500px;
+  }
+  .page-hero__text {
+    position: absolute;
+    bottom: 230px;
+    width: 100%;
+  }
+  .hero-subtitle {
+    opacity: .7;
+  }
+}

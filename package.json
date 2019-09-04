@@ -1,0 +1,58 @@
+{
+  "name": "shopnow",
+  "version": "1.0.0-beta1",
+  "private": true,
+  "author": "Hubert <xhubert.fan@gmail.com>",
+  "description": "An opinionated, Slate compatible, starting point for developing Shopify themes.",
+  "keywords": [
+    "shopify",
+    "theme"
+  ],
+  "bugs": "",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/xhubert/shopnow.git",
+  "scripts": {
+    "start": "slate-tools start",
+    "start:prod": "slate-tools start --env=production",
+    "watch": "slate-tools start --skipFirstDeploy",
+    "build": "slate-tools build",
+    "deploy": "slate-tools build && slate-tools deploy --replace",
+    "deploy:prod": "slate-tools build && slate-tools deploy --env=production --replace",
+    "zip": "slate-tools build && slate-tools zip",
+    "lint": "slate-tools lint",
+    "format": "slate-tools format"
+  },
+  "dependencies": {
+    "@fancyapps/fancybox": "^3.5.7",
+    "@shopify/theme-a11y": "3.0.0",
+    "@shopify/theme-cart": "^3.0.0",
+    "@shopify/theme-currency": "^3.0.0",
+    "@shopify/theme-images": "^3.0.0",
+    "@shopify/theme-rte": "^3.0.0",
+    "@shopify/theme-sections": "^3.0.0",
+    "@shopify/theme-variants": "^1.0.0-alpha.9",
+    "animate.css": "^3.7.2",
+    "jarallax": "^1.11.0",
+    "jquery": "^3.4.1",
+    "jquery-match-height": "^0.7.2",
+    "lazysizes": "^5.1.1",
+    "mark.js": "^8.11.1",
+    "mobile-detect": "^1.4.3",
+    "normalize.css": "^8.0.1",
+    "smooth-scroll": "^16.1.0",
+    "swiper": "^4.5.0",
+    "throttle-debounce": "^2.1.0"
+  },
+  "devDependencies": {
+    "@shopify/slate-cssvar-loader": "^1.0.0-beta.15",
+    "@shopify/slate-tools": "1.0.0-beta.18",
+    "babel-core": "^6.26.3",
+    "babel-preset-shopify": "^16.2.0",
+    "eslint": "^6.3.0",
+    "eslint-plugin-shopify": "^30.0.1",
+    "lodash-es": "^4.17.11",
+    "stylelint": "^10.1.0",
+    "stylelint-config-prettier": "^5.0.0",
+    "stylelint-config-shopify": "^7.1.0"
+  }
+}

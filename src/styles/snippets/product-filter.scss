@@ -1,0 +1,19 @@
+.product-filter {
+  background-color: $color-index-section-bg;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+  transition: all $transition-duration $transition-timing;
+  opacity: 1;
+  a.dropdown-toggler {
+    @extend .link-dark;
+  }
+  &:hover {
+    border-color: $color-border;
+  }
+  display: flex;
+  align-items: center;
+  label {
+    padding-left: $grid-gutter-small;
+  }
+}
+

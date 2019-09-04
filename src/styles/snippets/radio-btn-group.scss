@@ -1,0 +1,52 @@
+.radio-btn-group--snippet {
+  display: flex;
+  flex-wrap: wrap;
+  input[type='radio'] {
+    visibility: hidden;
+    position: absolute;
+    width: 100px;
+  }
+  label.product-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #FFFFFF;
+    margin-top: 5px;
+    flex: 1 1 auto;
+    max-width: 150px;
+    overflow: hidden;
+    border-radius: $border-radius;
+    background-color: darken($color-index-section-bg, 3%);
+    margin-right: $grid-gutter-small;
+    transition: color $transition-duration $transition-timing,
+                border-color $transition-duration $transition-timing;
+    &.active {
+      border-color: $color-primary;
+      color: $color-primary;
+      cursor: default;
+    }
+    &:not(.active):hover() {
+      color: $color-primary;
+    }
+  }
+  .option-value {
+    width: 100px;
+    display: block;
+  }
+  .color-temp-option {
+    width: 140px;
+    height: 48px;
+    .option-value {
+      width: 100px;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .color-temp-img {
+      flex: 0 0 48px;
+      width: 48px;
+      img {
+        display: block;
+      }
+    }
+  }
+}

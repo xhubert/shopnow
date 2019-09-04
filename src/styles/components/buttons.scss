@@ -1,0 +1,246 @@
+$btn-size-small: 26px;
+$btn-size: 34px;
+$btn-size-large: 40px;
+
+/* stylelint-disable declaration-no-important */
+.btn[disabled], .btn[disabled]:hover {
+  box-shadow: none !important;
+  border-color: $color-border-disabled !important;
+  background-color: $color-bg-disabled !important;
+  color: $color-disabled !important;
+  cursor: auto !important;
+}
+/* stylelint-enable */
+
+.button,
+.btn {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  border: $color-border 1px solid;
+  background-color: $color-border;
+  text-align: center;
+  white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
+  font-size: $font-size-base;
+  height: $btn-size;
+  line-height: 20px;
+  padding: 0 $btn-size / 2;
+  border-radius: $border-radius;
+  font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+  transition: all $transition-duration $transition-timing;
+  &.large {
+    height: $btn-size-large;
+    font-size: $font-size-large;
+    padding: 0 $btn-size-large / 2;
+  }
+  &.small {
+    height: $btn-size-small;
+    padding: 0 $btn-size-small / 2;
+    font-size: $font-size-small;
+  }
+  &.with-icon {
+    position: relative;
+    > .iconfont {
+      pointer-events: none;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+a.button, a.btn {
+  padding: ($btn-size - 20) / 2 - 1 $btn-size-small / 2;
+  > span {
+    display: inline-block;
+  }
+  &.large {
+    padding: ($btn-size-large - 20) / 2 - 1 $btn-size-large / 2;
+    .iconfont {
+      line-height: 1.1;
+    }
+  }
+  &.small {
+    padding: ($btn-size-small - 20) / 2 - 1 $btn-size-small / 2;
+  }
+}
+
+/* ================ Button styles ================ */
+
+.btn-primary {
+  background: $color-primary;
+  border-color: $color-primary;
+  color: #FFFFFF;
+  &:hover {
+    box-shadow: 0 5px 10px 0 rgba(27, 35, 31, 0.2);
+    color: #FFFFFF;
+  }
+}
+
+.btn-primary-ghost {
+  border: 1px solid $color-primary;
+  color: $color-primary;
+  background: transparent;
+  &:hover {
+    background: $color-primary;
+    color: #FFFFFF;
+  }
+}
+
+.btn-accent {
+  background: $color-accent;
+  border-color: $color-accent;
+  color: #FFFFFF;
+  &:hover {
+    box-shadow: 3px 5px 10px 0 rgba(27, 35, 31, 0.2);
+    color: #FFFFFF;
+  }
+}
+
+.btn-accent-ghost {
+  border: 1px solid $color-accent;
+  color: $color-accent;
+  background: transparent;
+  &:hover {
+    background: $color-accent;
+    color: #FFFFFF;
+  }
+}
+
+.btn-error {
+  background: $color-error;
+  border-color: $color-error;
+  color: #FFFFFF;
+  &:hover {
+    box-shadow: 0 5px 10px 0 rgba(27, 35, 31, 0.2);
+    color: #FFFFFF;
+  }
+}
+
+.btn-error-ghost {
+  border: 1px solid $color-error;
+  color: $color-error;
+  background: transparent;
+  &:hover {
+    background: $color-error;
+    color: #FFFFFF;
+  }
+}
+
+.link {
+  display: inline-block;
+  > span {
+    display: inline-block;
+    line-height: 22px;
+    vertical-align: middle;
+    padding-right: 5px;
+  }
+  > .icon {
+    height: 22px;
+    width: 22px;
+    vertical-align: middle;
+  }
+}
+
+.link-default,
+.link-default a {
+  color: $color-primary;
+  &:hover {
+    color: $color-primary-light;
+  }
+}
+
+.link-dark,
+.link-dark a {
+  color: darken($color-muted, 20);
+  &:hover {
+    color: darken($color-muted, 5);
+    ;
+  }
+}
+
+.link-error,
+.link-error a {
+  color: $color-error;
+  &:hover {
+    color: lighten($color-error, 15%);
+  }
+
+  &.solid {
+    &:hover {
+      color: #FFFFFF;
+      background-color: $color-error;
+    }
+  }
+}
+
+.more-link {
+  margin-top: $grid-gutter * 2;
+}
+.mask-link {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(55,62,55,.05);
+  transition: background-color $transition-duration $transition-timing,
+              opacity $transition-duration $transition-timing;
+  &:hover{
+    background-color: rgba(55,62,55,.15);;
+  }
+  &.dark-green {
+    background-color: rgba(33,50,33,.1);
+    &:hover{
+      background-color: rgba(33,50,33,.5);;
+    }
+  }
+}
+.hover-action {
+  .hover-action-item {
+    position: relative;
+    display: none;
+    color: #FFFFFF;
+    padding: $grid-gutter-small;
+    max-height: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include overlay(-1, 0.5);
+    backdrop-filter: saturate(100%) blur(3px);
+    animation-duration: $transition-duration;
+    animation-delay: 150ms;
+    animation-timing-function: $transition-timing;
+  }
+}
+
+a.contact-btn {
+  position: fixed;
+  bottom: $grid-gutter * 3;
+  right: $grid-gutter;
+  z-index: $zindex-sticky-header;
+  background: #3B99FC;
+  border: none;
+  border-radius: 50%;
+  opacity: .8;
+  width: 42px;
+  height: 42px;
+  padding: 6px;
+  box-shadow: 0 0 0 1px rgba(39,42,40,0.05),0 2px 7px 1px rgba(39,42,40,0.16);
+  transition: all $transition-duration $transition-timing;
+  > svg {
+    width: 30px;
+    height: 30px;
+    fill: #FFFFFF;
+  }
+  &:hover {
+    opacity: 1;
+  }
+}

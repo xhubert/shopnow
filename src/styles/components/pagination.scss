@@ -1,0 +1,28 @@
+.pagination--snippet {
+  text-align: right;
+  padding: $grid-gutter 0;
+  span.page, span.next, span.prev {
+    display: inline-block;
+    background-color: $color-index-section-bg;
+    margin-left: $grid-gutter / 2;
+    cursor: pointer;
+    border-radius: $border-radius;
+    transition: background-color $transition-duration $transition-timing;
+    text-align: center;
+    &:hover {
+      background-color: darken($color-index-section-bg, 3%);
+    }
+    &.current {
+      background-color: lighten($color-index-section-bg, 1.5%);
+      color: $color-muted;
+      padding: $grid-gutter-small / 2 $grid-gutter-small;
+    }
+    &:not(.next), &:not(.prev) {
+      min-width: 32px;
+    }
+    a {
+      padding: $grid-gutter-small / 2 $grid-gutter-small;
+      display: block;
+    }
+  }
+}

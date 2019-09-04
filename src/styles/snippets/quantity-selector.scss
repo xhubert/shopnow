@@ -1,0 +1,57 @@
+$quantity-height: 32px;
+
+.quantity-selector--snippet {
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .quantity-box {
+    display: flex;
+    align-items: center;
+  }
+  input.quantity-input {
+    padding: 0;
+    height: $quantity-height;
+    width: 50px;
+    text-align: center;
+    transition: color $transition-duration $transition-timing,
+                background-color $transition-duration $transition-timing;
+    margin: 0;
+  }
+  button.ss-icon {
+    width: $quantity-height;
+    height: $quantity-height;
+    user-select: none;
+    padding: 5px 0;
+    text-align: center;
+    cursor: pointer;
+    color: $color-body-text;
+    background-color: #FFFFFF;
+    transition: background-color $transition-duration $transition-timing;
+    &:hover {
+      background-color: $color-index-section-bg;
+      color: $color-primary;
+    }
+    &.product-minus {
+      border-style: solid;
+      border-color: $color-border;
+      border-width: 1px 0 1px 1px;
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &.product-plus {
+      border-style: solid;
+      border-color: $color-border;
+      border-width: 1px 1px 1px 0;
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    .iconfont {
+      margin: 0 auto;
+    }
+  }
+}

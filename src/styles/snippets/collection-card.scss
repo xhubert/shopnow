@@ -1,0 +1,92 @@
+.collection-card--snippet {
+  position: relative;
+  z-index: 3;
+  border-radius: $border-radius;
+  overflow: hidden;
+  height: 150px;
+  .count-tag {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  a {
+    z-index: 2;
+  }
+  .collection-card__image {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    .bg-image {
+      height: 100%;
+      width: 100%;
+    }
+    svg {
+      border: none;
+      fill: $color-muted;
+      background: #FFFFFF;
+    }
+    svg, img {
+      height: 150px;
+      vertical-align: middle;
+    }
+  }
+  .collection-title {
+    width: 100%;
+    font-weight: 800;
+    font-size: $font-size-large;
+  }
+  .collection-card__meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    @include overlay(-1, 0.8, true);
+    backdrop-filter: saturate(100%) blur(3px);
+    padding: $grid-gutter / 2 $grid-gutter;
+    overflow: hidden;
+  }
+}
+
+.best-sellers, .new-arrivals, .small-related {
+  .collection-card__meta {
+    height: 100%;
+    text-align: center;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &::before {
+      opacity: 0.5;
+      background-color: #000000;
+    }
+    .collection-title {
+      font-weight: 800;
+      font-size: $font-size-xl;
+    }
+    .collection-desc {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+  .collection-card--snippet {
+    height: 80px;
+  }
+}
+
+.small-related {
+  .collection-card--snippet {
+    border-bottom: 5px $color-primary solid;
+  }
+}
+
+.best-sellers {
+  .collection-card--snippet {
+    border-bottom: 5px $color-accent solid;
+  }
+}
+
+.new-arrivals {
+  .collection-card--snippet {
+    border-bottom: 5px $color-error solid;
+  }
+}

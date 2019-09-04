@@ -1,0 +1,121 @@
+$color-footer-bg: darken($color-index-section-bg, 2%);
+$color-footer-text: lighten($color-muted, 15%);
+$color-footer-title: lighten($color-title, 20%);
+$color-footer-link: $color-muted;
+$color-footer-link-hover: $color-footer-text;
+
+.site-footer {
+  background-color: $color-footer-bg;
+  color: $color-footer-text;
+  padding: $section-spacing 0;
+  margin-top: $section-spacing;
+  .inner {
+    display: flex;
+    flex-wrap: nowrap;
+    .footer-left {
+      flex: 1 1 auto;
+    }
+    .footer-right {
+      flex: 0 0 45%;
+      padding-left: $grid-gutter * 2;
+      text-align: right;
+    }
+  }
+  .thanks {
+    display: block;
+    margin-bottom: 15px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+  a {
+    text-decoration: none;
+    color: $color-footer-link;
+    transition: all $transition-duration $transition-timing;
+    &:hover {
+      color: $color-footer-link-hover;
+    }
+  }
+  div.h5 {
+    margin-bottom: $grid-gutter-small;
+    color: $color-footer-title;
+  }
+
+  form {
+    input.newsletter__input {
+      float: left;
+      width: 65%;
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      transition: border-color $transition-duration * 2 $transition-timing;
+      &:focus{
+        border-color: $color-primary;
+      }
+    }
+    .btn {
+      float: left;
+      width: 35%;
+      display: block;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      /* stylelint-disable declaration-no-important */
+      box-shadow: none !important;
+      /* stylelint-enable */
+    }
+  }
+  .copyright {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: $grid-gutter / 2;
+  }
+  @include media-query($medium-down) {
+    .inner {
+      flex-wrap: wrap;
+      .footer-left {
+        flex: 1 1 100%;
+        text-align: center;
+      }
+      .footer-right {
+        flex: 1 1 100%;
+        padding-left: 0;
+        text-align: center;
+        margin-top: $grid-gutter * 2;
+      }
+      .has-submenu {
+        padding: 0;
+      }
+      form {
+        width: 90%;
+        margin: 0 auto;
+        min-width: 270px;
+      }
+      .copyright {
+        justify-content: center;
+      }
+    }
+  }
+}
+
+ul.footer-nav {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 15px;
+  >li {
+    flex: 1;
+    margin-bottom: 0;
+    &:last-child {
+      padding-left: $grid-gutter;
+    }
+  }
+  >ul {
+    line-height: 30px;
+    list-style: none;
+    margin: 0;
+  }
+}

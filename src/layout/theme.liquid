@@ -1,0 +1,124 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  {% if settings.disallow_robots == true %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+  {% if settings.verify_google_site == true %}
+    <meta name="google-site-verification" content="{{ settings.verify_code_of_google_site }}">
+  {% endif %}
+  {% if settings.verify_pinterest_claim == true %}
+    <meta name="p:domain_verify" content="{{ settings.verify_code_of_pinterest_claim }}"/>
+  {% endif %}
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- assign templateName = template.name | handle -%}
+
+  {%- capture seo_title -%}
+    {%- if templateName == 'index' -%}
+      {{ shop.name }} &#x007C; {{ page_title }}
+    {%- else -%}
+      {{ page_title }}
+      {%- if current_tags -%}
+        {%- assign meta_tags = current_tags | join: ', ' -%}
+        &#126; {{ 'general.meta.tags' | t: tags: meta_tags }}
+      {%- endif -%}
+      {%- if current_page != 1 -%}
+        &#126; {{ 'general.meta.page' | t: page: current_page }}
+      {%- endif -%}
+      {%- assign escaped_page_title = page_title | escape -%}
+      {%- unless escaped_page_title contains shop.name -%}
+        &#x007C; {{ shop.name }}
+      {%- endunless -%}
+    {%- endif %}
+  {%- endcapture -%}
+  <title>
+    {{ seo_title | strip }}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% include 'favicon' %}
+
+  {% include 'social-meta-tags' %}
+
+  {% include 'external-libs' with type: 'style' %}
+
+  {% include 'style-tags' with layout: 'theme' %}
+  {% include 'css-variables' %}
+
+  <script type="text/javascript">
+    document.documentElement.className = document.documentElement.className.replace('no-js', '');
+
+    window.theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }}
+      },
+      moneyFormat: {{ shop.money_format | json }}
+    };
+  </script>
+
+  {{ 'https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js' | script_tag }}
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+  {% include 'script-tags' with layout: 'theme' %}
+
+  {{ content_for_header }}
+</head>
+
+{%- if templateName != 'index' and templateName != 'collection' and template.suffix != 'hero' -%}
+  {%- assign noPageHeroCls = ' no-hero'-%}
+{%- endif -%}
+
+<body
+  id="{{ page_title | handle }}"
+  class="template-{{ templateName }}{{noPageHeroCls}}"
+>
+  <div class="offcanvas-content">
+    <a class="in-page-link visually-hidden skip-link" href="#SiteContent">
+      {{ 'general.accessibility.skip_to_content' | t }}
+    </a>
+  </div>
+  <div class="offcanvas-content">
+    {% section 'announcement-bar' %}
+  </div>
+
+  <header role="header" id="SiteHeader" class="offcanvas-content">
+    {% section 'header' %}
+  </header>
+
+  <div class="body-wrapper offcanvas-content">
+    <main role="main" id="SiteContent">
+      <div class="inner">
+        {{ content_for_layout }}
+      </div>
+    </main>
+    <footer role="footer" id="SiteFooter">
+      {% section 'footer' %}
+    </footer>
+  </div>
+
+  <div id="ContentMask" class="overlay offcanvas-content"></div>
+
+  <div id="SidebarNav" role="navigation">
+    {% section 'sidebar-nav' %}
+  </div>
+
+  <a href="/pages/contact-us" role="button" class="contact-btn hide animated slideInRight" title="Contact Us...">
+    {% include 'icon-contact-us' %}
+  </a>
+
+  {% include 'cookies-banner' %}
+
+  {% include 'external-libs' with type: 'script' %}
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+.cookies-banner--snippet {
+  .cookies-message {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+		background-color: darken($color-index-section-bg, 8%);
+		padding: $grid-gutter;
+		text-align: center;
+		box-shadow: 0 0 5px rgba(0,0,0,0.4);
+		opacity: 0;
+    visibility: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation-timing-function: $transition-timing;
+    &.cookies-message-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .message-icon {
+      flex: 0 0 32px;
+      .iconfont {
+        vertical-align: middle;
+      }
+    }
+    .cookies-text {
+      flex: 1 1 auto;
+      text-align: left;
+      margin-right: $grid-gutter;
+    }
+  }
+}

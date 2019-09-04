@@ -1,0 +1,276 @@
+/**
+ * Slider component.
+ * https://github.com/nolimits4web/swiper
+ * 1. Hero banner section;
+ */
+
+$slider-height-small: 475px;
+$slider-height-medium: 650px;
+$slider-height-large: 775px;
+$slide-text-transition: transform 0.6s cubic-bezier(0.44, 0.13, 0.48, 0.87),
+                        opacity 0.6s cubic-bezier(0.44, 0.13, 0.48, 0.87);
+$slide-image-transition: opacity 0.8s cubic-bezier(0.44, 0.13, 0.48, 0.87);
+$slide-nav-height: 27px;
+
+/* --------- Hero banner ----------- */
+.swiper-container {
+  width: 100%;
+  .swiper-pagination__wrapper {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    .swiper-pagination {
+      bottom: 0;
+      position: relative;
+      width: 70px;
+      margin: 0 auto;
+      border-radius: $border-radius;
+      background: $color-index-section-bg;
+      font-size: $font-size-small;
+      opacity: .7;
+      animation-delay: 1s;
+      > * {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  .hero__banner--section & {
+    height: $slider-height-small;
+    max-height: 100vh;
+    &.medium {
+      height: $slider-height-medium;
+    }
+    &.large {
+      height: $slider-height-large;
+    }
+    .swiper-button-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: $slide-nav-height;
+      margin-top: -10px;
+      .inner {
+        position: relative;
+        height: $slide-nav-height;
+      }
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+      top: 0;
+      visibility: hidden;
+      transition: all $transition-duration $transition-timing;
+      opacity: 0.5;
+      height: $slide-nav-height;
+      margin-top: 0;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .swiper-button-prev {
+      @include media-query($medium-up) {
+        left: $grid-gutter;
+      }
+    }
+    .swiper-button-next {
+      @include media-query($medium-up) {
+        right: $grid-gutter;
+      }
+    }
+    &:hover {
+      .swiper-button-prev,
+      .swiper-button-next {
+        visibility: visible;
+      }
+    }
+    .swiper-pagination-bullet {
+      background: #AAAAAA;
+      width: 10px;
+      height: 10px;
+      border: 1px solid #FFFFFF;
+    }
+    .swiper-pagination-bullet-active {
+      background: #FFFFFF;
+    }
+  }
+  .parallax-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 130%;
+    height: 100%;
+    background-position: 50% 50%;
+    background-repeat: repeat;
+  }
+}
+
+.slide__image {
+  transition: $slide-image-transition;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+  .swiper-slide-active &,
+  .swiper-slide-duplicate-active &,
+  .no-js & {
+    opacity: 1;
+  }
+}
+
+.slide__text-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  &.slide__overlay {
+    @include overlay(1);
+  }
+  &.top {
+    align-items: flex-start;
+  }
+  &.center {
+    align-items: center;
+  }
+  &.bottom {
+    align-items: flex-end;
+  }
+}
+
+.slide__text-wrap {
+  z-index: 1;
+  color: white;
+}
+
+.slide__text-content {
+  width: 100%;
+  padding: $grid-gutter * 3 $grid-gutter * 2;
+  .product-sku {
+    background-color: $color-accent;
+    padding: $grid-gutter-small / 3 $grid-gutter-small;
+    margin-bottom: $grid-gutter / 2;
+    color: rgba(255, 255, 255, .7);
+    border-radius: $border-radius;
+    font-size: $font-size-small;
+    opacity: .9;
+    display: inline-block;
+  }
+  > * {
+    opacity: 0;
+    transition: $slide-text-transition;
+    transition-delay: 0.3s;
+  }
+  > .slide-title {
+    @extend .h1;
+    font-weight: 900;
+    margin: 0;
+    color: white;
+    text-shadow: 0 0 1px rgba(0,0,0,0.05),0 1px 2px rgba(0,0,0,0.3);
+  }
+  .slide-subtitle {
+    @extend .text-large;
+    @extend .text-title;
+  }
+  .btn, .button {
+    margin-top: $grid-gutter;
+    @include media-query($small) {
+      margin-top: $grid-gutter / 2;
+    }
+  }
+  &.center {
+    text-align: center;
+    > * {
+      text-align: center;
+    }
+    .title {
+      transform: translateY(-30%);
+    }
+    .subtitle {
+      transform: translateY(20%);
+    }
+    .link-wrapper {
+      transform: translateY(30%);
+    }
+  }
+  &.left {
+    text-align: left;
+    > * {
+      text-align: left;
+    }
+    .title {
+      transform: translateX(20%);
+    }
+    .subtitle {
+      transform: translateX(10%);
+    }
+    .link-wrapper {
+      transform: translateY(20%);
+    }
+  }
+  &.right {
+    text-align: right;
+    > * {
+      text-align: right;
+    }
+    .title {
+      transform: translateX(-20%);
+    }
+    .subtitle {
+      transform: translateX(-10%);
+    }
+    .link-wrapper {
+      transform: translateY(20%);
+    }
+  }
+  &:not(.center) {
+    @include media-query($small) {
+      text-align: center;
+      > * {
+        text-align: center;
+      }
+      .title {
+        transform: translateY(-30%);
+      }
+      .subtitle, .link-wrapper {
+        transform: translateY(30%);
+      }
+    }
+  }
+  .swiper-slide-active &,
+  .swiper-slide-duplicate-active &,
+  .no-js & {
+    > * {
+      opacity: 1;
+    }
+    > .title, .subtitle, .link-wrapper {
+      transform: translateY(0%);
+      transform: translateX(0%);
+    }
+  }
+}
+
+.gallery-top {
+  height: 80%;
+  width: 100%;
+}
+.gallery-thumbs {
+  height: 20%;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+.gallery-thumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+.gallery-thumbs .swiper-slide-active {
+  opacity: 1;
+}
