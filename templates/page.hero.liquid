@@ -1,0 +1,102 @@
+<div class="page-hero--tpl">
+  <div class="page-hero-banner">
+    {% section 'page-hero-banner' %}
+  </div>
+  <div class="inner">
+    <div class="page-content__wrapper">
+      <div class="page-content rte">
+        {{ page.content }}
+      </div>
+
+      {% if page.handle == 'contact-us' %}
+        <div class="contact-form__wrapper">
+          {% form 'contact', class: 'basic-form grid-form contact-form' %}
+
+            {% if form.posted_successfully? %}
+              <div class="form-success">
+                {{ 'contact.form.post_success' | t }}
+              </div>
+            {% endif %}
+
+            {{ form.errors | default_errors }}
+            <div class="grid-form-inner">
+              <div class="form-item">
+                <label for="ContactFormName">
+                  {{ 'contact.form.name' | t }}
+                  <span class="required-tip text-error">*</span>
+                </label>
+                <input type="text"
+                  name="contact[name]"
+                  id="ContactFormName"
+                  class="large"
+                  required="required"
+                  placeholder="{{ 'contact.form.name' | t }}"
+                  value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                >
+              </div>
+
+              <div class="form-item">
+                <label for="ContactFormEmail">
+                  {{ 'contact.form.email' | t }}
+                  <span class="required-tip text-error">*</span>
+                </label>
+                <input type="email"
+                  name="contact[email]"
+                  id="ContactFormEmail"
+                  class="large"
+                  placeholder="{{ 'contact.form.email' | t }}"
+                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                  spellcheck="false"
+                  autocomplete="off"
+                  required="required"
+                  autocapitalize="off"
+                >
+              </div>
+
+              <div class="form-item">
+                <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+                <input type="tel"
+                  name="contact[phone]"
+                  class="large"
+                  id="ContactFormPhone"
+                  placeholder="{{ 'contact.form.phone' | t }}"
+                  value="{% if form[phone] %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                  pattern="[0-9\-]*"
+                >
+              </div>
+
+              <div class="form-item full-wide">
+                <label for="ContactFormMessage">
+                  {{ 'contact.form.message' | t }}
+                  <span class="required-tip text-error">*</span>
+                </label>
+                <textarea rows="7"
+                  name="contact[body]"
+                  id="ContactFormMessage"
+                  required="required"
+                  placeholder="{{ 'contact.form.message' | t }}">
+                  {%- if form.body -%}
+                    {{- form.body -}}
+                  {%- endif -%}
+                </textarea>
+              </div>
+            </div>
+
+            <div class="text-center" style="margin-top: 16px;">
+              <input
+                type="submit"
+                class="button btn btn-primary large"
+                value="{{ 'contact.form.send' | t }}"
+                style="width: 70%;"
+              >
+            </div>
+
+          {% endform %}
+        <div>
+      {% endif %}
+    </div>
+  </div>
+  {% if page.handle == 'contact-us' %}
+    {% section 'map' %}
+  {% endif %}
+</div>

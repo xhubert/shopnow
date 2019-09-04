@@ -1,0 +1,19 @@
+{%- if settings.apple_touch_icon != blank -%}
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.apple_touch_icon | img_url: '180x180' }}">
+{%- endif -%}
+
+{%- if settings.favicon != blank -%}
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | img_url: '32x32' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ settings.favicon | img_url: '16x16' }}">
+{%- endif -%}
+
+{%- if settings.safari_pinned_tab != blank -%}
+  <link rel="mask-icon" href="{{ settings.safari_pinned_tab | asset_url }}" color="{{ settings.safari_pinned_tab_color }}">
+{%- endif -%}
+
+<link rel="manifest" href="{{ settings.site_webmanifest | asset_url }}">
+<meta name="apple-mobile-web-app-title" content="{{ shop.name }}">
+<meta name="application-name" content="{{ shop.name }}">
+<meta name="msapplication-config" content="{{ settings.browserconfig_file | asset_url }}">
+<meta name="theme-color" content="{{ settings.color_primary }}">
+

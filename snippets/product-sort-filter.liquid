@@ -1,0 +1,114 @@
+{%- comment -%}
+  It creates a style tag for product quantity selection.
+
+  Accepts:
+  - default_sort_by: { String } The defaultSortBy of collection.
+  - sort_by: { String } The sortBy of collection.
+  - wrapper_class: { String} The wrapper Class.
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'product-tag-filter' with option wrapper_class: "wrapper-css-class" %}
+{%- endcomment -%}
+
+<!--Radio butons-->
+{%- assign sort_keys = 'manual, best-selling, title-ascending, title-descending, price-ascending, price-descending, created-descending, created-ascending,' | split: ', ' -%}
+
+{% capture dropdown_active %}
+  <i class="iconfont icon-check-mark-empty icon-active"></i>
+{% endcapture %}
+
+<div
+  class="product-sort-filter--snippet dropdown-menu product-filter{% if wrapper_class != blank %} {{ wrapper_class }}{% endif %}"
+  aria-haspopup="true"
+  aria-expanded="false"
+  aria-controls="SortFilterDropdown"
+  data-product-sort-filter
+>
+  {%- assign x_sort_by = sort_by | default: default_sort_by -%}
+  {%- assign placeholder = 'collections.sorting.placeholder' | t -%}
+
+  {% if sort_keys contains x_sort_by %}
+    {% case x_sort_by %}
+      {% when 'manual' %}
+        {%- assign sort_by_text = 'collections.sorting.featured' | t -%}
+      {% when 'best-selling' %}
+        {%- assign sort_by_text = 'collections.sorting.best_selling' | t -%}
+      {% when 'title-ascending' %}
+        {%- assign sort_by_text = 'collections.sorting.az' | t -%}
+      {% when 'title-descending' %}
+        {%- assign sort_by_text = 'collections.sorting.za' | t -%}
+      {% when 'price-ascending' %}
+        {%- assign sort_by_text = 'collections.sorting.price_ascending' | t -%}
+      {% when 'price-descending' %}
+        {%- assign sort_by_text = 'collections.sorting.price_descending' | t -%}
+      {% when 'created-descending' %}
+        {%- assign sort_by_text = 'collections.sorting.date_descending' | t -%}
+      {% when 'created-ascending' %}
+        {%- assign sort_by_text = 'collections.sorting.date_ascending' | t -%}
+      {% else %}
+        {%- assign sort_by_text = 'error' -%}
+    {% endcase %}
+    {% if x_sort_by == default_sort_by %}
+      {%- assign sort_by_text = sort_by_text | append: ' (' | append: placeholder | append: ')' -%}
+    {% endif %}
+  {% endif %}
+  <label class="text-uppercase">
+    {{ 'collections.sorting.title' | t }}:
+  </label>
+  <a
+    role="button"
+    href="javascript:void(0)"
+    title="{{ sort_by_text }}"
+    class="dropdown-toggler"
+  >
+    <span class="dropdown-caption text-capitalize">
+      {{ sort_by_text }}
+    </span>
+    <i class="iconfont icon-arrow-down icon-dropdown-arrow text-small"></i>
+  </a>
+  <div class="dropdown-content__wrapper animated fadeInUpSmall" id="SortFilterDropdown">
+    <div class="dropdown-content-arrow"></div>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        {% for sort_key in sort_keys %}
+          {% if sort_key == x_sort_by %}
+            <li class="dropdown-item active text-capitalize">
+              <span>{{ sort_by_text }}</span>
+              {{ dropdown_active }}
+            </li>
+          {% else %}
+            <li class="dropdown-item">
+              <a href="javascript: void(0)" data-value="{{ sort_key }}" class="sort-by-key text-capitalize">
+                {% case sort_key %}
+                  {% when 'manual' %}
+                    {%- assign sort_key_text = 'collections.sorting.featured' | t -%}
+                  {% when 'best-selling' %}
+                    {{ 'collections.sorting.best_selling' | t }}
+                  {% when 'title-ascending' %}
+                    {%- assign sort_key_text = 'collections.sorting.az' | t -%}
+                  {% when 'title-descending' %}
+                    {%- assign sort_key_text = 'collections.sorting.za' | t -%}
+                  {% when 'price-ascending' %}
+                    {%- assign sort_key_text = 'collections.sorting.price_ascending' | t -%}
+                  {% when 'price-descending' %}
+                    {%- assign sort_key_text = 'collections.sorting.price_descending' | t -%}
+                  {% when 'created-descending' %}
+                    {%- assign sort_key_text = 'collections.sorting.date_descending' | t -%}
+                  {% when 'created-ascending' %}
+                    {%- assign sort_key_text = 'collections.sorting.date_ascending' | t -%}
+                {% endcase %}
+                {% if sort_key == default_sort_by %}
+                  {{ sort_key_text | append: ' (' | append: placeholder | append: ')' }}
+                {% else %}
+                  {{ sort_key_text }}
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <input id="DefaultSortBy" type="hidden" value="{{ collection.default_sort_by }}">
+</div>

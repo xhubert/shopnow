@@ -1,0 +1,32 @@
+<div class="blog--tpl container">
+  <div class="inner">
+    {% include 'breadcrumbs' %}
+    <h1 class="section-title">{{ blog.title }}</h1>
+    <div class="blog__wrapper">
+
+      <div class="article-list__wrapper">
+        {% include 'article-list' with
+          blog: blog
+        %}
+      </div>
+
+      {% if blog.all_tags.size > 0 %}
+        <div class="blog-categories__wrapper">
+          <div class="h4">{{ 'blogs.general.categories' | t }}</div>
+
+          <ul class="text-uppercase">
+            {% for tag in blog.all_tags %}
+
+              {% if current_tags contains tag %}
+                <li>{{ tag }}</li>
+              {% else %}
+                <li>{{ tag | link_to_tag: tag }}</li>
+              {% endif %}
+
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

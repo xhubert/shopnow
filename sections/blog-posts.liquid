@@ -1,0 +1,109 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Blog posts" section in the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the blog posts section
+  - Blog (which blog category to show in your store)
+
+  Theme Store optional settings
+  - Number of posts to show
+  - Show author
+  - Show date
+  - List type (list or grid);
+{%- endcomment -%}
+<section>
+  {% if section.settings.title != blank and section.settings.show_title == true %}
+    <h2 class="section-title">{{ section.settings.title | escape }}</h2>
+  {% endif %}
+
+  {%- assign blog = blogs[section.settings.blog] -%}
+
+  {%- comment -%}
+    Due to accessibility requirements, the Blog entries list functions
+    as a list of content items. Non-visual users will expect lists of content
+    to appear in a list structure, allowing for easier understanding and navigation of list items.
+  {%- endcomment -%}
+
+  {% assign sorted_articles = blog.articles | sort: "id" %}
+
+
+  {% include 'articles' with
+    blog: blog,
+    list_type: section.settings.list_type,
+    show_cnt: section.settings.article_limit
+  %}
+</section>
+
+{% schema %}
+  {
+    "name": "Blog posts",
+    "class": "blog__posts--section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Blog"
+      },
+      {
+        "type": "select",
+        "id": "list_type",
+        "label": "How to list the articles?",
+        "default": "grid",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          }, {
+            "value": "list",
+            "label": "List"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": "Show blog title",
+        "default": false
+      },
+      {
+        "id": "blog",
+        "type": "blog",
+        "label": "Blog"
+      },
+      {
+        "type": "range",
+        "id": "article_limit",
+        "label": "How many article you want to show?",
+        "min": 3,
+        "max": 12,
+        "step": 3,
+        "default": 3
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Blog posts",
+        "category": "Blog",
+        "settings": {
+          "blog": "News",
+          "list_type": "grid",
+          "article_limit": 3
+        }
+      }
+    ]
+  }
+{% endschema %}

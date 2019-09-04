@@ -1,0 +1,74 @@
+{%- if img_height == blank -%}
+  {%- assign img_height = '200' -%}
+{%- endif -%}
+
+<div class="product-card--snippet grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %}">
+  <a
+    class="product-item__link mask-link hover-action"
+    data-hoverin-action="fadeInDown"
+    data-hoverout-action="fadeOutUp"
+    href="{{ product.url | within: collection }}"
+    title="{{ product.title | escape }}"
+  >
+    {% unless product.has_only_default_variant %}
+    <div class="product-item__title hover-action-item animated">
+        <div class="more-options">
+          {% assign firstOption = product.options_with_values | first %}
+          <small class="more-options-info">
+            {{ 'products.product.more_options_html' | t: option: firstOption.name }}
+          </small>
+        </div>
+    </div>
+    {% endunless %}
+  </a>
+  <div class="product-item-top__wrapper match-height" data-mh="product-card-image">
+    {% unless product.has_only_default_variant %}
+      <small class="more-options-tag">
+        <i class="iconfont icon-more-outline"></i>
+      </small>
+    {% endunless %}
+    {% if product.compare_at_price > product.price %}
+      <span class="on-sale-tag">
+        <i class="iconfont icon-sale-tag text-error"></i>
+      </span>
+    {% endif %}
+    <div class="product-item-image__wrapper">
+      {% if product.featured_image != blank %}
+        {%
+          include 'responsive-image' with
+            image: product.featured_image,
+            max_height: img_height,
+            max_width: img_height,
+            wrapper_class: 'product-item__image',
+        %}
+      {% else %}
+        <div class="product-item__image">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="product-item-bottom__wrapper text-center">
+    <div class="grid-item__meta">
+      <div class="product-item__type text-small">
+        {{ product.type }}
+      </div>
+      {% if section.settings.show_sku %}
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        <div class="product-item__sku text-muted text-small">
+          {% assign skus = current_variant.sku | split: "G1029-" %}
+          {{ skus.last }}
+        </div>
+      {% endif %}
+      <div class="product-item_tags text-muted text-ellipsis hide">
+        {{ product.tags | join: '/' }}
+      </div>
+      <div class="product-item__title">
+        {{ product.title | escape | truncate: 70 }}
+      </div>
+    </div>
+    <div class="product-item__price text-price text-large">
+      {% include 'product-price' %}
+    </div>
+  </div>
+</div>

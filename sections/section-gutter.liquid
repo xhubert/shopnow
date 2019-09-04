@@ -1,0 +1,52 @@
+<section class="section-gutter {{ section.settings.height }} {{ section.settings.bg_color }}">
+</section>
+
+{% schema %}
+  {
+    "name": "Section gutter",
+    "class": "section__gutter--section",
+    "settings": [
+      {
+        "type": "select",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "transparent",
+        "options": [
+          {
+            "value": "light",
+            "label": "Light"
+          }, {
+            "value": "dark",
+            "label": "Dark"
+          }, {
+            "value": "transparent",
+            "label": "Transparent"
+          }
+        ]
+      }, {
+        "type": "select",
+        "id": "height",
+        "label": "Gutter height",
+        "default": "middle",
+        "options": [
+          {
+            "value": "big",
+            "label": "High"
+          }, {
+            "value": "middle",
+            "label": "Middle"
+          }, {
+            "value": "small",
+            "label": "Low"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Section gutter",
+        "category": "Layout"
+      }
+    ]
+  }
+{% endschema %}

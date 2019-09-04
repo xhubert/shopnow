@@ -1,0 +1,92 @@
+{%- comment -%}
+  It creates a style tag for product quantity selection.
+
+  Accepts:
+  - id: The id of the product item ( not product id ).
+  - input_name: The name for quantity-input.
+  - input_id: The id for quantity-input.
+  - input_init_value: The init-value for quantity-input.
+  - input_aria_label: cart.general.item_quantity' | t.
+  - inventory_quantity: The inventory-quantity of current item.
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'quantity-selector' with option: varuaint: product.variants, wrapper_class: "wrapper-css-class" %}
+{%- endcomment -%}
+
+<!--Radio butons-->
+{%- assign limitCnt = 0 -%}
+{%- if inventory_quantity != blank -%}
+  {%- assign limitCnt = inventory_quantity -%}
+{%- endif -%}
+
+{%- if settings.cnt_show_left != blank -%}
+  {%- assign cntToShowLeft = settings.cnt_show_left -%}
+{%- else -%}
+  {%- assign cntToShowLeft = 10 -%}
+{%- endif -%}
+
+{% capture only_left %}
+  <span
+    class="only-left text-warning text-small{% if limitCnt > 0 or limitCnt == undefined %} hide{% endif %}"
+    data-only-left
+    data-cnt-show-left="{{ cntToShowLeft }}"
+  >
+    {{ 'products.product.only_left_html' | t: quantity: limitCnt }}
+  </span>
+{% endcapture %}
+
+{%- assign templateName = template.name | handle -%}
+
+<div
+  id="quantity-selector-{{ id }}"
+  class="quantity-selector--snippet"
+  data-quantity-selector
+  data-current-id="{{ id }}"
+  data-quantity-id="{{ input_id }}"
+>
+  {% if templateName != 'cart' %}
+    <label class="text-muted text-small" for="Quantity">
+      {{ 'products.product.quantity' | t }}
+    </label>
+  {% endif %}
+  <div class="quantity-box">
+    <button
+      type="button"
+      class="btn ss-icon product-minus js-change-quantity"
+      data-func="minus"
+      {% if input_init_value <= 1 or limitCnt == 0 %}disabled{% endif %}
+    >
+      <i class="iconfont icon-minus-empty"></i>
+    </button>
+
+    <input
+      type="number"
+      min="1"
+      size="2"
+      class="quantity-input"
+      name="{{ input_name }}"
+      id="{{ input_id }}"
+      value="{{ input_init_value }}"
+      aria-label="{{ input_aria_label }}"
+      {% if limitCnt == 0 %}disabled{% endif %}
+    >
+    <input type="hidden" id="limit-cnt-{{ id }}" value="{{ limitCnt }}" />
+
+    <button
+      type="button"
+      class="btn ss-icon product-plus js-change-quantity"
+      data-func="plus"
+      {% if limitCnt == 0 %}disabled{% endif %}
+    >
+      <i class="iconfont icon-plus-empty"></i>
+    </button>
+
+    {% if templateName == 'product' %}
+      &nbsp;&nbsp;&nbsp;{{ only_left }}
+    {% endif %}
+  </div>
+  {% if templateName == 'cart' and limitCnt <= cntToShowLeft %}
+    {{ only_left }}
+  {% endif %}
+</div>

@@ -1,0 +1,137 @@
+<div class="site-footer">
+  <div class="inner container">
+    <div class="footer-left">
+      <div class="h5 nav-title text-uppercase">
+        LET'S BE FRIEND...
+      </div>
+      {% include 'social-list' %}
+      <br />
+      <div class="thanks">
+        <small>
+          Thank you for visiting {{ shop.name }},
+          if you didn't find what you where looking for or if you have any questions,
+          please don't hesitate to contact us by filling this form or subscribe us.
+        </small>
+      </div>
+      {% form 'contact' %}
+        <label for="Email" class="text-bold" style="line-height: 32px">
+          Join our mailing list...
+        </label>
+        <div class="input-group">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            id="Email"
+            class="input-group__field newsletter__input large"
+            value=""
+            placeholder="Email address"
+            autocorrect="off"
+            autocapitalize="off"
+          >
+
+          <button
+            type="submit"
+            class="btn large btn-primary newsletter__submit"
+            name="commit"
+            id="Subscribe"
+          >
+            <span class="newsletter__submit-text--large">Subscribe</span>
+          </button>
+        </div>
+      {% endform %}
+    </div>
+    <div class="footer-right">
+      {%- assign footer_linklist = section.settings.footer_linklist -%}
+      {% if linklists[footer_linklist].links.size > 0 %}
+        <ul id="FooterNav" class="footer-nav">
+          {% for link in linklists[footer_linklist].links %}
+            {%- assign child_list_handle = link.title | handleize -%}
+            {% if menus[child_list_handle].links != blank %}
+              <li class="has-submenu">
+                <div class="h5 nav-title text-uppercase">
+                  {{ link.title }}
+                </div>
+                <ul class="submenu no-bullets">
+                  {% for childlink in menus[child_list_handle].links %}
+                    <li class="text-capitalize">
+                      <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% else %}
+              <li {% if link.active %}class="active"{% endif %}>
+                <a href="{{ link.url }}" class="nav-link text-uppercase">{{ link.title }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if section.settings.show_payment_icons %}
+        {% unless shop.enabled_payment_types == empty %}
+          {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,bitcoin,cirrus,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,interac,jcb,litecoin,maestro,master,paypal,visa,google_pay,shopify_pay' | split: ',' -%}
+          <div class="h5 nav-title text-capitalize">
+            with available payments
+          </div>
+          <span class="visually-hidden">{{ 'layout.footer.payment_methods' | t }}</span>
+          <ul class="payment-icons">
+            {% for type in shop.enabled_payment_types %}
+              {% if payment_icons_available contains type %}
+                {%- assign icon_name = type | prepend: 'icon-' -%}
+                <li class="{{icon_name}}">
+                  {% include icon_name %}
+                  <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endunless %}
+      {% endif %}
+      <div class="copyright">
+        <div class="info text-ellipsis">
+          <small>{{ 'layout.footer.copyright' | t }} &copy; 2003 - {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}.</small>
+        </div>
+        <div class="powered">
+          <small>
+            &nbsp;Powered by
+            <a
+              target="_blank?ref=out-of-the-sandbox"
+              rel="nofollow?ref=out-of-the-sandbox"
+              href="https://www.shopify.com?utm_campaign=poweredby&amp;utm_medium=shopify&amp;utm_source=onlinestore?ref=out-of-the-sandbox"
+            >
+              <i class="iconfont icon-shopify text-small"></i>Shopify
+            </a>
+            .
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "class": "footer--section",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "footer_linklist",
+        "label": "First menu",
+        "default": "footer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      }
+    ],
+    "presets": [{
+      "name": "Footer",
+      "category": "Layout"
+    }]
+  }
+
+{% endschema %}

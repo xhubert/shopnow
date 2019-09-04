@@ -1,0 +1,27 @@
+<!-- ShopifyExplorer - Add an EU cookies banner to your website without app -->
+<!-- Details in: http://shopifyexplorer.com/shopify-add-eu-cookies-banner-website-without-app.html -->
+{% comment %}Define variables{% endcomment %}
+{% assign text = "We use cookies to ensure that we give you the best experience on our website. If you continue we'll assume that you are understand this." %}
+{% assign more_info = "Learn more..." %}
+{% assign button_text = "Confirm" %}
+
+{%- assign privacy_url = "javascript:void(0);" -%}
+{%- unless settings.privacy_url == blank -%}
+  {%- assign privacy_url = settings.privacy_url -%}
+{%- endunless-%}
+
+<div id="CookiesBannerContainer" class="cookies-banner--snippet">
+	<div id="CookiesMessage" class="cookies-message animated">
+    <div class="message-icon">
+      <i class="iconfont icon-ios-info-outline text-xl"></i>
+    </div>
+		<div class="cookies-text">
+			{{text}}
+      &nbsp;
+      <a href="{{privacy_url}}">{{more_info}}</a>
+		</div>
+		<button id="AcceptCookiesBtn" class="btn btn-primary">
+      {{button_text}}
+    </button>
+	</div>
+</div>

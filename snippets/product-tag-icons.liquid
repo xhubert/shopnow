@@ -1,0 +1,16 @@
+{%- assign sorted_tags = tags | uniq -%}
+
+<div class="tag-icons--snippet">
+  <ul>
+    {% for tag in sorted_tags %}
+      {%- assign tag_handle = tag | handleize -%}
+      {% capture tag_icon %}icon-{{ tag_handle }}{% endcapture %}
+      {% if settings[tag_icon] %}
+        <li title="{{ tag }}">
+          {% include tag_icon %}
+          <img src="{{ settings[tag_icon] | img_url: '128x' }}" alt="{{ tag_handle }}"/>
+        </li>
+      {% endif%}
+    {% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,45 @@
+{% comment %}
+  This page represents the /collections and /products pages.
+{% endcomment %}
+
+<div class="list-collections--tpl container">
+  <h1 class="section-title">{{ page_title }}</h1>
+
+  <div class="flex-grid flex-grid-2">
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+        {% if collection.handle == 'new-arrivals' %}
+          <div class="flex-grid-item new-arrivals">
+            {% include 'collection-card' with
+              collection: collection
+            %}
+          </div>
+        {% endif %}
+        {% if collection.handle == 'best-sellers' %}
+          <div class="flex-grid-item best-sellers">
+            {% include 'collection-card' with
+              collection: collection
+            %}
+          </div>
+        {% endif %}
+      {% endunless %}
+    {% endfor %}
+  </div>
+
+  <hr class="divider large">
+
+  <div class="flex-grid flex-grid-4">
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage'
+        or collection.handle == 'new-arrivals'
+        or collection.handle == 'best-sellers'
+      %}
+          <div class="flex-grid-item">
+            {% include 'collection-card' with
+              collection: collection
+            %}
+          </div>
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>

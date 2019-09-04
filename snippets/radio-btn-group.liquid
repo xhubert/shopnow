@@ -1,0 +1,71 @@
+{%- comment -%}
+  It creates a style tag for product variant selection.
+
+  Accepts:
+  - option: {Object} the option of product.
+  - active_class: {String} class name of the actived item.
+  - wrapper_class: {String} class name of the <div> wrapper.
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'radio-btn-group' with option: active_class: "active-class", wrapper_class: "wrapper-css-class" %}
+{%- endcomment -%}
+
+<!--Radio buttons-->
+{%- assign actived_radio_class = 'active ' | append: active_class -%}
+
+{% capture image_3000k %}
+  <img
+    src="{{ 'warm-white-3000k.jpg' | file_img_url: '160x160' }}"
+  >
+{% endcapture %}
+{% capture image_4000k %}
+  <img
+    src="{{ 'cool-white-4000k.jpg' | file_img_url: '160x160' }}"
+  >
+{% endcapture %}
+{% capture image_5000k %}
+  <img
+    src="{{ 'day-light-5000k.jpg' | file_img_url: '160x160' }}"
+  >
+{% endcapture %}
+
+<div
+  class="radio-btn-group--snippet {{ wrapper_class }}"
+  data-toggle="buttons"
+  data-selector-name="product-option-{{ option.position }}"
+  data-actived-class="{{ actived_radio_class }}"
+>
+  {% for value in option.values %}
+    <label
+      for="product-option-{{ option.position }}-{{ forloop.index }}"
+      class="btn-radio product-option {% if option.selected_value == value %}{{ actived_radio_class }}{% endif %} {% if option.name == 'Color Temperature' %}color-temp-option{% endif %}"
+      title="{{ value | escape }}"
+    >
+      <input
+        id="product-option-{{ option.position }}-{{ forloop.index }}"
+        data-single-option-selector
+        data-index="option{{ option.position }}"
+        class="form-check-input"
+        name="product-option-{{ option.position }}"
+        type="radio"
+        value="{{ value | escape }}"
+        {% if option.selected_value == value %}checked{% endif %}
+      >
+      <span class="option-value">{{ value }}</span>
+      {% if option.name == 'Color Temperature' %}
+        <span class="color-temp-img">
+          {% case value %}
+            {% when 'Warm white (3000K)' %}
+              {{ image_3000k }}
+            {% when 'Cool white (4000K)' %}
+              {{ image_4000k }}
+            {% when 'Day light (5000K)' %}
+              {{ image_5000k }}
+          {% endcase %}
+        </span>
+      {% endif %}
+    </label>
+  {% endfor %}
+</div>
+<!--Radio buttons-->

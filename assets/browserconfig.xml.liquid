@@ -1,0 +1,11 @@
+{%- if settings.ms_tile_icon != blank -%}
+  <?xml version="1.0" encoding="utf-8"?>
+  <browserconfig>
+    <msapplication>
+      <tile>
+        <square150x150logo src="{{ settings.ms_tile_icon | img_url: '32x32' }}"/>
+        <TileColor>{{ ms_tile_color }}</TileColor>
+      </tile>
+    </msapplication>
+  </browserconfig>
+{%- endif -%}

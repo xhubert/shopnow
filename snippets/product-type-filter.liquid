@@ -1,0 +1,75 @@
+{%- comment -%}
+  Accepts:
+  - collection: { Object } The collection Object.
+  - wrapper_class: { String} The wrapper Class.
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'product-type-filter' with option wrapper_class: "wrapper-css-class" %}
+{%- endcomment -%}
+
+{% if collection.current_type == blank %}
+  {% assign currentTypeText = 'collections.filters.all_products' | t %}
+{% else %}
+  {% assign currentTypeText = collection.current_type %}
+{% endif %}
+
+{% capture dropdown_active %}
+  <i class="iconfont icon-check-mark-empty icon-active"></i>
+{% endcapture %}
+
+<div
+  class="product-type-filter--snippet dropdown-menu product-filter{% if wrapper_class != blank %} {{ wrapper_class }}{% endif %}"
+  aria-haspopup="true"
+  aria-expanded="false"
+>
+  <label class="text-uppercase">
+    {{ 'collections.filters.title_tags' | t }}:
+  </label>
+  <a
+    role="button"
+    href="javascript:void(0)"
+    title="{{ currentTypeText }}"
+    class="dropdown-toggler"
+  >
+    <span class="dropdown-caption">
+      {{ currentTypeText }}
+    </span>
+    <i class="iconfont icon-arrow-down icon-dropdown-arrow text-small"></i>
+  </a>
+  <div class="dropdown-content__wrapper animated fadeInUpSmall" id="TypesFilterDropdown">
+    <div class="dropdown-content-arrow"></div>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        {% if collection.current_type == blank %}
+          <li class="dropdown-item active">
+            <span>
+              {{ currentTypeText }}
+            </span>
+            {{ dropdown_active }}
+          </li>
+        {% else %}
+          <li class="dropdown-item">
+            <a href="/collections/{{ collection.handle }}">
+              {{ currentTypeText }}
+            </a>
+          </li>
+        {% endif %}
+        {% if collection.all_types %}
+          {% for product_type in collection.all_types %}
+            {% if currentType == product_type %}
+              <li class="dropdown-item active">
+                <span>{{ product_type }}</span>
+                {{ dropdown_active }}
+              </li>
+            {% else %}
+              <li class="dropdown-item">
+                {{ product_type | link_to_type }}
+              </li>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>

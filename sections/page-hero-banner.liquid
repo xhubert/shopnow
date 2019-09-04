@@ -1,0 +1,139 @@
+{%- comment -%}
+  This Section is for page template.
+{%- endcomment -%}
+{% if template.name == 'page' and template.suffix == 'hero' %}
+  <section
+    class="page-hero-banner__wrapper"
+    data-section-type="page-hero-banner"
+    data-section-id="{{ section.id }}"
+  >
+    {% for hero in section.blocks %}
+      {% if hero.settings.page_handle == page.handle %}
+        <div class="page-hero{% if hero.settings.is_parallax %} jarallax{% endif %}">
+          {% if hero.settings.hero_image != blank %}
+            {% include 'responsive-image' with
+              no_wrapper: true,
+              image: hero.settings.hero_image,
+              image_class: 'jarallax-img'
+              max_width: 2160,
+              max_height: 750
+            %}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+
+          {% if hero.settings.show_overlay == true %}
+            <div class="image-overlay" style="background-color: {{ hero.settings.color_overlay }}"></div>
+          {% endif %}
+
+          <div
+            class="page-hero__text{% if hero.settings.text_wrapper_class != blank %} {{hero.settings.text_wrapper_class}}{%endif%}"
+            style="text-align: {{ hero.settings.text_align }};"
+          >
+            {% if hero.settings.hero_title != blank %}
+              <div class="h2" style="color: {{ hero.settings.color_text }}">
+                {{ hero.settings.hero_title | escape }}
+              </div>
+              <div class="hero-subtitle" style="color: {{ hero.settings.color_text }}">
+                {{ hero.settings.hero_subtitle | escape }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </section>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Page Hero Banner",
+    "class": "page__hero__banner--section",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "text",
+        "id": "text_wrapper_class",
+        "label": "Text wrapper class",
+        "default": "container"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Hero Banner",
+        "settings": [
+          {
+            "type": "text",
+            "id": "page_handle",
+            "label": "The handle of Page to match this hero."
+          }, {
+            "type": "image_picker",
+            "id": "hero_image",
+            "label": "Image"
+          }, {
+            "type": "checkbox",
+            "id": "is_parallax",
+            "label": "Make background parallax",
+            "default": false
+          }, {
+            "type": "text",
+            "id": "hero_title",
+            "label": "Page Hero Title",
+            "default": "Page Hero Title"
+          }, {
+            "type": "text",
+            "id": "hero_subtitle",
+            "label": "Hero Subtitle",
+            "default": "Page Hero Subtitle."
+          }, {
+            "type": "color",
+            "id": "color_text",
+            "label": "Text Color",
+            "default": "#FFFFFF"
+          }, {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "default": "center",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              }, {
+                "value": "center",
+                "label": "Center"
+              }, {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }, {
+            "type": "checkbox",
+            "id": "show_overlay",
+            "label": "Show overlay mask",
+            "default": true
+          }, {
+            "type": "color",
+            "id": "color_overlay",
+            "label": "Overlay Color",
+            "default": "#111512"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Page Hero Banner",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image"
+          }, {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

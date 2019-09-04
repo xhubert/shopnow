@@ -1,0 +1,286 @@
+{% case section.settings.grid %}
+  {% when '2' %}
+    {% assign gridCls = 'flex-grid-2' %}
+    {%- assign max_height = 530 -%}
+  {% when '3' %}
+    {% assign gridCls = 'flex-grid-3' %}
+    {%- assign max_height = 370 -%}
+  {% when '4' %}
+    {% assign gridCls = 'flex-grid-4' %}
+    {%- assign max_height = 270 -%}
+  {% when '5' %}
+    {% assign gridCls = 'flex-grid-5' %}
+    {%- assign max_height = 230 -%}
+{% endcase %}
+
+{% if section.settings.layout == 'grid' %}
+  {%- assign limit = section.settings.grid | times: section.settings.rows -%}
+{% else %}
+  {%- assign limit = 16 -%}
+{% endif %}
+
+{% paginate collection.products by limit %}
+
+<section data-section-id="{{ section.id }}" data-section-type="product-grid">
+  <header class="collection-header">
+    {% if section.settings.show_collection_image and collection.image %}
+      <div class="collection-hero">
+        <div class="collection-hero__image bg-image lazyload js"
+             data-bgset="{% include 'responsive-bg-image', image: collection.image %}"
+             data-sizes="auto"
+             data-expand="-1"
+             data-parent-fit="cover"
+             style="background-image: url({{ collection.image | img_url: '300x300' }});"
+        ></div>
+        <noscript>
+          <div class="collection-hero__image" style="background-image: url({{ collection.image | img_url: '2048x600', crop: 'top' }});"></div>
+        </noscript>
+        <div class="collection-hero__title-wrapper container">
+          <h1 class="collection-hero__title section-title">
+            {{ collection.title }}
+          </h1>
+          {% if collection.description != blank %}
+          <div class="rte collection-description text-center">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="collection-hero">
+        {% if section.settings.default_hero != blank %}
+        <div class="collection-hero__image bg-image lazyload js"
+             data-bgset="{% include 'responsive-bg-image', image: section.settings.default_hero %}"
+             data-sizes="auto"
+             data-expand="-1"
+             data-parent-fit="cover"
+             style="background-image: url({{ section.settings.default_hero | img_url: '300x300' }});"
+        ></div>
+        <noscript>
+          <div class="collection-hero__image" style="background-image: url({{ section.settings.default_hero | img_url: '2048x600', crop: 'top' }});"></div>
+        </noscript>
+        {% else %}
+          <div class="collection-hero__image placeholder-background">
+            {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+            {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+        <div class="collection-hero__title-wrapper container">
+          <h1 class="collection-hero__title section-title">{{ collection.title }}</h1>
+          {% if collection.description != blank %}
+          <div class="rte collection-description text-center">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="container page-bar">
+      <div class="breadcrumbs-bar">
+        {% include 'breadcrumbs' %}
+      </div>
+      <div class="text-capitalize quick-view small--text-center text-right">
+        <span class="filters-toolbar__product-count text-muted">
+          {{ 'collections.general.items_with_count' | t: count: collection.products_count }}
+        </span>
+        {% if collection.handle != 'all' %}
+          <span id="ViewAllProducts">
+            <span class="text-muted">&nbsp;|&nbsp;</span>
+            <a href="/collections/all">{{ 'collections.filters.all_products' | t }}</a>
+          </span>
+        {% endif %}
+        <span id="ViewAllCollections">
+          <span class="text-muted">&nbsp;|&nbsp;</span>
+          <a href="/collections">{{ 'collections.general.all_collections' | t }}</a>
+        </span>
+      </div>
+    </div>
+
+    {% if section.settings.tags_enable or section.settings.sort_enable %}
+      <div class="filters-toolbar__wrapper container">
+        <div class="filters-toolbar">
+          <div class="filters-toolbar-left">
+            {%
+              include 'product-collection-filter' with
+              currentCollection: collection,
+              wrapper_class: "filters-toolbar__item filters-toolbar__item--collection"
+            %}
+            {% if section.settings.tags_enable and collection.handle != 'all' %}
+              {%
+                include 'product-tag-filter' with
+                collection: collection,
+                current_tags: current_tags,
+                wrapper_class: "filters-toolbar__item filters-toolbar__item--tag"
+              %}
+            {% endif %}
+          </div>
+          {% if section.settings.sort_enable %}
+            <div class="filters-toolbar-right">
+              {%
+                include 'product-sort-filter' with
+                sort_by: collection.sort_by,
+                default_sort_by: collection.default_sort_by,
+                wrapper_class: "filters-toolbar__item filters-toolbar__item--sort"
+              %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="product-grid__wrapper container">
+    <div class="flex-grid {{ gridCls }}">
+      {% for product in collection.products %}
+        <div class="flex-grid-item">
+          {% include 'product-card' with img_height: max_height %}
+        </div>
+      {% else %}
+        {% comment %}
+        Add default products to help with onboarding for collections/all only.
+        The onboarding styles and products are only loaded if the
+        store has no products.
+        {% endcomment %}
+        {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+          {% for i in (1..limit) %}
+            <div class="flex-grid-item">
+              <div class="grid-view-item">
+                <a href="#" class="grid-view-item__link">
+                  <div class="grid-view-item__image">
+                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                  <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                  <div class="grid-view-item__meta">
+                    <span class="product-price__price">$19.99</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          {%- assign is_empty_collection = true -%}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if is_empty_collection %}
+      <div class="flex-grid-item text-center">
+        <br />
+        <p class="text-center">{{ 'collections.general.no_matches' | t }}</p>
+        <br />
+        <i class="iconfont icon-grid text-muted" style="font-size: 50px; color: rgba(33, 39, 35, 0.2);"></i>
+      </div>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      {% include 'pagination' %}
+    {% endif %}
+  </div>
+</section>
+
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Product grid",
+    "class": "product__grid--section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "default_hero",
+        "label": "Default title background"
+      }, {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "4",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      }, {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows per page",
+        "default": "3",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "7",
+            "label": "7"
+          },
+          {
+            "value": "8",
+            "label": "8"
+          }
+        ]
+      }, {
+        "type": "checkbox",
+        "id": "show_collection_image",
+        "label": "Show collection image",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendors",
+        "default": false
+      }, {
+        "type": "checkbox",
+        "id": "show_sku",
+        "label": "Show product sku code",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "sort_enable",
+        "label": "Enable sorting",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "tags_enable",
+        "label": "Enable tag filtering",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product grid",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

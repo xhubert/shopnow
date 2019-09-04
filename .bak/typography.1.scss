@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css?family=Jockey+One|Titillium+Web:300,300i,400,400i,600');
+html {
+  font-size: 62.5%;
+}
+
+.text-title {
+  font-family: 'Jockey One', sans-serif;
+}
+
+.text-default {
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.text-price {
+  @extend .text-title;
+}
+
+body,
+input,
+textarea,
+button,
+select {
+  @extend .text-default;
+  font-size: $font-size-base;
+  font-size: 1.4rem;
+  color: $color-body-text;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+  line-height: 1.5;
+}
+
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5
+h6, .h6 {
+  color: $color-title;
+  @extend .text-default;
+}
+
+// /* -- Headings -- */
+h1, .h1 {
+  color: $color-title;
+  @extend .text-title;
+  @extend .text-bold;
+  font-size: 32px;
+  font-size: em(32px);
+  @include media-query($small) {
+    font-size: 22px;
+    font-size: em(22px);
+  }
+}
+
+h2, .h2 {
+  @extend .text-bold;
+  font-size: 30px;
+  font-size: em(30px);
+  @include media-query($small) {
+    font-size: 20px;
+    font-size: em(20px);
+  }
+}
+
+h3, .h3 {
+  @extend .text-bold;
+  font-size: 24px;
+  font-size: em(24px);
+  @include media-query($small) {
+    font-size: 18px;
+    font-size: em(18px);
+  }
+}
+
+h4, .h4 {
+  font-weight: 600;
+  font-size: 18px;
+  font-size: em(18px);
+}
+
+h5, .h5 {
+  font-weight: 600;
+  font-size: 16px;
+  font-size: em(16px);
+}
+
+h6, .h6 {
+  font-weight: 600;
+  font-size: 14px;
+  font-size: em(14px);
+}
+
+a {
+  color: $color-link;
+  text-decoration: none;
+  &:hover {
+    color: $color-primary-light;
+  }
+  &:focus {
+    color: inherit;
+  }
+}
+
+/* -------- Text Size ----------- */
+/* stylelint-disable declaration-no-important */
+.text-large {
+  font-size: $font-size-large !important;
+}
+
+.text-small {
+  font-size: $font-size-small !important;
+}
+
+.text-xl {
+  font-size: $font-size-xl !important;
+}
+
+.text-xs {
+  font-size: $font-size-xs !important;
+}
+/* stylelint-enable */
+
+/* --------- Text Style ----------- */
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+/* --------- Text Color ----------- */
+.text-muted {
+  color: $color-muted;
+}
+
+.text-warning {
+  color: $color-warning;
+}
+
+.text-error {
+  color: $color-error;
+}
+
+.text-accent {
+  color: $color-accent;
+}
+
+/* -- Other -- */
+
+p {
+  margin: 0 0 $grid-gutter - 10 0;
+  img {
+    margin: 0;
+  }
+}
+
+em {
+  font-style: italic;
+}
+
+b,
+strong {
+  @extend .text-bold;
+}
+
+small {
+  font-size: 0.9em;
+}
+
+sup,
+sub {
+  position: relative;
+  font-size: 60%;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.5em;
+}
+
+/* -- Blockquotes -- */
+
+blockquote {
+  font-size: 1.125em;
+  line-height: 1.45;
+  font-style: italic;
+  margin: 0 0 $grid-gutter;
+  padding: ($grid-gutter / 2) $grid-gutter;
+  border-left: 1px solid $color-border;
+  p {
+    margin-bottom: 0;
+    &cite {
+      margin-top: $grid-gutter / 2;
+    }
+  }
+  cite {
+    display: block;
+    font-size: 0.75em;
+    &::before {
+      content: '\2014 \0020';
+    }
+  }
+}
+
+/* -- Code -- */
+
+code,
+pre {
+  background-color: #faf7f5;
+  font-family: Consolas, monospace;
+  font-size: 1em;
+  border: 0 none;
+  padding: 0 2px;
+  color: #51ab62;
+}
+
+pre {
+  overflow: auto;
+  padding: $grid-gutter / 2;
+  margin: 0 0 $grid-gutter;
+}
+
+/* -- Lists -- */
+
+ul,
+ol {
+  margin: 0 0 ($grid-gutter / 2) 20px;
+  padding: 0;
+}
+
+ol {
+  list-style: decimal;
+}
+
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+  margin: 4px 0 5px 20px;
+}
+
+li {
+  margin-bottom: 0.25em;
+}
+
+ul.square {
+  list-style: square outside;
+}
+
+ul.disc {
+  list-style: disc outside;
+}
+
+ol.alpha {
+  list-style: lower-alpha outside;
+}
+
+.no-bullets {
+  list-style: none outside;
+  margin-left: 0;
+}
+
+.inline-list {
+  margin-left: 0;
+  li {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+}
+.highlight-words {
+  color: $color-primary;
+}

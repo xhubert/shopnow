@@ -1,0 +1,344 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Header" section in the theme editor.
+
+  Theme Store optional settings
+  - Home page only: only shows on the home page
+{%- endcomment -%}
+
+{% if section.settings.logo != blank or section.settings.logo_svg != blank %}
+  {% assign hasLogo = true %}
+{% endif %}
+
+{%- assign templateName = template.name | handle -%}
+
+<section
+  data-section-id="{{ section.id }}"
+  data-section-type="header"
+  class="site-header text-uppercase{% if template == 'index' %} animated fadeInDown{% endif %}"
+>
+  <div class="container inner">
+    <div class="navbar-toggle">
+      <a
+        id="SidebarNavToggler"
+        class="lines-button lines-button--close"
+        href="javascript:void(0)"
+        aria-controls="SidebarNav"
+        aria-expanded="false"
+      >
+        <i class="iconfont icon-menu"></i>
+      </a>
+    </div>
+
+    <div class="navbar-logo">
+      {% if templateName == 'index' %}
+        <h1 class="text-ellipsis">
+      {% else %}
+        <div class="h1 text-ellipsis">
+      {% endif %}
+          <a href="/" itemprop="url" title="{{shop.name}}">
+            {% include 'icon-logo' %}
+          </a>
+      {% if templateName == 'index' %}
+        </h1>
+      {% else %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="navbar-menu">
+      <nav id="NavBar" role="navigation" class="navbar">
+        <ul class="navbar-menu navbar-item" id="AccessibleNav">
+          {% for link in linklists[section.settings.nav_menu].links %}
+            {% if link.links != blank %}
+              <li
+                class="site-nav--has-submenu dropdown-menu{% if link.active %} site-nav--active{% endif %}"
+                aria-expanded="false"
+                aria-haspopup="true"
+                data-remove-triangle-h="true"
+              >
+                <a
+                  role="button" href="{{link.url}}"
+                >
+                  {{ link.title }}<i class="iconfont icon-arrow-down text-small" style="padding-left: 2px;"></i>
+                </a>
+                <div id="SiteNavSubmenu-{{forloop.index}}" class="dropdown-content__wrapper">
+                  <div class="dropdown-content-arrow">
+                  </div>
+                  <div class="dropdown-content">
+                    <ul class="site-nav__submenu">
+                      {% for childlink in link.links %}
+                        <li {% if childlink.active %}class="site-nav--active"{% endif %}>
+                          <a href="{{ childlink.url }}" class="site-nav__link">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            {% else %}
+              <li {% if link.active %}class="site-nav--active"{% endif %}>
+                {%- assign needScroll = false -%}
+                {%- assign dataScroll = '' -%}
+                {%- unless link.url contains '/' -%}
+                  {%- if link.url contains '#' and link.url != '#' -%}
+                    {%- assign needScroll = true -%}
+                    {%- assign dataScroll = 'data-scroll' -%}
+                  {%- endif -%}
+                {%- endunless -%}
+                <a
+                  href="{% if needScroll == true %}{{ link.url | prepend: '/' }}{% else %}{{ link.url }}{% endif %}"
+                  class="site-nav__link"
+                  {{ dataScroll }}
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+      <form id="NavSearchForm" action="/search" method="get" role="search" class="navbar-form hide">
+        <label for="Search" class="label-hidden">
+          {{ 'general.search.placeholder' | t }}
+        </label>
+        <i class="iconfont icon-search"></i>
+        <input type="search"
+          name="q"
+          id="NavSearchInput"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}">
+
+        <button type="submit" class="btn">
+          <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="navbar-right">
+      <div class="navbar-opt navbar-search">
+        <a id="NavSearchToggler"
+          role="button" aria-controls="NavSearchForm" aria-expanded="false"
+          href="javascript:void(0)"
+        >
+          <i class="iconfont icon-search"></i>
+        </a>
+      </div>
+      <div
+        class="navbar-opt dropdown-menu navbar-cart"
+        aria-haspopup="true"
+        aria-expanded="false"
+        data-remove-triangle-h="true"
+      >
+        <a
+          role="button"
+          href="javascript:void(0)"
+          title="{{ cart.item_count }}"
+          class="dropdown-toggler"
+        >
+          <i class="iconfont icon-cart-line"></i>
+          {% if cart.item_count > 0 %}
+            <i class="iconfont icon-diamond shopping-cart-badge"></i>
+          {% endif %}
+        </a>
+        <div
+          id="NavCartDropdown"
+          class="dropdown-content__wrapper shopping-cart-dropdown text-capitalize animated fadeInUpSmall">
+          <div class="dropdown-content-arrow"></div>
+          <div class="dropdown-content">
+            <div class="current-cart">
+            {% if cart.item_count > 0 %}
+              <div class="cart-content animated fadeIn" style="top: 99px;">
+                <form action="/checkout" method="post" class="js-cart_content__form ">
+                  <ul class="cart_items js-cart_items clearfix">
+                  {% for item in cart.items %}
+                    <li class="cart-item clearfix">
+                      <a class="item-image" href="{{ item.url | within: collections.all }}">
+                        {{ item | img_url: '240x240' | img_tag: item.title }}
+                      </a>
+                      <div class="item-title">
+                        <a href="{{ item.url }}">
+                          {{ item.product.title | truncatewords: 15 }}
+                        </a>
+                        {% unless item.product.has_only_default_variant %}
+                          <p>{{ item.variant.title }}</p>
+                        {% endunless %}
+                        <div class="sub-price">
+                          {{ item.quantity }}
+                          {% if item.quantity == 1 %}
+                            {{ 'layout.cart.items_count.one' | t }}
+                          {% else %}
+                            {{ 'layout.cart.items_count.other' | t }}
+                          {% endif %}
+                        </div>
+                        <div>
+                          {{ item.line_price | money }}
+                        </div>
+                      </div>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                  <div class="cart-items-status">
+                    <div class="text-muted">
+                      {{ 'cart.label.total' | t }}
+                      {{ cart.item_count }}
+                      {% if cart.item_count == 1 %}
+                        {{ 'layout.cart.items_count.one' | t }}
+                      {% else %}
+                        {{ 'layout.cart.items_count.other' | t }}
+                      {% endif %}
+                    </div>
+                    <div class="total-price">
+                      {% assign total_saving = 0 %}
+                      {% for item in cart.items %}
+                        {% if item.variant.compare_at_price > item.price %}
+                          {% capture item_saving %}
+                            {{ item.variant.compare_at_price | minus: item.price | times: item.quantity }}
+                          {% endcapture %}
+                          {% assign total_saving = item_saving | plus: total_saving %}
+                        {% endif %}
+                      {% endfor %}
+                      <div class="h4 text-price">
+                        {{ cart.total_price | money }}
+                      </div>
+                      <div style="margin-bottom: 5px;">
+                        {% if total_saving > 0 %}
+                          <span class="text-muted">
+                            {{ 'cart.general.savings' | t }}
+                          </span>
+                          <span class="text-error">
+                            {{ total_saving | money }}
+                          </span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-checkout">
+                    {{ 'cart.general.checkout' | t }}
+                  </button>
+                </form>
+              </div>
+            {% else %}
+              <div class="empty-cart text-muted">
+                {{ 'cart.general.empty' | t }}
+              </div>
+            {% endif %}
+            </div>
+            <ul class="dropdown-list">
+              <li class="shopping-cart-link">
+                <a href="/cart">
+                  {{ 'cart.general.title' | t }}
+                </a>
+              </li>
+
+              {% if shop.customer_accounts_enabled %}
+                {% if customer %}
+                  <li class="profile-link">
+                    {% if customer.first_name != blank %}
+                      <a href="/account">{{ customer.first_name }}</a>
+                    {% else %}
+                      <a href="/account">{{ 'layout.customer.account' | t }}</a>
+                    {% endif %}
+                  </li>
+                  <li class="logout-link">
+                    {{ 'layout.customer.log_out' | t | customer_logout_link }}
+                  </li>
+                {% else %}
+                  <li class="login-link">
+                    {{ 'layout.customer.log_in' | t | customer_login_link }}
+                  </li>
+                  <li class="reg-link">
+                    {{ 'layout.customer.create_account' | t | customer_register_link }}
+                  </li>
+                {% endif %}
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if section.settings.logo != blank %}
+  <style>
+    .logo-image {
+      display: block;
+      max-width: {{ section.settings.logo_max_width }}px;
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Header",
+    "class": "header--section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "min": 50,
+        "max": 450,
+        "step": 10,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 250
+      },
+      {
+        "type": "link_list",
+        "id": "nav_menu",
+        "label": "Menu",
+        "default": "main-menu"
+      }
+    ],
+    "presets": [{
+      "name": "Header",
+      "category": "Layout"
+    }]
+  }
+{% endschema %}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "{{ shop.name }}",
+  {% if section.settings.logo %}
+    {% assign image_size = section.settings.logo.width | append:'x' %}
+    "logo": "https:{{ section.settings.logo | img_url: image_size }}",
+  {% endif %}
+  "sameAs": [
+    "{{ settings.social_twitter_link }}",
+    "{{ settings.social_facebook_link }}",
+    "{{ settings.social_pinterest_link }}",
+    "{{ settings.social_instagram_link }}",
+    "{{ settings.social_tumblr_link }}",
+    "{{ settings.social_snapchat_link }}",
+    "{{ settings.social_youtube_link }}",
+    "{{ settings.social_vimeo_link }}"
+  ],
+  "url": "{{ shop.url }}{{ page.url }}"
+}
+</script>
+{% if templateName == 'index' %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "{{ shop.name }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ shop.url }}/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "url": "{{ shop.url }}{{ page.url }}"
+    }
+  </script>
+{% endif %}

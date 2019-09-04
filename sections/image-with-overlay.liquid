@@ -1,0 +1,145 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add the "Image with overlay" section in the theme editor.
+
+  Theme Store required settings
+  - Image
+  - Heading: title of the block
+  - Text: description of the block
+
+  Theme Store optional settings
+  - Button label: label associated with the button
+  - Button link: link of the button
+{%- endcomment -%}
+
+<section
+  id="ImageWithOverlay-{{ section.id }}"
+  class="image-with-overlay"
+  data-section-type="image-with-overlay"
+  data-section-id="{{ section.id }}"
+>
+  <div
+    id="ImageWithOverlayWrapper-{{ section.id }}"
+    class="image__wrapper{% if section.settings.is_parallax %} jarallax{% endif %}"
+  >
+    {% if section.settings.image != blank %}
+      {% include 'responsive-image' with
+        no_wrapper: true,
+        image: section.settings.image,
+        image_class: 'jarallax-img'
+        max_width: 2000,
+        max_height: 750
+      %}
+    {% else %}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+
+    {% if section.settings.no_overlay == false %}
+      <div class="image-overlay" style="background-color: {{ section.settings.color_overlay }}"></div>
+    {% endif %}
+
+    <div
+      class="image-with-overlay__text{% if section.settings.text_wrapper_class != blank %} {{section.settings.text_wrapper_class}}{%endif%}"
+      style="text-align: {{ section.settings.text_align }};"
+    >
+      {% if section.settings.title != blank %}
+        <div class="h2" style="color: {{ section.settings.color_text }}">{{ section.settings.title | escape }}</div>
+      {% endif %}
+      {% if section.settings.desc != blank %}
+        <div class="text-desc" style="color: {{ section.settings.color_text }}">{{ section.settings.desc }}</div>
+      {% endif %}
+      <div style="margin-top: 15px;">
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a
+          role="button"
+          class="btn btn-accent large"
+          style="display: inline-block"
+          href="{{ section.settings.button_link }}"
+        >
+          {{ section.settings.button_label | escape }}
+        </a>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Image with overlay",
+    "class": "image__with__overlay--section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text_wrapper_class",
+        "label": "Text wrapper class",
+        "default": "container"
+      }, {
+        "type": "checkbox",
+        "id": "is_parallax",
+        "label": "Make background parallax",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "no_overlay",
+        "label": "Not need overlay mask",
+        "default": false
+      }, {
+        "type": "color",
+        "id": "color_overlay",
+        "label": "Overlay Color",
+        "default": "#111512"
+      }, {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Color",
+        "default": "#FFFFFF"
+      }, {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }, {
+        "type": "text",
+        "id": "title",
+        "label": "Image title",
+        "default": "Image with overlay"
+      }, {
+        "type": "text",
+        "id": "desc",
+        "label": "Image description",
+        "default": "Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review."
+      }, {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      }, {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      }, {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          }, {
+            "value": "center",
+            "label": "Center"
+          }, {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with overlay",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

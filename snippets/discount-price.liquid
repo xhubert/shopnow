@@ -1,0 +1,25 @@
+{%- comment -%}
+  It creates a style tag for product quantity selection.
+
+  Accepts:
+  - item: [Object] The item in cart.
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'discount-price' with option: item: cart.item, only_show_all_save: false %}
+{%- endcomment -%}
+
+<!--Radio butons-->
+{% unless item == blank -%}
+  {% if item.original_price > item.price %}
+    <div class="discount-price--snippet text-muted text-small">
+      <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+      <s>{{ item.original_price | money }}</s>
+    </div>
+  {% elsif item.variant.compare_at_price > item.price %}
+    <div class="discount-price--snippet text-muted text-small">
+      <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+      <s>{{ item.variant.compare_at_price | money }}</s>
+    </div>
+  {% endif %}
+{% endunless %}

@@ -1,0 +1,369 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Shopnow",
+    "theme_version": "1.0.0",
+    "theme_author": "Hubert",
+    "theme_documentation_url": "https://github.com/Shopify/starter-theme",
+    "theme_support_url": "https://github.com/Shopify/starter-theme/issues"
+  },{
+    "name": "SEO",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "disallow_robots",
+        "label": "Disallow search engine bot.",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "verify_google_site",
+        "label": "Verify Google Site.",
+        "default": false
+      }, {
+        "type": "text",
+        "id": "verify_code_of_google_site",
+        "label": "Verify Code of Google Site."
+      }, {
+        "type": "checkbox",
+        "id": "verify_pinterest_claim",
+        "label": "Verify Pinterest Claim.",
+        "default": false
+      }, {
+        "type": "text",
+        "id": "verify_code_of_pinterest_claim",
+        "label": "Verify Code of Pinterest Claim."
+      }
+    ]
+  }, {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      }, {
+        "type": "link_list",
+        "id": "main_menu",
+        "label": "Main menu",
+        "default": "main-menu"
+      }
+    ]
+  }, {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }, {
+        "type": "image_picker",
+        "id": "apple_touch_icon",
+        "label": "Apple touch icon",
+        "info": "Will be scaled down to 180 x 180px"
+      }, {
+        "type": "text",
+        "id": "safari_pinned_tab",
+        "label": "The filename of safari pinned tab.",
+        "info": "You need to place the file in the theme assets path.",
+        "default": "safari-pinned-tab.svg"
+      }, {
+        "type": "color",
+        "id": "safari_pinned_tab_color",
+        "label": "Safari pinned tab color",
+        "default": "#FD8727"
+      }, {
+        "type": "image_picker",
+        "id": "ms_tile_icon",
+        "label": "Ms Application icon",
+        "info": "Will be scaled down to 150 x 150px"
+      }, {
+        "type": "color",
+        "id": "ms_tile_color",
+        "label": "The color of msapplication",
+        "default": "#FD8727"
+      }, {
+        "type": "image_picker",
+        "id": "android_chrome_192",
+        "label": "Android chrome 192x192",
+        "info": "Will be scaled down to 192 x 192px"
+      }, {
+        "type": "image_picker",
+        "id": "android_chrome_256",
+        "label": "Android chrome icon (256x256)",
+        "info": "Will be scaled down to 256 x 256px"
+      }, {
+        "type": "text",
+        "id": "site_webmanifest",
+        "label": "The filename of chrome site webmanifest.",
+        "info": "You need to place the file in the theme assets path.",
+        "default": "manifest.json"
+      }, {
+        "type": "text",
+        "id": "browserconfig_file",
+        "label": "The filename of chrome site webmanifest.",
+        "info": "You need to place the file in the theme assets path.",
+        "default": "browserconfig.xml"
+      }
+    ]
+  }, {
+    "name": "Product",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Basic settings"
+      }, {
+        "type": "checkbox",
+        "id": "show_related_collections",
+        "label": "Show the collections of current product",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "must_track_inventory",
+        "label": "You can sell the product while tracking the inventory only.",
+        "default": true
+      }, {
+        "type": "range",
+        "id": "cnt_show_left",
+        "label": "The inventory quantity tips for customer (number).",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Product Tag Icons",
+        "info": "This is only for Cloudy Bay."
+      }, {
+        "type": "image_picker",
+        "id": "icon-3000k",
+        "label": "3000K Color temperature"
+      }, {
+        "type": "image_picker",
+        "id": "icon-4000k",
+        "label": "4000K Color temperature"
+      }, {
+        "type": "image_picker",
+        "id": "icon-5000k",
+        "label": "5000K Color temperature"
+      }, {
+        "type": "image_picker",
+        "id": "icon-ct-optional",
+        "label": "Optional Color temperature"
+      }, {
+        "type": "image_picker",
+        "id": "icon-energy-star",
+        "label": "Energy star"
+      }, {
+        "type": "image_picker",
+        "id": "icon-2-year-warranty",
+        "label": "Limited Warranty (2-year)"
+      }, {
+        "type": "image_picker",
+        "id": "icon-3-year-warranty",
+        "label": "Limited Warranty (3-year)"
+      }, {
+        "type": "image_picker",
+        "id": "icon-5-year-warranty",
+        "label": "Limited Warranty (5-year)"
+      }, {
+        "type": "image_picker",
+        "id": "icon-etl",
+        "label": "ETL Certification"
+      }, {
+        "type": "image_picker",
+        "id": "icon-ul-listed",
+        "label": "UL Listed Certification"
+      }, {
+        "type": "image_picker",
+        "id": "icon-cri90",
+        "label": "CRI 90 Tested"
+      }, {
+        "type": "image_picker",
+        "id": "icon-dimmable",
+        "label": "Dimmable LED"
+      }, {
+        "type": "image_picker",
+        "id": "icon-dry-location",
+        "label": "For Dry Location"
+      }, {
+        "type": "image_picker",
+        "id": "icon-damp-location",
+        "label": "For Damp Location"
+      }, {
+        "type": "image_picker",
+        "id": "icon-wet-location",
+        "label": "For Wet Location"
+      }
+    ]
+  }, {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary",
+        "default": "#fd8727",
+        "info": "The primary color of theme."
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#27C757",
+        "info": "Buttons and special ornaments"
+      },
+      {
+        "type": "color",
+        "id": "color_body_text",
+        "label": "Text",
+        "default": "#203950"
+      },
+      {
+        "type": "color",
+        "id": "color_main_bg",
+        "label": "Background",
+        "default": "#FFFFFF"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "default": "helvetica_n4",
+        "label": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "default": "helvetica_n4",
+        "label": "Body text"
+      }
+    ]
+  }, {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social sharing image"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image",
+        "info": "Shown when sharing a link on social media. [Learn more](https://help.shopify.com/manual/using-themes/troubleshooting/showing-social-media-thumbnail-images/) about image thumbnails."
+      },
+      {
+        "type": "header",
+        "content": "Social sharing options"
+      },
+      {
+        "type": "checkbox",
+        "id": "social_sharing_blog",
+        "label": "Enable sharing for blog articles",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Share on Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Tweet on Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Pin on Pinterest",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Sharing links"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter link"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook link"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest link"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram link"
+      },
+      {
+        "type": "text",
+        "id": "social_googleplus_link",
+        "label": "Google plus link"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr link"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "Youtube link"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo link"
+      }
+    ]
+  }, {
+    "name": "Shopping Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes",
+        "default": true
+      }
+    ]
+  }, {
+    "name": "Information",
+    "settings": [
+      {
+        "type": "url",
+        "id": "privacy_url",
+        "label": "Privacy Policy URL"
+      }, {
+        "type": "url",
+        "id": "service_terms_url",
+        "label": "Terms of service URL"
+      }, {
+        "type": "url",
+        "id": "color_temperature_url",
+        "label": "What is color temperature?"
+      }, {
+        "type": "url",
+        "id": "dimmable_url",
+        "label": "What is dimmable LED?"
+      }, {
+        "type": "url",
+        "id": "cri_url",
+        "label": "What is CRI Tested?"
+      }
+    ]
+  }
+]

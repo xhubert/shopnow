@@ -1,0 +1,139 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add the "Image with text" section in the theme editor.
+
+  Theme Store required settings
+  - Image
+  - Heading: title of the block
+  - Text: description of the block
+
+  Theme Store optional settings
+  - Button label: label associated with the button
+  - Button link: link of the button
+{%- endcomment -%}
+
+<section
+  data-section-id="{{ section.id }}"
+  data-section-type="image-with-text"
+  class="image-with-text hover-scale {% if section.settings.wrapper_class != blank %} {{section.settings.wrapper_class}}{%endif%} {{section.settings.layout}}"
+>
+  {% capture image_layout %}
+    <div class="image-with-text__image">
+      {% if section.settings.image != blank %}
+
+        <div
+          class="title-image bg-image lazyload"
+          data-bgset="{% include 'responsive-bg-image', image: section.settings.image %}"
+          data-sizes="auto"
+          data-expand="-1"
+          data-parent-fit="cover"
+          style="background-image: url({{ section.settings.image | img_url: '300x300' }});"
+        ></div>
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+  {% endcapture %}
+
+  {% if section.settings.layout == 'left' %}
+    {{ image_layout }}
+  {% endif %}
+
+  <div class="image-with-text__text {{section.settings.bg_color}}">
+    {% if section.settings.title != blank %}
+      <div class="h2">{{ section.settings.title | escape }}</div>
+    {% endif %}
+    {% if section.settings.text != blank %}
+      <div>{{ section.settings.text }}</div>
+    {% endif %}
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <a href="{{ section.settings.button_link }}" class="link link-default text-uppercase">
+        <span>{{ section.settings.button_label | escape }}</span>
+        {% include 'icon-arrow-right-outline' %}
+      </a>
+    {% endif %}
+  </div>
+
+  {% if section.settings.layout == 'right' %}
+    {{ image_layout }}
+  {% endif %}
+</section>
+
+{% schema %}
+  {
+    "name": "Image with text",
+    "class": "image__with__text--section",
+    "settings": [
+      {
+        "type": "select",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "transparent",
+        "options": [
+          {
+            "value": "light",
+            "label": "Light"
+          }, {
+            "value": "dark",
+            "label": "Dark"
+          }, {
+            "value": "transparent",
+            "label": "Transparent"
+          }
+        ]
+      }, {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }, {
+        "type": "text",
+        "id": "wrapper_class",
+        "label": "Wrapper class",
+        "default": "container"
+      }, {
+        "type": "select",
+        "id": "layout",
+        "label": "Image alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with text",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

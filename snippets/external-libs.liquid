@@ -1,0 +1,141 @@
+{% if type == 'style' %}
+  {{ '//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' | stylesheet_tag }}
+  {{ '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css' | stylesheet_tag }}
+{% endif %}
+
+{% if type == 'script' %}
+
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/lazysizes.min.js' | script_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/plugins/object-fit/ls.object-fit.min.js' | script_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/plugins/parent-fit/ls.parent-fit.min.js' | script_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/plugins/rias/ls.rias.min.js' | script_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/plugins/bgset/ls.bgset.min.js' | script_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/plugins/respimg/ls.respimg.min.js' | script_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/lazysizes@4.1.7/plugins/blur-up/ls.blur-up.min.js' | script_tag }}
+
+  {{ '//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js' | script_tag }}
+
+  <script type="text/javascript">
+    $(document).ready(() => {
+      $.fn.matchHeight._throttle = 80;
+      const $matchHeightEls = $('.match-height');
+      if ($matchHeightEls.length > 0) {
+        $matchHeightEls.matchHeight();
+      }
+      $(window).resize(() => {
+        if ($matchHeightEls.length === 0) { return; }
+        if ($(window).width() > 480) {
+          $.fn.matchHeight._apply($matchHeightEls);
+        } else {
+          $matchHeightEls.matchHeight({
+            remove: true,
+          });
+        }
+      })
+    });
+    window.lazySizesConfig.loadMode = 1;
+  </script>
+{% endif %}
+
+{% capture swiperLib %}
+  {% case type %}
+    {% when 'script' %}
+      {{ 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/js/swiper.min.js' | script_tag }}
+    {% when 'style' %}
+      {{ 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.0/css/swiper.min.css' | stylesheet_tag }}
+  {% endcase %}
+{% endcapture %}
+
+{% capture smoothScrollLib %}
+  {% if type == 'script' %}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.0.3/smooth-scroll.polyfills.min.js' | script_tag }}
+    <script type="text/javascript">
+      const scrollOptions = {
+        header: '#SiteHeader',
+	      speed: 900, // Integer. How fast to complete the scroll in milliseconds
+	      clip: true,
+        offset: 32,
+        easing: 'easeInOutCubic',
+      };
+      const scroll = new SmoothScroll();
+      const $scrollItems = $('a[data-scroll]');
+      $scrollItems.each((i, item) => {
+        const anchor = $(item).data('scroll-anchor');
+        if ($(anchor).length === 0) {
+          return;
+        }
+        $(item).on('click', (event) => {
+          event.stopPropagation();
+          scroll.animateScroll(
+            document.querySelector(anchor),
+            event.currentTarget,
+            scrollOptions
+          );
+        })
+      })
+    </script>
+  {% endif %}
+{% endcapture %}
+
+{% capture jarallaxLib %}
+  {% case type %}
+    {% when 'script' %}
+      {{ '//cdnjs.cloudflare.com/ajax/libs/jarallax/1.10.7/jarallax.min.js' | script_tag }}
+    {% when 'style' %}
+      {{ '//cdnjs.cloudflare.com/ajax/libs/jarallax/1.10.7/jarallax.css' | stylesheet_tag }}
+  {% endcase %}
+{% endcapture %}
+
+{% capture fancyboxLib %}
+  {% case type %}
+    {% when 'script' %}
+      {{ '//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js' | script_tag }}
+      <script type="text/javascript">
+        $(document).ready(() => {
+          if ($('[data-fancybox]').length > 0) {
+            const options = {
+              spinnerTpl: '<div class="loader"></div>',
+            };
+            if ($('[data-fancybox]').data['type'] === 'image') {
+              const pixelRatio = window.devicePixelRatio || 1;
+              options.afterLoad = function(instance, current) {
+                if ( pixelRatio > 1.5 ) {
+                  current.width  = current.width  / pixelRatio;
+                  current.height = current.height / pixelRatio;
+                }
+              }
+            }
+            $('[data-fancybox]').fancybox(options);
+          }
+        })
+      </script>
+    {% when 'style' %}
+      {{ '//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css' | stylesheet_tag }}
+  {% endcase %}
+{% endcapture %}
+
+{% capture markjsLib %}
+  {% if type == 'script' %}
+    {{ '//cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js' | script_tag }}
+  {% endif %}
+{% endcapture %}
+{%- assign templateName = template.name | handle -%}
+{% case templateName %}
+  {% when 'index' %}
+    {{ swiperLib }}
+    {{ smoothScrollLib }}
+    {{ jarallaxLib }}
+  {% when 'product' %}
+    {{ swiperLib }}
+    {{ fancyboxLib }}
+    {{ smoothScrollLib }}
+  {% when 'addresses' %}
+    {{ fancyboxLib }}
+  {% when 'search' %}
+    {{ fancyboxLib }}
+    {{ markjsLib }}
+  {% when 'password' %}
+    {{ fancyboxLib }}
+  {% when 'page' %}
+    {{ jarallaxLib }}
+{% endcase %}

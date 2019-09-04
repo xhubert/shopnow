@@ -1,0 +1,13 @@
+<div class="blog-grid--tpl container">
+  <div class="inner">
+    {% include 'breadcrumbs' %}
+    <h1 class="section-title">{{ blog.title }}</h1>
+    <div class="blog__wrapper">
+      {% assign sorted_articles = blog.articles | sort: "id" %}
+      {% include 'article-list' with
+        blog: blog,
+        list_type: 'grid'
+      %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+{%- comment -%}
+    Accepts:
+    - prodcut: {Object} Product object
+    - wrapper_class: {String} class name of the <div> wrapper
+
+    Usage:
+    In your liquid template file, copy the following line
+    - {% include 'add-to-card' with image: prodcut %}
+{%- endcomment -%}
+
+
+<div class="add-to-cart {{ wrapper_class }}" id="add-{{product.id}}-to-cart">
+  <a
+    data-current-product="{{ product.id }}"
+    data-fancybox
+    data-src="#add-to-cart-modal-{{product.id}}"
+    name="add"
+    btn-add-to-cart
+    class="btn btn-primary"
+    {% unless product.available %}disabled="disabled"{% endunless %}
+    href="javascript:void(0)"
+  >
+    <span>
+      {% if product.available %}
+        {{ 'products.product.add_to_cart' | t }}
+      {% else %}
+        {{ 'products.product.sold_out' | t }}
+      {% endif %}
+    </span>
+  </a>
+  {% unless product == empty %}
+    <div
+      style="display: none;"
+      id="add-to-cart-modal-{{product.id}}"
+      class="add-to-cart-modal"
+      add-to-cart-modal-content
+    >
+      <div class="inner">
+      <div class="image-show">
+        {% if product.featured_image != blank %}
+          <div
+            class="title-image bg-image lazyload"
+            data-bgset="{% include 'responsive-bg-image', image: product.featured_image %}"
+            data-sizes="auto"
+            data-parent-fit="cover"
+            style="background-image: url({{ product.featured_image | img_url: '300x300' }});">
+          </div>
+        {% else %}
+          <div class="title-image">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="opt-area">
+        <div class="h3">
+          {{ product.title }}
+        </div>
+        {% capture 'form_id' %}addToCartForm-{{ section.id }}{% endcapture %}
+        {% form 'product', product, id:form_id %}
+          <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1">
+          <button
+            type="submit"
+            name="add"
+            data-add-to-cart
+            {% unless product.available %}disabled="disabled"{% endunless %}
+            {% if section_onboarding %}disabled="disabled"{% endif %}>
+              <span data-add-to-cart-text>
+                {% if product.available %}
+                  {{ 'products.product.add_to_cart' | t }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+          </button>
+        {% endform %}
+      </div>
+      </div>
+    </div>
+  {% endunless %}
+</div>
+
+<script>
+  if(Storage !== undefined) {
+
+    {% if template contains 'collection' %}
+      sessionStorage.collection = "{{ collection.url }}";
+    {% endif %}
+    {% if template contains 'product' %}
+      sessionStorage.collection = "/collections/all";
+    {% endif %}
+    {% if template contains 'cart' %}
+      document.getElementById("add-to-cart-continue-shopping").href = sessionStorage.collection;
+    {% endif %}
+  }
+</script>

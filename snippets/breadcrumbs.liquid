@@ -1,0 +1,47 @@
+{%- assign divider = '/'  -%}
+
+{%- assign templateName = template.name | handle -%}
+
+{% unless templateName == 'index' or templateName == 'cart' or templateName == 'list-collections' %}
+<nav class="breadcrumb--snippet" role="navigation" aria-label="breadcrumbs">
+  <a href="/" title="Home">Home</a>
+  {% if templateName contains 'page' %}
+    <span aria-hidden="true" class="divider">{{ divider }}</span>
+    <span>{{ page.title }}</span>
+  {% elsif templateName contains 'product' %}
+    {% if collection.url %}
+      <span aria-hidden="true" class="divider">{{ divider }}</span>
+      {{ collection.title | link_to: collection.url }}
+    {% endif %}
+    <span aria-hidden="true" class="divider">{{ divider }}</span>
+    <span>{{ product.title }}</span>
+  {% elsif templateName contains 'collection' and collection.handle %}
+    <span aria-hidden="true" class="divider">{{ divider }}</span>
+    {% if current_tags %}
+      {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+      {{ collection.title | link_to: url }}
+      <span aria-hidden="true" class="divider">{{ divider }}</span>
+      <span>{{ current_tags | join: " + " }}</span>
+    {% else %}
+      <span>{{ collection.title }}</span>
+    {% endif %}
+  {% elsif templateName == 'blog' %}
+    <span aria-hidden="true" class="divider">{{ divider }}</span>
+    {% if current_tags %}
+      {{ blog.title | link_to: blog.url }}
+      <span aria-hidden="true" class="divider">{{ divider }}</span>
+      <span>{{ current_tags | join: " + " }}</span>
+    {% else %}
+    <span>{{ blog.title }}</span>
+    {% endif %}
+  {% elsif templateName == 'article' %}
+    <span aria-hidden="true" class="divider">{{ divider }}</span>
+    {{ blog.title | link_to: blog.url }}
+    <span aria-hidden="true" class="divider">{{ divider }}</span>
+    <span>{{ article.title }}</span>
+  {% else %}
+   <span aria-hidden="true" class="divider">{{ divider }}</span>
+   <span class="bread-page-title">{{ page_title }}</span>
+  {% endif %}
+</nav>
+{% endunless %}

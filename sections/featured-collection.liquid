@@ -1,0 +1,143 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Featured Collection" section in the theme editor.
+
+  Theme Store required settings
+  - Collection
+
+  Theme Store optional settings
+  - Heading: title of the featured collection section
+{%- endcomment -%}
+
+{% case section.settings.count_per_row %}
+  {% when '2' %}
+    {% assign gridCls = 'flex-grid-2' %}
+    {%- assign max_height = 530 -%}
+  {% when '3' %}
+    {% assign gridCls = 'flex-grid-3' %}
+    {%- assign max_height = 370 -%}
+  {% when '4' %}
+    {% assign gridCls = 'flex-grid-4' %}
+    {%- assign max_height = 270 -%}
+  {% when '5' %}
+    {% assign gridCls = 'flex-grid-5' %}
+    {%- assign max_height = 230 -%}
+  {% when '6' %}
+    {% assign gridCls = 'flex-grid-6' %}
+    {%- assign max_height = 195 -%}
+{% endcase %}
+
+<section
+  class="featured-collection {{section.settings.bg_color}} container"
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-collection"
+>
+  {% if section.settings.title != blank %}
+    <h2 class="featured-collection__title section-title">
+      {{ section.settings.title | escape }}
+    </h2>
+  {% endif %}
+  {%- assign collection = collections[section.settings.collection] -%}
+  {% assign limitCnt = section.settings.count_per_row %}
+  <div class="product-grid__wrapper">
+    <div class="flex-grid {{ gridCls }}">
+      {% for product in collection.products limit: limitCnt %}
+        <div class="flex-grid-item">
+          {% include 'product-card' with img_height: max_height %}
+        </div>
+      {% else %}
+        {% for i in (1..limitCnt) %}
+          <div class="featured-collection-item grid-{{section.settings.count_per_row}}">
+            <a href="#" class="hover-scale">
+              <div class="featured-collection__image">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+              </div>
+              <div class="featured-collection__desc">
+                <div class="product-title text-ellipsis">
+                  {{ 'homepage.onboarding.product_title' | t }}
+                </div>
+                <span class="product-price text-price text-large">
+                  {{ 1999 | money }}
+                </span>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    <div class="more-link text-center">
+      <a href="{{ collection.url }}" class="link link-default" title="{{ 'collections.general.all_of_collection' | t }}">
+        <span class="text-uppercase">{{ 'collections.general.all_of_collection' | t }}</span>
+        {% include 'icon-more-outline' %}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "class": "featured__collection--section index-section",
+    "settings": [
+      {
+        "type": "select",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "transparent",
+        "options": [
+          {
+            "value": "light",
+            "label": "Light"
+          }, {
+            "value": "dark",
+            "label": "Dark"
+          }, {
+            "value": "transparent",
+            "label": "Transparent"
+          }
+        ]
+      }, {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      }, {
+        "type": "checkbox",
+        "id": "show_sku",
+        "label": "Show product sku code",
+        "default": true
+      }, {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      }, {
+        "type": "select",
+        "id": "count_per_row",
+        "label": "The number of Row",
+        "options": [
+          { "label": "Two", "value": "2" },
+          {"label": "Three", "value": "3" },
+          { "label": "Four", "value": "4" }
+        ],
+        "default": "4"
+      }, {
+        "type": "select",
+        "id": "row_height",
+        "label": "The height of Row",
+        "options": [
+          { "label": "Big", "value": "300" },
+          {"label": "Middle", "value": "200" },
+          { "label": "Small", "value": "100" }
+        ],
+        "default": "200"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

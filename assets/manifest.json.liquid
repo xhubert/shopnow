@@ -1,0 +1,30 @@
+{%- if settings.android_chrome_192 != blank -%}
+  {%- assign androidChrome192 = settings.android_chrome_192 | img_url: '192x192' -%}
+{%- else -%}
+  {%- assign androidChrome192 = '' -%}
+{%- endif -%}
+
+{%- if settings.android_chrome_256 != blank -%}
+  {%- assign androidChrome256 = settings.android_chrome_256 | img_url: '256x256' -%}
+{%- else -%}
+  {%- assign androidChrome256 = '' -%}
+{%- endif -%}
+{
+  "name": "Cloudy Bay Lighting Shop",
+  "short_name": "Cloudy Bay",
+  "icons": [
+      {
+          "src": "{{ androidChrome192 }}",
+          "sizes": "192x192",
+          "type": "image/png"
+      },
+      {
+          "src": "{{ androidChrome256 }}",
+          "sizes": "256x256",
+          "type": "image/png"
+      }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

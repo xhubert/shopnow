@@ -1,0 +1,83 @@
+{%- comment -%}
+  Accepts:
+  - collection: { Object } The collection Object.
+  - wrapper_class: { String} The wrapper Class.
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'product-type-filter' with option wrapper_class: "wrapper-css-class" %}
+{%- endcomment -%}
+
+{%- assign no_filter_text = 'collections.filters.no_filter' | t | append: ' --' | prepend: '-- ' -%}
+{% assign exclusions = 'frontpage,' | split: ',' %}
+
+{% if currentCollection == blank or currentCollection.handle == 'all' %}
+  {% assign currentSelectedText = no_filter_text %}
+{% else %}
+  {% assign currentSelectedText = currentCollection.title %}
+{% endif %}
+
+{% capture dropdown_active %}
+  <i class="iconfont icon-check-mark-empty icon-active"></i>
+{% endcapture %}
+
+<div
+  class="product-collection-filter--snippet dropdown-menu product-filter{% if wrapper_class != blank %} {{ wrapper_class }}{% endif %}"
+  aria-haspopup="true"
+  aria-expanded="false"
+>
+  <label class="text-uppercase">
+    Collection:
+  </label>
+  <a
+    role="button"
+    href="javascript:void(0)"
+    title="{{ currentSelectedText }}"
+    class="dropdown-toggler"
+  >
+    <span class="dropdown-caption">
+      {{ currentSelectedText }}
+    </span>
+    <i class="iconfont icon-arrow-down icon-dropdown-arrow text-small"></i>
+  </a>
+  <div class="dropdown-content__wrapper animated fadeInUpSmall" id="CollectionsFilterDropdown">
+    <div class="dropdown-content-arrow"></div>
+    <div class="dropdown-content">
+      <ul class="dropdown-list">
+        {% if currentCollection == blank or currentCollection.handle == 'all' %}
+          <li class="dropdown-item active">
+            <span>
+              {{ currentSelectedText }}
+            </span>
+            {{ dropdown_active }}
+          </li>
+        {% else %}
+          <li class="dropdown-item">
+            <a href="/collections/all">
+              {{ no_filter_text }}
+            </a>
+          </li>
+        {% endif %}
+        {% for collection in collections %}
+          {% unless exclusions contains collection.handle %}
+            {% if collection.handle == currentCollection.handle %}
+              <li class="dropdown-item active">
+                <span>{{ collection.title }}</span>
+                {{ dropdown_active }}
+              </li>
+            {% else %}
+              <li class="dropdown-item">
+                <a
+                  href="{{ collection.url | default: "#" }}" {{ block.shopify_attributes }}
+                  title="{{ 'collections.general.link_title' | t: title: collection.title }}"
+                >
+                  {{ collection.title }}
+                </a>
+              </li>
+            {% endif %}
+          {% endunless %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>

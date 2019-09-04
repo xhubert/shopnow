@@ -1,0 +1,297 @@
+<section
+    data-section-id="{{ section.id }}"
+    data-section-type="hero-banner"
+>
+    <div
+      id="HeroBanner-{{ section.id }}"
+      class="swiper-container {{ section.settings.banner_height }}"
+      data-speed="{{ section.settings.transition_speed}}"
+      data-loop="{{ section.settings.slide_loop}}"
+    >
+    {% if section.settings.background %}
+    <div
+      class="parallax-bg"
+      style="background-image: url({{ section.settings.background | img_url: '720x' }});"
+      data-swiper-parallax="-23%"
+    ></div>
+    {% endif %}
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+      <div
+        class="swiper-slide slide--{{ block.id }}"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.image == blank %}
+          <div class="slide__image">
+            <div class="placeholder-background">
+              {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+              {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          </div>
+        {% else %}
+          <div
+            class="slide__image bg-image js lazyload{% unless forloop.first == true %} lazypreload{% endunless %}"
+            data-bgset="{% include 'responsive-bg-image', image: block.settings.image %}"
+            data-sizes="auto"
+            data-expand="-1"
+            data-parent-fit="cover"
+            style="background-position: {{ block.settings.alignment }};{% if forloop.first == true %} background-image: url('{{ block.settings.image | img_url: '300x300' }});{% endif %}"
+          ></div>
+        {% endif %}
+        <div class="slide__text-layer {{ block.settings.text_v_alignment }}{% if block.settings.slide_overlay == true %} slide__overlay{% endif %}">
+          <div class="slide__text-wrap{% if section.settings.text_wrapper_class != blank %} {{section.settings.text_wrapper_class}}{%endif%}">
+            <div class="slide__text-content {{ block.settings.text_alignment }}">
+              {% if block.settings.product != blank %}
+                {%- assign product = all_products[block.settings.product] -%}
+                {%- assign current_variant = product.selected_or_first_available_variant -%}
+                <span class="product-sku text-title">
+                  {% assign skus = current_variant.sku | split: "G1029-" %}
+                  {{ skus.last }}
+                </span>
+              {% endif %}
+              {% unless block.settings.title == blank %}
+                <div class="slide-title">
+                  {{ block.settings.title | escape | upcase }}
+                </div>
+              {% endunless %}
+              {% unless block.settings.subheading == blank %}
+                <div class="slide-subtitle">
+                  {{ block.settings.subheading }}
+                </div>
+              {% endunless %}
+
+              {% if block.settings.link != blank and block.settings.link_title != blank %}
+                <div class="link-wrapper">
+                  <a role="button" class="btn btn-primary-ghost large" href="{{ block.settings.link }}">
+                    <span>{{ block.settings.link_title | escape | upcase }}</span>
+                  </a>
+                </div>
+              {% elsif product != blank %}
+                <div class="link-wrapper">
+                  <a role="button" class="btn btn-primary-ghost large" href="{{ product.url }}">
+                    <span>{{ 'announcement.link_text' | t | escape | upcase }}</span>
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Add Navigation -->
+    <div class="swiper-button-wrapper">
+      <div class="inner container">
+        <div class="swiper-button-prev swiper-button-white"></div>
+        <div class="swiper-button-next swiper-button-white"></div>
+      </div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination swiper-pagination-white"></div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Slideshow of Hero Banner",
+    "class": "hero__banner--section",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "slide_loop",
+        "label": "Continuous loop mod",
+        "default": true
+      }, {
+        "type": "select",
+        "id": "transition_speed",
+        "label": "Duration of transition between slides",
+        "options": [
+          { "value": "100", "label": "Fastest" },
+          { "value": "300", "label": "Fast" },
+          { "value": "600", "label": "Normal" },
+          { "value": "900", "label": "Slow" },
+          { "value": "1500", "label": "Slowest" }
+        ],
+        "default": "600"
+      }, {
+        "type": "select",
+        "id": "banner_height",
+        "label": "Section height",
+        "options": [
+          { "label": "Small", "value": "small" },
+          {"label": "Medium", "value": "medium" },
+          { "label": "Large", "value": "large" }
+        ],
+        "default": "small"
+      }, {
+        "type": "text",
+        "id": "text_wrapper_class",
+        "label": "Text wrapper class",
+        "default": "container"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image slide",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },{
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          }, {
+            "type": "checkbox",
+            "id": "slide_overlay",
+            "label": "Dark overlay for this slide",
+            "default": true
+          }, {
+            "type": "select",
+            "id": "alignment",
+            "label": "Image alignment",
+            "default": "top",
+            "options": [
+              { "value": "top", "label": "Top" },
+              { "value": "center", "label": "Middle" },
+              { "value": "bottom", "label": "Bottom" }
+            ]
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Image slide"
+          }, {
+            "type": "richtext",
+            "id": "subheading",
+            "label": "subheading",
+            "default": "<p>Tell your brand's story through video and images</p>"
+          }, {
+            "type": "url",
+            "id": "link",
+            "label": "Slide link"
+          }, {
+            "type": "text",
+            "id": "link_title",
+            "label": "Slide link title"
+          }, {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text Content alignment",
+            "default": "center",
+            "options": [
+              { "value": "left", "label": "Left" },
+              { "value": "center", "label": "Center" },
+              { "value": "right", "label": "Right" }
+            ]
+          }, {
+            "type": "select",
+            "id": "text_v_alignment",
+            "label": "Text vertical alignment",
+            "default": "center",
+            "options": [
+              { "value": "top", "label": "Top" },
+              { "value": "center", "label": "Middle" },
+              { "value": "bottom", "label": "Bottom" }
+            ]
+          }
+        ]
+      }, {
+        "type": "video",
+        "name": "Video slide",
+        "settings": [
+          {
+            "type": "video_url",
+            "id": "video_url",
+            "label": "Video link",
+            "accept": ["youtube"],
+            "default": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          },{
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          }, {
+            "type": "checkbox",
+            "id": "slide_overlay",
+            "label": "Dark overlay for this slide",
+            "default": true
+          }, {
+            "type": "select",
+            "id": "video_type",
+            "label": "Style",
+            "options": [
+              {
+                "value": "chrome",
+                "label": "Image with play button"
+              }, {
+                "value": "background-chrome",
+                "label": "Background video with play button"
+              }, {
+                "value": "background",
+                "label": "Background video"
+              }
+            ]
+          }, {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Fallback when autoplaying video is not supported on mobile devices"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Video slide"
+          }, {
+            "type": "richtext",
+            "id": "subheading",
+            "label": "subheading",
+            "default": "<p>Tell your brand's story through video and images</p>"
+          }, {
+            "type": "url",
+            "id": "link",
+            "label": "Slide link"
+          }, {
+            "type": "text",
+            "id": "link_title",
+            "label": "Slide link title"
+          }, {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text Content alignment",
+            "default": "center",
+            "options": [
+              { "value": "left", "label": "Left" },
+              { "value": "center", "label": "Center" },
+              { "value": "right", "label": "Right" }
+            ]
+          }, {
+            "type": "select",
+            "id": "text_v_alignment",
+            "label": "Text vertical alignment",
+            "default": "center",
+            "options": [
+              { "value": "top", "label": "Top" },
+              { "value": "center", "label": "Middle" },
+              { "value": "bottom", "label": "Bottom" }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Slideshow of Hero Banner",
+      "category": "Slider",
+      "settings": {
+        "slide_loop": true,
+        "transition_speed": "600"
+      },
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }]
+  }
+{% endschema %}

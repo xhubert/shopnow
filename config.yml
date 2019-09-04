@@ -1,0 +1,6 @@
+default:
+  password: 5de551e158b0f8b7b7f2cd98181be9d4
+  theme_id: "33102725162"
+  store: cloudybay-lighting.myshopify.com
+  ignore_files:
+  - /config/settings_data.json

@@ -1,0 +1,127 @@
+<div class="container search--tpl">
+  {% paginate search.results by 10 %}
+    <form action="/search" method="get" role="search">
+      <label for="Search" class="label-hidden">
+        {{ 'general.search.placeholder' | t }}
+      </label>
+      <input type="search"
+        name="q"
+        id="Search"
+        value="{{ search.terms | escape }}"
+        class="large"
+        placeholder="{{ 'general.search.placeholder' | t }}"
+      >
+      <button type="submit" class="button btn btn-primary large with-icon">
+        <i class="iconfont icon-search text-xl"></i>
+        <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+      </button>
+    </form>
+
+    <div class="search-result" data-key-words="{{search.terms}}">
+      {% if search.performed %}
+        <span class="visually-hidden">{{ 'general.search.heading' | t: count: search.results_count }}:</span>
+        {{ 'general.search.results_with_count' | t: count: search.results_count }}
+        {{ 'general.search.results_key_words_html' | t: terms: search.terms }}
+      {% else %}
+        {{ 'general.search.title' | t }}
+      {% endif %}
+    </div>
+
+    <hr class="divider">
+    <br />
+
+    {% if search.performed %}
+      {% if search.results_count == 0 %}
+        <p class="none-result-tips">
+          {{ 'general.search.no_results_html' | t: terms: search.terms }}
+        </p>
+      {% else %}
+        <h2 class="visually-hidden">
+          {{ 'general.search.heading' | t: count: search.results_count }}
+        </h2>
+        <ul class="search-result-list">
+          {% for item in search.results %}
+            <li class="search-result-item">
+              <div class="item-desc">
+                <a class="link-dark text-bold" href="{{ item.url | within: collection }}">
+                  <div class="text-large" data-search-result-item>{{ item.title }}</div>
+                </a>
+                {% if item.object_type == 'product' %}
+                  <div class="text-price text-accent">
+                    {% if item.compare_at_price > item.price %}
+                      {% if item.price_varies %}
+                        {% assign sale_price = item.price | money %}
+                        {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                      {% else %}
+                        {{ 'products.product.on_sale' | t }}
+                        <span>{{ item.price | money }}</span>
+                      {% endif %}
+                      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                      &nbsp;
+                      <span class="text-muted"><s>{{ item.compare_at_price | money }}</s></span>
+                    {% else %}
+                      {% if item.price_varies %}
+                        {% assign price = item.price | money %}
+                        <span>{{ 'products.product.from_text_html' | t: price: price }}</span>
+                      {% else %}
+                        <span>{{ item.price | money }}</span>
+                      {% endif %}
+                    {% endif %}
+                    {% unless item.available %}
+                      <span class="text-muted">{{ 'products.product.sold_out' | t }}</span>
+                    {% endunless %}
+                  </div>
+                  <p class="text-muted" data-search-result-item>
+                    {{ item.description | strip_html | truncatewords: 50 }}
+                  </p>
+                {% else %}
+                  <p class="text-muted" data-search-result-item>
+                    {{ item.content | strip_html | truncatewords: 50 }}
+                  </p>
+                {% endif %}
+              </div>
+              {% assign featured_image = item.image | default: item.featured_image %}
+              {% if featured_image != blank %}
+              <div class="item-thumb small--hide">
+                <a
+                  href="{{ featured_image | img_url: '1920x1920' }}"
+                  data-srcset="{% include 'responsive-bg-image', image: featured_image %}"
+                  data-fancybox="images_{{item.id}}"
+                  data-caption="{{item.title}}"
+                  data-loop="true"
+                  data-type="image"
+                >
+                  {{ featured_image | img_url: '240x240' | img_tag }}
+                </a>
+                <div class="hide">
+                  {% for image in item.images %}
+                    {% unless image == featured_image %}
+                      <a
+                        href="{{ image | img_url: '1920x1920' }}"
+                        data-srcset="{% include 'responsive-bg-image', image: image %}"
+                        data-fancybox="images_{{item.id}}"
+                        data-caption="{{item.title}}"
+                        data-loop="true"
+                        data-type="image"
+                      >
+                        <img
+                          src="{{ image | img_url: '240x240' }}"
+                        >
+                      </a>
+                    {% endunless %}
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+          {% include 'pagination' %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+  {% endpaginate %}
+</div>

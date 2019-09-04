@@ -1,0 +1,99 @@
+<section class="sidebar-nav-inner">
+  {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+  <div class="sidebar-nav-header h1">
+      {% include 'icon-logo' %}
+  </div>
+  <div class="sidebar-nav-body">
+    <form action="/search" method="get" role="search" class="side-search-form">
+      <label for="Search" class="label-hidden">
+        {{ 'general.search.placeholder' | t }}
+      </label>
+      <input type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'general.search.placeholder' | t }}"
+      />
+      <button type="submit" class="btn with-icon btn-search">
+        <i class="iconfont icon-search"></i>
+      </button>
+    </form>
+
+    <nav role="navigation" class="sidebar-navbar">
+      <ul class="navbar-item" id="AccessibleNav">
+        {% for link in linklists[section.settings.sidebar_menu].links %}
+          {%- assign child_list_handle = link.title | handleize -%}
+          {% if menus[child_list_handle].links != blank %}
+            <li class="sidebar-nav--has-submenu{% if link.active %} sidebar-nav--active{% endif %}">
+              <a href="{{ link.url }}" class="sidebar-nav__link lights">
+                <span>{{ link.title }}</span>
+                <i class="iconfont icon-led"></i>
+                <i class="iconfont icon-etl"></i>
+              </a>
+              <ul class="sidebar-nav__submenu">
+                {% for childlink in menus[child_list_handle].links %}
+                  <li {% if childlink.active %}class="sidebar-nav--active"{% endif %}>
+                    <a href="{{ childlink.url }}" class="sidebar-nav__link">{{ childlink.title | escape }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% elsif link.type == 'collections_link' %}
+            <li {% if link.active %}class="sidebar-nav--active"{% endif %}>
+              <a href="{{ link.url }}" class="sidebar-nav__link lights">
+                {{ link.title }}
+                <i class="iconfont icon-led"></i>
+                <i class="iconfont icon-etl"></i>
+              </a>
+            </li>
+          {% else %}
+            <li {% if link.active %}class="sidebar-nav--active"{% endif %}>
+              <a href="{{ link.url }}" class="sidebar-nav__link">{{ link.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <li class="customer-link current top">
+              {% if customer.first_name != blank %}
+                <a href="/account" class="link">{{ customer.first_name }}</a>
+              {% else %}
+                <a href="/account">{{ 'layout.customer.account' | t }}</a>
+              {% endif %}
+            </li>
+            <li class="customer-link logout">
+              {{ 'layout.customer.log_out' | t | customer_logout_link }}
+            </li>
+          {% else %}
+            <li class="customer-link login top">
+              {{ 'layout.customer.log_in' | t | customer_login_link }}
+            </li>
+            <li class="customer-link register">
+              {{ 'layout.customer.create_account' | t | customer_register_link }}
+            </li>
+          {% endif %}
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  <div class="sidebar-nav-footer">
+    {% include 'social-list' with wrapper_cls: 'dark small' %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Sidebar Navigation",
+    "class": "sidebar__nav--section",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "sidebar_menu",
+        "label": "Sidebar Menu"
+      }
+    ],
+    "presets": [{
+      "name": "Sidebar Navigation",
+      "category": "Layout"
+    }]
+  }
+{% endschema %}

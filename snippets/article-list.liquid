@@ -1,0 +1,199 @@
+{%- comment -%}
+  Accepts:
+  - blog: {Object} blog;
+  - page_limit: {Number} Page count;
+  - list_type: {String} List style of articles;
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'articles' with blog: blog %}
+{%- endcomment -%}
+
+{%- assign limitCnt = page_limit | default: 10 -%}
+{%- assign list_type = list_type | default: 'list' -%}
+{%- assign snippetCls = 'article-list--snippet' -%}
+{%- if list_type == 'grid' -%}
+  {%- assign snippetCls = 'article-grid--snippet' -%}
+  {% capture article_list_content %}
+    <ul class="article-list flex-grid flex-grid-3">
+      {% for article in blog.articles %}
+        <li class="article-item flex-grid-item">
+          {%- comment -%}
+            Due to accessibility requirements, we are regrouping all logical elements into the <a> element.
+            If a screen reader user is tabbing through the page, or browsing by links on the page with duplicated links,
+            they will appear identical which may lead to a confusing user experience.
+          {%- endcomment -%}
+          <div class="inner">
+            <a
+              href="{{ article.url }}"
+              title="{{article.title}}"
+              class="article-link mask-link"
+            >
+              <h3 class="article-title text-ellipsis">{{ article.title }}</h3>
+            </a>
+            {% if article.image %}
+              {% include 'responsive-image' with
+                  image: article.image,
+                  max_width: 500,
+                  max_height: 500
+              %}
+            {% else %}
+              <div class="article-image">
+                {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {% endif %}
+            <div class="article-brief">
+              {% if section.settings.blog_show_author %}
+                <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+              {% endif %}
+              {% if section.settings.blog_show_date %}
+                <p>
+                  {{ article.published_at | time_tag: format: 'month_day_year' }}
+                </p>
+              {% endif %}
+              <div>
+                {% if article.excerpt.size > 0 %}
+                  {{ article.excerpt }}
+                {% else %}
+                  {{ article.content | strip_html | truncate: 150 }}
+                {% endif %}
+              </div>
+              {% if article.tags.size > 0 %}
+                {%- comment -%}
+                  The Tag link list functions as a list of content items.
+                  Non-visual users will expect lists of content to appear
+                  in a list structure, allowing for easier understanding and navigation of list items.
+                {%- endcomment -%}
+                <ul aria-label="{{ 'blogs.article.tags' | t }}" class="hide">
+                  {% for tag in article.tags %}
+                    <li><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+        </li>
+      {% else %}
+        {% for i in (1..limitCnt) %}
+          <li class="article-list__item flex-grid-item">
+            <div class="inner">
+              <a
+                href="#"
+                class="mask-link article-link"
+              >
+                <h3 class="article-title">{{ 'homepage.onboarding.blog_title' | t }}</h3>
+              </a>
+              <div class="article-image">
+                {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="article-brief hide">
+                {% if section.settings.blog_show_author %}
+                  <span>{{ 'homepage.onboarding.blog_author' | t }}</span>
+                {% endif %}
+                <div>{{ 'homepage.onboarding.blog_excerpt' | t }}</div>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endcapture %}
+{%- else -%}
+  {% capture article_list_content %}
+    <div class="article-list">
+      {% for article in blog.articles %}
+        <div class="article-item">
+          <div class="article-cover">
+            <div class="article-cover-left">
+              <h3>
+                <a href="{{ article.url }}" class="link link-dark">{{ article.title }}</a>
+              </h3>
+              {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+              <p class="text-muted hide">
+                {{ 'blogs.article.author_on_date_html' | t: author: 'Cloudy Bay', date: date }}
+              </p>
+              {% if article.tags.size > 0 %}
+                <ul class="tags-list">
+                  {% for tag in article.tags %}
+                    <li class="tag tag-default">
+                      <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            {% if article.image %}
+              <div class="article-cover-right">
+                <a href="{{ article.url }}">
+                  {% include 'responsive-image' with
+                    image: article.image,
+                    max_width: 150,
+                    max_height: 150,
+                    wrapper_class: 'rounded'
+                  %}
+                </a>
+              </div>
+            {% endif %}
+          </div>
+          <div class="article-item-brief rte">
+            {% if article.excerpt.size > 0 %}
+              {{ article.excerpt }}
+            {% else %}
+              <p>
+                {{ article.content | strip_html | truncatewords: 100 }}
+              </p>
+            {% endif %}
+          </div>
+          <div class="article-item-meta">
+            {% if blog.comments_enabled? or article.tags.size > 0 %}
+              <ul>
+                {% if blog.comments_enabled? %}
+                  <li>
+                    <a href="{{ article.url }}#comments">
+                      {{ 'blogs.comments.with_count' | t: count: article.comments_count }}
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            <div class="more-link">
+              <a
+                href="{{ article.url }}"
+                class="link link-default"
+                title="{{ 'blogs.article.read_more' | t }}"
+              >
+                <span class="text-uppercase">{{ 'blogs.article.read_more' | t }}</span>
+                {% include 'icon-arrow-right-outline' %}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endcapture %}
+{%- endif -%}
+
+<div class="{{snippetCls}}">
+  {% if blog.articles_count == 0 %}
+    <div class="no-articles">
+      {{ 'blogs.article.no_articles' | t }}
+    </div>
+  {% else %}
+    {% paginate blog.articles by limitCnt %}
+
+      {% comment %}
+
+      Article Previews
+      ====================
+      {% endcomment %}
+
+      {{ article_list_content }}
+
+      {% if paginate.pages > 1 %}
+        {% include 'pagination' %}
+      {% endif %}
+    {% endpaginate %}
+  {% endif %}
+</div>
