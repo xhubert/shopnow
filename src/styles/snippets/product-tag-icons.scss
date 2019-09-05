@@ -1,0 +1,46 @@
+.tag-icons--snippet {
+  ul {
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    li {
+      flex: 0 0 40px;
+      margin: 0;
+      &:not(:last-child) {
+        margin-right: $grid-gutter-small / 2;
+      }
+    }
+  }
+  svg, img {
+    height: 40px;
+    width: auto;
+  }
+  @include media-query($small) {
+    li {
+      flex: 0 0 24px;
+    }
+    svg {
+      height: 24px;
+      width: auto;
+    }
+  }
+
+  .no-svg & {
+    svg {
+      display: none;
+    }
+    img {
+      display: block;
+    }
+  }
+  .svg & {
+    svg {
+      display: block;
+    }
+    img {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,448 @@
+/* ================ Site Header ================ */
+$header-h: 50px;
+
+$color-header-bg-dark: rgba(35, 32, 27, 0.6);
+$color-header-dropdown-bg: $color-body;
+$color-header-input-bg: darken($color-header-bg-dark, 20%); // rgba(135, 132, 127, 0.39);
+$color-header-link: white;
+$color-header-link-hover: darken($color-header-link, 10%); // rgba(255, 255, 255, 0.8);
+$color-header-link-active: white;
+
+$color-sticky-header-bg: rgba(255, 255, 255, 0.8); // #1b1f23
+$color-sticky-header-input-bg: lighten($color-header-bg-dark, 80%);
+$color-sticky-header-link: $color-header-bg-dark; // #b8c6c6;
+$color-sticky-header-link-hover: lighten($color-header-bg-dark, 10%); // rgba(255, 255, 255, 0.8);
+
+.header--section {
+  height: $header-h;
+}
+.site-header {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  background-color: transparent;
+  transition: transform $transition-duration $transition-timing,
+              background-color $transition-duration $transition-timing;
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 1px 2px 0 rgba(27, 35, 31, 0.2);
+    transition: opacity $transition-duration $transition-timing, visibility $transition-duration $transition-timing;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, rgba(27, 35, 31, 0.6) 0%, rgba(27, 35, 31, 0));
+    background-repeat: repeat-x;
+    /* stylelint-disable function-name-case, string-quotes */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#1b231f99", endColorstr="#1b231f00", GradientType=0);
+    display: block;
+    height: 100%;
+    opacity: 1;
+    visibility: visible;
+    width: 100%;
+    transition: opacity $transition-duration $transition-timing, visibility $transition-duration $transition-timing;
+  }
+  a {
+    transition: color $transition-duration $transition-timing;
+    color: $color-header-link;
+    &:hover {
+      color: $color-header-link-hover;
+    }
+  }
+  >div.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $header-h;
+  }
+  .navbar-toggle {
+    flex: 0 0 $header-h;
+    padding: 0;
+    margin: 0;
+    display: none;
+    >a {
+      padding: 0 10px;
+      display: inline-block;
+      height: $header-h;
+      margin-left: -10px;
+      >i.iconfont {
+        font-size: 24px;
+        display: block;
+        line-height: $header-h;
+      }
+    }
+  }
+  .navbar-logo {
+    flex: 0 0 120px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    h1,
+    div.h1 {
+      margin: 0;
+      padding: 0;
+      height: $header-h;
+    }
+    a {
+      line-height: $header-h;
+      display: block;
+      padding: 7px 0;
+    }
+    img,
+    svg {
+      display: block;
+      height: 36px;
+      width: auto;
+    }
+    .svg-logo-text {
+      transition: fill $transition-duration $transition-timing;
+      fill: white;
+    }
+  }
+  .navbar-right {
+    padding: 0;
+    flex: 0 0 120px;
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    margin-right: -10px;
+    .navbar-opts > a {
+      transition: color $transition-duration $transition-timing;
+      color: $color-header-link;
+      &:hover {
+        color: $color-header-link-hover;
+      }
+    }
+  }
+  @include media-query($medium-down) {
+    .navbar-toggle {
+      display: block;
+    }
+    .navbar-logo {
+      flex: 1 1 auto;
+      text-align: center;
+      a {
+        padding: 11px 0;
+      }
+      img, svg {
+        height: 28px;
+        margin: 0 auto;
+      }
+    }
+    .navbar-menu {
+      display: none;
+    }
+    .navbar-right {
+      flex: 0 0 50px;
+      .navbar-search {
+        display: none;
+      }
+    }
+  }
+}
+
+.navbar-menu {
+  position: relative;
+  flex: 1 1 auto;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  display: block;
+  list-style: none;
+  >li {
+    position: relative;
+    padding: 0 10px;
+    display: inline-block;
+    margin: 0;
+    border: 0;
+    animation-duration: 350ms;
+    >a {
+      line-height: $header-h;
+      display: block;
+    }
+    >a:hover {
+      text-decoration: underline;
+    }
+  }
+  >li.site-nav--has-submenu {
+    >a {
+      line-height: 50px;
+      height: 50px;
+      padding: 0;
+      display: block;
+      overflow: visible;
+    }
+  }
+  ul.site-nav__submenu {
+    margin: 0;
+    width: 250px;
+    float: left;
+    display: block;
+    text-align: left;
+    list-style: none outside;
+    >li {
+      line-height: 40px;
+      padding: 0 15px;
+      margin: 0;
+      transition: background-color $transition-duration $transition-timing;
+      &:hover {
+        background-color: darken($color-index-section-bg, 5%);
+      }
+    }
+    a {
+      display: block;
+      color: $color-sticky-header-link;
+      padding: 0;
+      margin: 0;
+      transition: color $transition-duration $transition-timing;
+      &:hover {
+        color: $color-sticky-header-link-hover;
+      }
+    }
+  }
+}
+
+.navbar-form {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  width: 70%;
+  max-width: 500px;
+  animation-duration: 300ms;
+  .btn {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  i.icon-search {
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    color: $color-header-link;
+    font-size: 22px;
+  }
+  input[type='search'] {
+    font-size: inherit;
+    background-color: $color-header-input-bg;
+    padding: 0 8px 0 35px;
+    margin: 0;
+    width: 100%;
+    border: 1px solid lighten($color-header-bg-dark, 70%);
+    border-radius: $border-radius;
+    color: $color-header-link-active;
+    transition: background-color $transition-duration * 2 $transition-timing,
+                opacity $transition-duration * 2 $transition-timing,
+                color $transition-duration * 2 $transition-timing,
+                border $transition-duration * 2 $transition-timing;
+    &:focus {
+      background-color: darken($color-header-input-bg, 30%);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+    &::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: $color-header-link-active;
+      opacity: .7;
+    }
+  }
+}
+
+/* stylelint-disable declaration-no-important */
+.navbar-cart {
+  // display: block;
+  // float: right;
+  >a {
+    height: 50px !important;
+    margin-right: -10px;
+  }
+  i.iconfont.icon-cart-line {
+    margin-left: 0 !important;
+    font-size: 24px;
+    display: block;
+    line-height: 50px;
+  }
+  i.shopping-cart-badge {
+    color: $color-primary;
+    position: absolute;
+    z-index: 1;
+    left: 16px;
+    top: 15px;
+  }
+}
+/* stylelint-enable */
+
+.navbar-search {
+  margin-right: $grid-gutter-small;
+  // float: left;
+  >a {
+    position: relative;
+    display: block;
+    height: $header-h;
+    padding: 0 10px;
+    .iconfont {
+      animation-duration: 100ms;
+      font-size: 24px;
+      line-height: $header-h;
+      display: block;
+    }
+  }
+}
+
+.dropdown-content__wrapper.shopping-cart-dropdown {
+  top: $header-h;
+  right: -5px !important;
+  left: auto;
+  text-align: center;
+  .dropdown-content {
+    width: 300px;
+    padding: $grid-gutter-small;
+    &::after {
+      right: 12px;
+      left: auto;
+    }
+  }
+  .current-cart {
+    text-align: center;
+    padding: 20px 10px;
+    a {
+      color: $color-primary;
+    }
+    a:hover {
+      color: $color-primary-light;
+    }
+    .btn {
+      width: 90%;
+    }
+  }
+  ul.dropdown-list {
+    display: block;
+    li {
+      margin: 0;
+      border-top: 1px solid $color-divider;
+      transition: background-color $transition-duration $transition-timing;
+      &:hover {
+        background-color: darken($color-index-section-bg, 5%);
+      }
+    }
+    a {
+      display: block;
+      padding: 5px 15px;
+    }
+    li.shopping-cart-link > a {
+      @extend .link-dark;
+    }
+    li.profile-link > a {
+      @extend .link-dark;
+    }
+    li.logout-link > a {
+      @extend .link-error;
+    }
+    li.login-link > a {
+      @extend .link-default;
+    }
+    li.reg-link > a {
+      @extend .link-dark;
+    }
+  }
+  .cart-content {
+    ul {
+      margin: 0 0 10px 0;
+    }
+    li.cart-item {
+      border-radius: $border-radius;
+      background-color: $color-index-section-bg;
+      margin: 0 0 1px 0;
+      display: flex;
+      padding: $grid-gutter-small;
+      .item-image {
+        flex: 0 0 100px;
+        img {
+          max-width: 80px;
+          display: block;
+        }
+      }
+      .item-title {
+        text-align: left;
+        line-height: 1.2;
+      }
+      .sub-price {
+        margin-top: $grid-gutter-small;
+      }
+    }
+    .cart-items-status {
+      display: flex;
+      width: 90%;
+      margin: 0 auto;
+      justify-content: space-between;
+    }
+    .total-price {
+      text-align: right;
+    }
+  }
+}
+
+.no-hero .site-header {
+  background-color: $color-header-bg-dark;
+}
+
+.js-sticky-header--open .site-header {
+  background: $color-sticky-header-bg;
+  backdrop-filter: saturate(180%) blur(20px);
+  &::before {
+    opacity: 1;
+    visibility: visible;
+  }
+  &::after {
+    opacity: 0;
+    visibility: hidden;
+  }
+  a {
+    color: $color-sticky-header-link;
+    &:hover {
+      color: $color-sticky-header-link-hover;
+    }
+  }
+  .navbar-logo .svg-logo-text {
+    fill: darken(#7A7374, 10%);
+  }
+  i.icon-search {
+    color: $color-sticky-header-link;
+  }
+  input[type='search'] {
+    background-color: $color-sticky-header-input-bg;
+    color: $color-sticky-header-link;
+    &:focus {
+      background-color: darken($color-sticky-header-input-bg, 10%);
+    }
+    &::placeholder {
+      color: $color-header-input-bg;
+    }
+  }
+
+  .navbar-opts>a {
+    color: $color-sticky-header-link;
+    &:hover {
+      color: $color-sticky-header-link-hover;
+    }
+  }
+}
+
+.touch {
+  li.site-nav--has-submenu {
+    i {
+      display: none;
+    }
+  }
+}

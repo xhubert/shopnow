@@ -1,0 +1,44 @@
+ul.tags, ul.tags-list {
+  margin: 0;
+  list-style: 0;
+}
+.tag {
+  box-sizing: border-box;
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  line-height: 20px;
+  padding: 0 7px;
+  border-radius: $border-radius;
+  transition: all $transition-duration $transition-timing;
+  opacity: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  &:hover {
+    opacity: .65;
+  }
+
+  &.tag-default {
+    a {
+      color: rgba(0,0,0,.65);
+    }
+    color: rgba(0,0,0,.65);
+    border: 1px solid #d9d9d9;
+    background: #fafafa;
+  }
+
+  &.tag-primary {
+    color: #FFFFFF;
+    border: 1px solid $color-primary;
+    background: $color-primary;
+  }
+
+  &.tag-accent {
+    color: #FFFFFF;
+    a {
+      color: #FFFFFF;
+    }
+    border: 1px solid $color-accent;
+    background: $color-accent;
+  }
+}

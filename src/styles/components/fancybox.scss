@@ -1,0 +1,22 @@
+.fancybox-content {
+  width: 60%;
+  padding: $grid-gutter * 2;
+  border-radius: $border-radius;
+  @include media-query($small) {
+    width: 100%;
+  }
+  &.wide {
+    width: 80%;
+    max-width: $grid-medium;
+    @include media-query($small) {
+      width: 100%;
+    }
+  }
+  &.confirm-modal {
+    max-width: 500px;
+  }
+}
+
+.fancybox-thumbs>ul>li::before {
+  border-color: $color-primary;
+}

@@ -1,0 +1,132 @@
+$color-primary: var(--color-primary);
+$color-primary-light: var(--color-primary-light);
+$color-primary-dark: var(--color-primary-dark);
+
+// Accent colors
+$color-accent: var(--color-accent);
+$color-border: var(--color-border);
+$color-divider: var(--color-divider);
+$color-title: #393633;
+$color-muted: #898E98;
+
+// Body colors
+$color-body-text: var(--color-body-text);
+$color-body-text-light: var(--color-body-text-light);
+$color-body-text-dark: var(--color-body-text-dark);
+$color-link: $color-primary;
+$color-blankstate: rgba(#203950, 0.35); // $color-body-text
+$color-blankstate-border: rgba(#203950, 0.2); // $color-body-text
+$color-blankstate-background: rgba(#203950, 0.1); // $color-body-text
+
+// Background colors
+$color-body: var(--color-main-background);
+$color-index-section-bg: #F5F5F5;
+$color-side-bg: #272522;
+
+// Placeholders
+$placeholder-color-foreground: #161d25;
+$placeholder-color-background: #f9fafb;
+
+// Overlay
+$overlay-color: #010302;
+$overlay-color-light: rgb(255, 254, 253);
+$overlay-opacity: 0.2;
+$color-overlay-title-text: #FFFFFF;
+
+// Helper colors for form error states
+$color-disabled: rgb(182, 179, 176);
+$color-border-disabled: rgb(231, 230, 229);
+$color-bg-disabled: #F7F5F3;
+$color-info: #2d8cf0;
+$color-info-bg: lighten($color-info, 30%);
+$color-warning: #ff9900;
+$color-warning-bg: lighten($color-warning, 30%);
+$color-error: #ed3f15;
+$color-error-bg: lighten($color-error, 30%);
+$color-success: #19be6b;
+$color-success-bg: lighten($color-success, 30%);
+
+// Sns theme color
+$color-twitter: #2AA3EF;
+$color-facebook: #4267B2;
+$color-instagram: #D8296B;
+$color-pinterest: #BD081C;
+$color-youtube: #FC0D1B;
+$color-tumblr: #33516C;
+$color-googleplus: #DA4941;
+$color-vimeo: #30B7E8;
+
+// Typography
+$font-heading: var(--font-heading);
+$font-body: var(--font-body);
+$font-body-weight: var(--font-body-weight);
+$font-body-style: var(--font-body-style);
+$font-body-bold-weight: var(--font-body-bold-weight);
+$font-size-base: 14px;
+$font-size-large: 1.1em;
+$font-size-small: 0.9em;
+$font-size-xl: 1.5em;
+$font-size-xs: 0.7em;
+
+// Transitions
+$transition-duration: 350ms;
+$transition-timing: cubic-bezier(0.165, 0.84, 0.44, 1); // ease-in-out
+
+// Zindex
+$zindex-dropdown: 900;
+$zindex-content-mask: 1020;
+$zindex-sticky-header: 1010;
+$zindex-modal-window-overlay: 1011;
+
+/*
+ * Grid settings:
+ * iphone se: 320 * 568;
+ * iphone 8: 375 * 667;
+ * iphone 8 plus: 414 * 736;
+ */
+$grid-xs: 0;
+$grid-small: 480px; //
+$grid-medium: 770px; // 46.85em
+$grid-large: 1024px; // 61.85em
+$grid-widescreen: 1400px; // 87.5em
+$grid-max-width: 1200px; // 73.75em
+$grid-gutter: 16px;
+$grid-gutter-small: 10px;
+$section-spacing: 55px;
+$section-spacing-small: 35px;
+$border-radius: 2px;
+$border-radius-big: 5px;
+
+$sidebar-nav-width: 80%;
+
+// Breakpoints used with the media-query mixin
+$small: 'small';
+$small-up: 'small-up';
+$medium: 'medium';
+$medium-down: 'medium-down';
+$medium-up: 'medium-up';
+$large: 'large';
+$large-down: 'large-down';
+$large-up: 'large-up';
+$widescreen: 'widescreen';
+
+$breakpoints: (
+  $small '(min-width: #{$grid-xs}) and (max-width: #{$grid-small - 1})',
+  $small-up '(min-width: #{$grid-small})',
+  $medium '(min-width: #{$grid-small}) and (max-width: #{$grid-medium - 1})',
+  $medium-down '(max-width: #{$grid-medium - 1})',
+  $medium-up '(min-width: #{$grid-medium})',
+  $large '(min-width: #{$grid-medium}) and (max-width: #{$grid-large - 1})',
+  $large-down '(max-width: #{$grid-large - 1})',
+  $large-up '(min-width: #{$grid-large})',
+  $widescreen '(min-width: #{$grid-widescreen})'
+);
+
+/* ============================================================================
+  Generate breakpoint-specific column widths and push classes
+    - Default column widths: $breakpoint-has-widths: ($small, $medium-up);
+    - Default is no push classes
+    - Will not work if `styles/global/grid.scss` is removed
+============================================================================== */
+$breakpoint-has-widths: ($small, $small-up, $medium, $medium-down, $medium-up, $large-down, $large-up);
+$breakpoint-has-push: ();

@@ -1,0 +1,119 @@
+.cart--tpl {
+  h1 {
+    margin-top: 0;
+  }
+  p {
+    margin-bottom: $grid-gutter / 2;
+  }
+  .blank_shopping_cart {
+    display: block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 9px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: $color-divider;
+    margin: 0 auto $grid-gutter;
+    .iconfont {
+      color: #FFFFFF;
+    }
+  }
+  .cart-opt-area {
+    display: flex;
+    justify-content: flex-end;
+    .btn {
+      width: 150px;
+      margin-left: $grid-gutter-small;
+    }
+  }
+}
+
+.cart-tbl {
+  border-collapse: separate;
+  border-spacing: 1px;
+  width: 100%;
+  thead th {
+    padding-bottom: $grid-gutter / 2;
+    border-bottom: 1px solid $color-border;
+  }
+  tbody > tr:nth-child(odd) {
+    background-color: $color-index-section-bg;
+  }
+  td.img-col {
+    width: 160px;
+    @include media-query($small) {
+      width: 100%;
+    }
+    a {
+      display: block;
+      width: 160px;
+      @include media-query($small) {
+        float: right;
+      }
+    }
+    img {
+      display: block;
+      width: 160px;
+    }
+  }
+  td:not(.desc-col) {
+    text-align: center;
+    @include media-query($small) {
+      text-align: right;
+    }
+  }
+  .desc-col, .quantity-col {
+    padding: 0 $grid-gutter / 2;
+  }
+  .quantity-col {
+    width: 190px;
+    @include media-query($small) {
+      width: 100%;
+    }
+    > div {
+      display: inline-block;
+    }
+  }
+  .price-col {
+    width: 70px;
+    @include media-query($small) {
+      width: 100%;
+    }
+  }
+  .total-price-col {
+    width: 130px;
+    @include media-query($small) {
+      width: 100%;
+    }
+  }
+  tr.subtotal_price > td {
+    border-top: 1px solid $color-border;
+    padding-top: $grid-gutter / 2;
+  }
+  .cart-subtotal-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@include media-query($small) {
+  .cart--tpl {
+    .cart-subtotal-price {
+      justify-content: flex-end;
+      .text-price {
+        padding-left: $grid-gutter-small;
+      }
+    }
+    .cart-opt-area {
+      flex-wrap: wrap;
+      .btn {
+        flex: 1 1 100%;
+        width: 100%;
+        margin-top: $grid-gutter-small;
+        margin-left: 0;
+      }
+    }
+  }
+}

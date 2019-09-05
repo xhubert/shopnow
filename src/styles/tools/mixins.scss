@@ -1,0 +1,178 @@
+/* stylelint-disable declaration-no-important, no-unknown-animations */
+
+@mixin lighten-color($color) {
+  @if ($color) {
+    color: lighten($color, 10%);
+  }
+}
+
+@mixin darken-color($color) {
+  @if ($color) {
+    color: darken($color, 10%);
+  }
+}
+
+/**
+ * Sets a media query for the specified breakpoint
+ *
+ * Accepts:
+ * - $media-query: {String} Breakpoint variable (list found in variables.scss)
+ *
+ * Usage:
+ * .selector {
+ *   @include media-query($medium-up) {
+ *     color: red;
+ *   }
+ * }
+ */
+@mixin media-query($media-query) {
+  $breakpoint-found: false;
+
+  @each $breakpoint in $breakpoints {
+    $name: nth($breakpoint, 1);
+    $declaration: nth($breakpoint, 2);
+
+    @if $media-query == $name and $declaration {
+      $breakpoint-found: true;
+
+      @media only screen and #{$declaration} {
+        @content;
+      }
+    }
+  }
+}
+
+/**
+ * Forces an element to self-clear its children
+ *
+ * Usage:
+ * .selector {
+ *   @include clearfix;
+ * }
+ */
+@mixin clearfix() {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  // stylelint-disable-next-line
+  *zoom: 1;
+}
+
+/**
+ * Hide element but make it accessible to screen readers
+ *
+ * Usage:
+ * .selector {
+ *   @include visually-hidden;
+ * }
+ */
+@mixin visually-hidden() {
+  // stylelint-disable-next-line
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+/**
+ * Reverse the properties applied by @mixin visually-hidden
+ *
+ * Accepts:
+ * - $position: {String} Positioning method for element
+ *
+ * Usage:
+ * .selector {
+ *   @include visually-shown(relative);
+ * }
+ */
+@mixin visually-shown($position: inherit) {
+  // stylelint-disable-next-line
+  position: $position !important;
+  overflow: auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+}
+
+/* ================ Responsive Show/Hide Helper ================ */
+
+@mixin responsive-display-helper($breakpoint: '') {
+  .#{$breakpoint}show {
+      display: block !important;
+  }
+  .#{$breakpoint}hide {
+      display: none !important;
+  }
+}
+
+/* ================ Responsive Text Alignment Helper ================ */
+
+@mixin responsive-text-align-helper($breakpoint: '') {
+  .#{$breakpoint}text-left {
+      text-align: left !important;
+  }
+  .#{$breakpoint}text-right {
+      text-align: right !important;
+  }
+  .#{$breakpoint}text-center {
+      text-align: center !important;
+  }
+}
+
+@mixin overlay($z-index: null, $opacity: 0.3, $isLight: false) {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: $opacity;
+
+    @if ($z-index) {
+      z-index: $z-index;
+    }
+    @if ($isLight) {
+      background-color: $overlay-color-light;
+    } @else {
+      background-color: $overlay-color;
+    }
+  }
+}
+
+@mixin spinner($size: 20px, $color: #FFF) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  display: block;
+  width: $size;
+  height: $size;
+  margin-left: - $size / 2;
+  margin-top: - $size / 2;
+  border-radius: 50%;
+  border: $size / 15 solid $color;
+  border-top-color: transparent;
+  animation: spin 650ms linear infinite;
+}
+
+/* stylelint-disable value-no-vendor-prefix, property-no-vendor-prefix */
+@mixin max-lines($lines: 3, $line-height: 1.35em) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  line-height: $line-height;
+  max-height: $line-height * $lines;
+}
+/* stylelint-enable */

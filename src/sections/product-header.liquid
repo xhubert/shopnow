@@ -1,0 +1,242 @@
+<section
+  data-section-id="{{ section.id }}"
+  data-section-type="product-header"
+  data-enable-history-state="true"
+  data-must-track-inventory="{{ settings.must_track_inventory }}"
+  class="product-header__wrapper"
+>
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+  {%- assign isAvailable = false -%}
+  {%- if current_variant.available -%}
+    {%- assign isAvailable = true -%}
+  {%- endif -%}
+  {%- if settings.must_track_inventory and current_variant.inventory_management != 'shopify' -%}
+    {%- assign isAvailable = false -%}
+  {%- endif -%}
+  <div class="inner">
+    <div class="product-header__left">
+      <div class="product-images__slides">
+        <div class="swiper-container gallery-top product-header-gallery-top">
+          <div class="swiper-wrapper">
+            {% for image in product.images %}
+              <a
+                class="swiper-slide responsive-image__wrapper no__wrapper"
+                href="{{ image | img_url: '2048x2048' }}"
+                data-srcset="{% include 'responsive-bg-image', image: image %}"
+                data-fancybox="product-header-gallery"
+                data-caption="{{product.title}}"
+                data-back-focus="false"
+                data-product-featured-image
+              >
+                {%
+                  include 'responsive-image' with
+                    image: image,
+                    max_height: 540,
+                    max_width: 540,
+                    image_class: 'contain',
+                    no_wrapper: true
+                %}
+              </a>
+            {% endfor %}
+          </div>
+          <div class="swiper-pagination__wrapper"><div class="swiper-pagination"></div></div>
+          <!-- Add Arrows -->
+          <div class="swiper-button-next swiper-button-white"></div>
+          <div class="swiper-button-prev swiper-button-white"></div>
+        </div>
+        <div class="swiper-container gallery-thumbs product-header-gallery-thumbs">
+          {% if product.images.size > 1 %}
+            <div class="swiper-wrapper">
+              {% for image in product.images %}
+                <div
+                  class="swiper-slide bg-image lazyload product-single__thumbnail-image"
+                  data-bgset="{% include 'responsive-bg-image', image: image %}"
+                  data-sizes="auto"
+                  data-thumbnail-id="{{ image.id }}"
+                  data-product-single-thumbnail
+                  style="background-image: url({{ image | img_url: '160x160' }}); background-size: contain;">
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="product-header__right">
+      <div>
+        <h2 class="product-sku" id="ProductSku-{{product.id}}">
+          {% assign skus = current_variant.sku | split: "G1029-" %}
+          {{ skus.last }}
+        </h2>
+        <h1>{{ product.title | escape }}</h1>
+        <p class="text-muted">
+          {{ product.vendor }}
+          {{ product.type }}
+        </p>
+      </div>
+
+      {% if section.settings.show_product_tag_icons %}
+        <div class="product-tag-icons_wrapper">
+          {% include 'product-tag-icons' with tags: product.tags%}
+        </div>
+      {% endif %}
+
+      <div class="product-opt__brief text-uppercase" id="ProductOptBrief-{{product.id}}">
+        <!-- Inject the first div.product-brief-hidden element of current product.description. -->
+      </div>
+
+      <div style="padding: 5px 0;">
+        <a
+          data-scroll
+          data-scroll-anchor="#product-desc--{{ product.id }}"
+          class="link link-default text-uppercase"
+          href="javascript:void(0)"
+        >
+          <span>{{ 'blogs.article.read_more' | t }}</span>
+          {% include 'icon-arrow-right-outline' %}
+        </a>
+      </div>
+      <br />
+      <form action="/cart/add" method="post" enctype="multipart/form-data">
+        <div data-price-wrapper class="text-price text-xl">
+          <span data-product-price>
+            {{ current_variant.price | money }}
+          </span>
+          {% if product.compare_at_price_max > product.price %}
+            <span class="visually-hidden" data-compare-text>
+              {{ 'products.product.regular_price' | t }}
+            </span>
+            <s data-compare-price class="compare-price">
+              {% if current_variant.compare_at_price > current_variant.price %}
+                {{ current_variant.compare_at_price | money }}
+              {% endif %}
+            </s>
+          {% endif %}
+        </div>
+        {% assign channels = "" %}
+        {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+            <div class="selector-wrapper js{% if option.name == 'channel' %} visually-hidden {% endif %}">
+              <label class="text-muted text-small">
+                {{ option.name }}
+              </label>
+              {% include 'radio-btn-group' with
+                option: option,
+                active_class: 'btn-radio-active'
+                is_available: isAvailable
+              %}
+            </div>
+            {% if option.name == 'channel' %}
+              {% assign channels = option.values %}
+            {% endif %}
+          {% endfor %}
+        {% endunless %}
+        <select name="id" class="no-js" data-product-select>
+          {% for variant in product.variants %}
+            <option
+              {% if variant == current_variant %}selected="selected"{% endif %}
+              {% unless isAvailable %}disabled="disabled"{% endunless %}
+              value="{{ variant.id }}">
+                {{ variant.title }}
+            </option>
+          {% endfor %}
+        </select>
+        <div class="add-to-cart__wrapper">
+          {% if isAvailable %}
+            {% assign quantityInputId = 'quantity-' | append: product.id %}
+            {% assign quantityInputLabel = 'products.product.quantity' | t %}
+            {% include 'quantity-selector' whith
+              id: product.id,
+              input_name: 'quantity',
+              input_id: quantityInputId,
+              input_init_value: 1,
+              inventory_quantity: current_variant.inventory_quantity,
+              input_aria_label: quantityInputLabel
+            %}
+          {% endif %}
+          <div class="product-opt__wrapper">
+            {% if isAvailable %}
+              <div>
+                <strong class="text-success">In Stock.</strong>
+                <div>
+                  <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
+                  <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
+                    <i class="iconfont icon-ios-info-outline"></i>
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+            {%
+              include 'buy-on-button' with
+                buttons: channels,
+                initSku: current_variant.sku,
+                variants: product.variants
+            %}
+            <button
+              type="submit"
+              name="add"
+              class="btn button btn-primary large add-to-cart{% unless isAvailable %} visually-hidden{% endunless %}"
+              data-add-to-cart
+              {% unless isAvailable %}disabled="disabled"{% endunless %}
+            >
+              <span data-add-to-cart-text>
+                {% if isAvailable %}
+                  {{ 'products.product.add_to_cart' | t }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+            </button>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          {% if section.settings.show_share_buttons %}
+            <div class="social-sharing__wrapper">
+              {% include 'social-sharing',
+                share_title: product.title,
+                share_permalink: product.url,
+                share_image: product,
+                h_alignment: 'left'
+              %}
+            </div>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% unless product == empty %}
+    <script type="application/json" data-product-json>
+      {{ product | json }}
+    </script>
+  {% endunless %}
+</section>
+
+{% schema %}
+  {
+    "name": "Product header",
+    "class": "product__header--section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }, {
+        "type": "checkbox",
+        "id": "show_product_tag_icons",
+        "label": "Show product tag icons",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product header",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

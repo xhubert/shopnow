@@ -1,0 +1,70 @@
+/* ================ Index sections ================ */
+
+.index-section {
+  padding-top: $section-spacing;
+  padding-bottom: $section-spacing;
+  &:first-child {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  &:last-child {
+    margin-bottom: - $section-spacing;
+  }
+}
+
+.index-section--flush+.index-section--flush {
+  margin-top: -($section-spacing-small * 2);
+}
+
+[class*='index-section--flush']+[class*='index-section--flush'] {
+  @include media-query($medium-up) {
+    margin-top: -($section-spacing * 2);
+  }
+} // Flush sections should be tight to the nav if they are the first on the page
+.index-section--flush:first-child {
+  margin-top: -$section-spacing-small;
+}
+
+[class*='index-section--flush']:first-child {
+  @include media-query($medium-up) {
+    margin-top: -$section-spacing;
+  }
+} // Flush sections should be tight to the footer if they are last on the page
+.index-section--flush:last-child {
+  margin-bottom: -$section-spacing-small;
+}
+
+[class*='index-section--flush']:last-child {
+  @include media-query($medium-up) {
+    margin-bottom: -$section-spacing;
+  }
+} // Visually align featured product section (if first on homepage on mobile)
+.index-section--featured-product:first-child {
+  @include media-query($small) {
+    margin-top: -12px;
+  }
+}
+
+.section-title {
+  position: relative;
+  text-transform: capitalize;
+  margin-top: 0;
+  text-align: center;
+  font-weight: 300 !important; /* stylelint-disable-line declaration-no-important */
+  margin-bottom: $section-spacing / 1.3;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -$section-spacing / 3.5;
+    height: 1px;
+    width: 100px;
+    border-bottom: 1px solid $color-title;
+    margin-left: -50px;
+  }
+}
+
+.section-title-blow {
+  margin-top: - $grid-gutter;
+  margin-bottom: $grid-gutter;
+}

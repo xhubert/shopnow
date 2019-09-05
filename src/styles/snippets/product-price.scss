@@ -1,0 +1,49 @@
+.product-price {
+  word-spacing: -4px;
+  &:not(.no-padding) {
+    padding: 0 $grid-gutter / 2;
+  }
+  .price-symbol {
+    font-size: 12px;
+    line-height: 12px;
+    margin-right: 3px;
+  }
+  .price-no-decimals {
+    font-size: 21px;
+    line-height: 21px;
+  }
+  .price-decimals {
+    font-size: 12px;
+    line-height: 12px;
+  }
+  &.large {
+    .price-symbol {
+      font-size: 15px;
+      line-height: 15px;
+      margin-right: 5px;
+    }
+    .price-no-decimals {
+      font-size: 27px;
+      line-height: 27px;
+    }
+    .price-decimals {
+      font-size: 15px;
+      line-height: 15px;
+    }
+  }
+  &.xlarge {
+    .price-symbol {
+      font-size: 17px;
+      line-height: 17px;
+      margin-right: 5px;
+    }
+    .price-no-decimals {
+      font-size: 32px;
+      line-height: 32px;
+    }
+    .price-decimals {
+      font-size: 17px;
+      line-height: 17px;
+    }
+  }
+}

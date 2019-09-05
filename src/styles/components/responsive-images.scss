@@ -1,0 +1,116 @@
+.responsive-image__wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  vertical-align: middle;
+  /* stylelint-disable declaration-no-important */
+  @include media-query($small) {
+    max-width: $grid-small !important;
+    img.responsive-image__image {
+      max-width: $grid-small !important;
+      max-height: $grid-small !important;
+    }
+  }
+  /* stylelint-enable */
+  &.rounded {
+    z-index: 1;
+    border-radius: $border-radius;
+  }
+  &.rounded-big {
+    z-index: 1;
+    border-radius: $border-radius-big;
+  }
+  .no-js & {
+    display: none;
+  }
+  &::before {
+    content: '';
+    position: relative;
+    display: block;
+  }
+}
+
+.responsive-image__image {
+  position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+  transition: transform $transition-duration $transition-timing,
+              filter $transition-duration $transition-timing,
+              opacity $transition-duration $transition-timing;
+  font-family: "blur-up: always", "object-fit: cover";
+  object-fit: cover;
+  .contain & {
+    font-family: "blur-up: always", "object-fit: contain";
+    object-fit: contain;
+  }
+  &.contain {
+    font-family: "blur-up: always", "object-fit: contain";
+    object-fit: contain;
+  }
+  &.lazyload, &.lazyloading {
+    filter: blur(10px);
+  }
+  &.lazyloaded {
+    filter: blur(0);
+  }
+}
+
+.responsive-image__wrapper.no__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .responsive-image__image {
+    position: relative;
+    top: auto;
+    left: auto;
+  }
+}
+
+.ls-blur-up-img {
+  position: absolute;
+  z-index: 1;
+	top: 0;
+	left: 0;
+	width: 100%;
+  height: 100%;
+	display: block;
+  font-family: "blur-up: always", "object-fit: cover";
+  object-fit: cover;
+  filter: blur(10px);
+  opacity: 1;
+  transition: opacity $transition-duration $transition-timing,
+              filter $transition-duration $transition-timing;
+}
+
+.ls-blur-up-img.ls-inview.ls-original-loaded {
+  opacity: 0;
+  filter: blur(5px);
+}
+
+.bg-image {
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  height: 100%;
+  min-height: 50px;
+  filter: blur(10px);
+  transition: filter $transition-duration $transition-timing,
+              transform $transition-duration $transition-timing;
+  &.lazyload, &.lazyloading {
+    filter: blur(15px);
+  }
+  &.lazyloaded {
+    filter: blur(0);
+  }
+}
+.hover-scale:hover {
+  img, .bg-image {
+    transform: scale3d(1.1,1.1,1);
+  }
+}

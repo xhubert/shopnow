@@ -1,0 +1,83 @@
+.social-list--snippet {
+  ul.social-list {
+    list-style: none;
+    display: block;
+    margin: 0;
+    height: 32px;
+    >li {
+      display: inline-block;
+      margin: 0 8px 0 0;
+      &:last-child {
+        margin: 0;
+      }
+    }
+    a {
+      display: block;
+      padding: 3px;
+      border-radius: $border-radius-big;
+      background-color: darken($color-footer-bg, 5%);
+      &:hover {
+        background-color: darken($color-footer-bg, 8%);
+      }
+    }
+    svg {
+      display: block;
+      height: 26px;
+      width: 26px;
+    }
+  }
+  li.sns-facebook:hover {
+    a {
+      color: $color-facebook;
+    }
+  }
+  li.sns-instagram:hover {
+    a {
+      color: $color-instagram;
+    }
+  }
+  li.sns-twitter:hover {
+    a {
+      color: $color-twitter;
+    }
+  }
+  li.sns-youtube:hover {
+    a {
+      color: $color-youtube;
+    }
+  }
+  li.sns-pinterest:hover {
+    a {
+      color: $color-pinterest;
+    }
+  }
+  li.sns-tumblr:hover {
+    a {
+      color: $color-tumblr;
+    }
+  }
+  li.sns-googleplus:hover {
+    a {
+      color: $color-googleplus;
+    }
+  }
+  /* stylelint-disable declaration-no-important */
+  &.small {
+    height: 30px;
+    svg {
+      height: 24px !important;
+      width: 24px !important;
+    }
+  }
+
+  &.dark {
+    a {
+      background-color: darken($color-side-bg, 3) !important;
+      &:hover {
+        background-color: darken($color-side-bg, 5) !important;
+      }
+    }
+  }
+  /* stylelint-enable */
+}
+
