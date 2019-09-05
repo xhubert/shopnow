@@ -1,0 +1,94 @@
+.flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: - $grid-gutter / 2;
+  margin-right: - $grid-gutter / 2;
+  margin-bottom: - $grid-gutter;
+  .flex-grid-item {
+    padding: 0 $grid-gutter / 2;
+    min-width: 100px;
+  }
+  &.flex-grid-2 {
+    .flex-grid-item {
+      flex: 1 1 auto;
+      width: 50%;
+      max-width: 50%;
+      margin-bottom: $grid-gutter;
+      @include media-query($small) {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+  }
+  &.flex-grid-3 {
+    .flex-grid-item {
+      flex: 1 1 auto;
+      width: percentage(1 / 3);
+      max-width: percentage(1 / 3);
+      margin-bottom: $grid-gutter;
+      @include media-query($small) {
+        width: 100%;
+      }
+    }
+  }
+  &.flex-grid-4 {
+    .flex-grid-item {
+      flex: 1 1 auto;
+      width: percentage(1 / 4);
+      max-width: percentage(1 / 4);
+      margin-bottom: $grid-gutter;
+      @include media-query($medium-down) {
+        width: percentage(1 / 2);
+        max-width: percentage(1 / 2);
+      }
+      @include media-query($small) {
+        width: 100%;
+      }
+    }
+  }
+  &.flex-grid-5 {
+    .flex-grid-item {
+      flex: 1 1 auto;
+      width: percentage(1 / 5);
+      max-width: percentage(1 / 5);
+      margin-bottom: $grid-gutter;
+      @include media-query($medium-down) {
+        width: percentage(1 / 2);
+        max-width: percentage(1 / 2);
+      }
+      @include media-query($small) {
+        width: 100%;
+      }
+    }
+  }
+  &.flex-grid-6 {
+    .flex-grid-item {
+      flex: 1 1 auto;
+      width: percentage(1 / 6);
+      max-width: percentage(1 / 6);
+      margin-bottom: $grid-gutter;
+      @include media-query($medium-down) {
+        width: percentage(1 / 2);
+        max-width: percentage(1 / 2);
+      }
+      @include media-query($small) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* ================ Build Base Grid Classes ================ */
+
+
+@include responsive-display-helper;
+@include responsive-text-align-helper;
+
+/* ================ Build Responsive Grid Classes ================ */
+@each $breakpoint in $breakpoint-has-widths {
+  @include media-query($breakpoint) {
+    @include responsive-display-helper('#{$breakpoint}--');
+    @include responsive-text-align-helper('#{$breakpoint}--');
+  }
+}
+

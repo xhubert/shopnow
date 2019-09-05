@@ -1,0 +1,27 @@
+.section__gutter--section {
+  display: block;
+  width: 100%;
+  section.section-gutter {
+    display: block;
+    width: 100%;
+    &.middle {
+      height: $section-spacing;
+    }
+    &.small {
+      height: $section-spacing-small;
+    }
+    &.big {
+      height: $section-spacing * 2;
+    }
+    &.light {
+      background: $color-index-section-bg;
+    }
+    &.dark {
+      background: darken($color-index-section-bg, 70%);
+      color: #FFFFFF;
+    }
+    &.transparent {
+      background: transparent;
+    }
+  }
+}

@@ -1,0 +1,71 @@
+<!-- /snippets/buy-on-button.liquid -->
+
+{%- comment -%}
+  Accepts:
+  - buttons: [String] button;
+  - initSku: {String} Initial sku;
+  - variants: [Object] product.variants;
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'buy-on-button' with buttons: buttons, current: current %}
+{%- endcomment -%}
+
+<div class="buy-on-button--snippet">
+  {% for variant in variants %}
+    {% if initSku == variant.sku %}
+      {% assign currentOption2 = variant.option2 %}
+    {% endif %}
+  {% endfor %}
+  {% for button in buttons %}
+    {% if settings.buy_on_amazon and button == 'amazon' %}
+      {% for variant in variants %}
+        {% if variant.option1 == 'amazon' and currentOption2 == variant.option2 %}
+          {% assign amazonSku = variant.sku %}
+        {% endif %}
+      {% endfor %}
+      <a class="buy-on-amazon-btn btn"
+        target="_blank"
+        href="{{ 'https://www.amazon.com/dp/' | append: amazonSku }}"
+      >
+        {% include 'icon-amazon-btn' %}
+        <span>
+          BUY ON
+        </span>
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>
+<style>
+.buy-on-button--snippet {
+  display: inline-block;
+}
+.buy-on-amazon-btn {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  height: 40px;
+  margin-top: 16px;
+  margin-right: 16px;
+  background: #353535;
+  border-color: #222222;
+}
+.buy-on-amazon-btn:hover {
+  box-shadow: 0 5px 10px 0 rgba(27, 35, 31, 0.2);
+    color: #FFFFFF;
+}
+.buy-on-amazon-btn > span {
+  position: absolute;
+  top: 5px;
+  left: 28px;
+  font-weight: 600 !important;
+  font-size: 12px;
+  color: #FF9900 !important;
+}
+.icon-amazon {
+  margin-left: 28px;
+}
+.icon-amazon .text {
+  fill: #FFFFFF;
+}
+</style>

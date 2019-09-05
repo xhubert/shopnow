@@ -1,0 +1,14 @@
+.featured__collection--section {
+  .featured-collection {
+    &.light {
+      background: $color-index-section-bg;
+    }
+    &.dark {
+      background: darken($color-index-section-bg, 70%);
+      color: #FFFFFF;
+    }
+    &.transparent {
+      background: transparent;
+    }
+  }
+}

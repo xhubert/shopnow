@@ -1,0 +1,73 @@
+@charset 'UTF-8';
+
+/**
+ * Shopnow | Built with Slate
+ */
+
+// Settings
+@import './variables';
+
+// Tools
+@import './tools/mixins';
+@import './tools/functions';
+
+// Core
+@import './core/helpers';
+@import './core/media';
+@import './core/responsive-tables';
+@import './core/rte';
+@import './core/typography';
+@import './core/grid';
+@import './core/layout';
+@import './core/forms';
+
+// Components
+@import './components/buttons';
+@import './components/icons';
+@import './components/placeholders';
+@import './components/responsive-images';
+@import './components/animates';
+@import './components/fancybox';
+@import './components/tags';
+@import './components/pagination';
+@import './components/jarallax';
+
+// Sections
+@import './sections/header';
+@import './sections/footer';
+@import './sections/sidebar-nav';
+@import './sections/announcement-bar';
+@import './sections/featured-collection';
+@import './sections/featured-product';
+@import './sections/image-with-text';
+@import './sections/image-with-overlay';
+@import './sections/slider';
+@import './sections/product-features';
+@import './sections/product-grid';
+@import './sections/section-gutter';
+@import './sections/page-hero-banner';
+
+// Templates
+@import './templates/gift_card';
+@import './templates/customers';
+@import './templates/index';
+@import './templates/product';
+@import './templates/cart';
+@import './templates/search';
+@import './templates/blog';
+@import './templates/page';
+@import './templates/article';
+
+// Snippets
+@import './snippets/radio-btn-group';
+@import './snippets/quantity-selector';
+@import './snippets/product-filter';
+@import './snippets/dropdown';
+@import './snippets/product-card';
+@import './snippets/product-price';
+@import './snippets/collection-card';
+@import './snippets/social-sharing';
+@import './snippets/cookies-banner';
+@import './snippets/social-list';
+@import './snippets/article-list';
+@import './snippets/product-tag-icons';

@@ -1,0 +1,150 @@
+.login-form {
+  margin: 0 auto;
+  max-width: 350px;
+  @include media-query($small) {
+    width: 90%;
+  }
+  .pwd-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .new-account, .returning-customer {
+    margin: $grid-gutter auto;
+  }
+}
+
+.reg-form, .recover-email-form, .reset-pwd-form {
+  margin: 0 auto;
+  max-width: 350px;
+  @include media-query($small) {
+    width: 90%;
+  }
+}
+
+.recover-email-form {
+  margin-bottom: $grid-gutter;
+  .submit-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .cancel-btn {
+      margin-left: $grid-gutter / 2;
+    }
+  }
+}
+
+.shopify-challenge__button {
+  max-width: 302px;
+  @extend .btn-primary;
+  @extend .large;
+}
+
+.my-account {
+  display: flex;
+  flex-wrap: wrap;
+  .account-details {
+    flex: 0 0 35%;
+    width: 35%;
+    min-width: 300px;
+    margin-right: $grid-gutter;
+    background-color: $color-index-section-bg;
+    padding: 0 $grid-gutter $grid-gutter * 2;
+    border-radius: $border-radius;
+    @include media-query($small) {
+      flex: 0 0 100%;
+      width: 100%;
+      min-width: auto;
+      margin-right: 0;
+      margin-bottom: $grid-gutter;
+    }
+  }
+  .account-orders {
+    flex: 1 1 auto;
+    text-align: right;
+    @include media-query($small) {
+      text-align: left;
+      flex: 0 0 100%;
+    }
+  }
+}
+
+.customers-addresses--tpl {
+  .address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $grid-gutter-small;
+    @include media-query($small) {
+      display: block;
+      text-align: center;
+      > * {
+        margin-bottom: $grid-gutter-small;
+      }
+    }
+  }
+  .address-detail {
+    position: relative;
+    border-radius: $border-radius;
+    background: $color-index-section-bg;
+
+    > .tag {
+      position: absolute;
+      right: 0;
+      top: 0;
+      cursor: default;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      font-size: $font-size-small;
+    }
+    > p {
+      z-index: 0;
+      margin: 0;
+      padding: $grid-gutter;
+    }
+    .address-opt-area {
+      z-index: 2;
+      transition: all $transition-duration $transition-timing 100ms;
+      padding: $grid-gutter-small $grid-gutter-small;
+      border-bottom-right-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+      text-align: right;
+      overflow: hidden;
+      backdrop-filter: saturate(100%) blur(3px);
+      @include overlay(-1, 0.1);
+    }
+  }
+  .no-touch & {
+    .address-opt-area {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      transform: translateY(10%);
+      opacity: 0;
+    }
+    .address-detail:hover {
+      .address-opt-area {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+form.address-form--snippet {
+  .address-form-opt {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 $grid-gutter / 2;
+    align-items: center;
+    .opt-right {
+      // min-width: 300px;
+      input[type='submit'] {
+        width: 150px;
+      }
+    }
+  }
+}

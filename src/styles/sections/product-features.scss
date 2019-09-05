@@ -1,0 +1,26 @@
+.product__features--section {
+  background: $color-index-section-bg;
+  a {
+    display: block;
+  }
+}
+.product-features__list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-feature__image {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  .responsive-image__wrapper {
+    display: block;
+    text-align: center;
+  }
+  img {
+    top: 20px;
+    left: 20px;
+    width: 80px;
+    height: 80px;
+  }
+}

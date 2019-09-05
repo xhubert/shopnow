@@ -1,0 +1,271 @@
+$input-size-small: 26px;
+$input-size: 34px;
+$input-size-large: 40px;
+
+form {
+  margin: 0;
+  input, select, textarea {
+    width: 100%;
+    display: block;
+  }
+  input[type='email'],
+  input[type='password'],
+  input[type='text'],
+  input[type='search'],
+  input[type='tel'],
+  textarea,
+  select {
+    margin-bottom: $grid-gutter-small;
+    padding: 0 10px;
+    border-radius: $border-radius;
+    transition: border-color $transition-duration * 2 $transition-timing;
+    &:focus{
+      border-color: $color-primary;
+    }
+  }
+  textarea {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  input[type='email'],
+  input[type='password'],
+  input[type='text'],
+  input[type='search'],
+  input[type='tel'], select {
+    height: $input-size;
+    &.large {
+      height: $input-size-large;
+    }
+  }
+  .form-item {
+    margin: 0 auto;
+    width: 350px;
+    @include media-query($small) {
+      width: 100%;
+    }
+  }
+  label {
+    margin-bottom: $grid-gutter-small / 2;
+    @extend .text-muted;
+  }
+  .errors {
+    @extend .text-error;
+    @extend .text-center;
+    box-shadow: inset 0 3px 0 0 $color-error,
+                inset 0 0 0 0 transparent,
+                0 0 0 1px rgba(63,63,68,0.05),
+                0 1px 3px 0 rgba(63,63,68,0.15);
+    margin: 0 auto;
+    padding: $grid-gutter-small + 3 $grid-gutter-small $grid-gutter-small;
+    background-color: lighten($color-error, 40%);
+    border-radius: $border-radius;
+    margin-bottom: $grid-gutter * 2;
+    opacity: 0.8;
+    @include media-query($small) {
+      width: 100%;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+    }
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .form-success {
+    @extend .text-success;
+    @extend .text-center;
+    padding: $grid-gutter-small + 3 $grid-gutter-small $grid-gutter-small;
+    border-radius: $border-radius;
+    background-color: lighten($color-success, 50%);
+    margin-bottom: $grid-gutter * 2;
+    box-shadow: inset 0 3px 0 0 $color-success,
+                inset 0 0 0 0 transparent,
+                0 0 0 1px rgba(63,63,68,0.05),
+                0 1px 3px 0 rgba(63,63,68,0.15);
+    opacity: 0.8;
+    @include media-query($small) {
+      width: 100%;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+    }
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .form-info {
+    @extend .text-info;
+    @extend .text-center;
+    padding: $grid-gutter-small + 3 $grid-gutter-small $grid-gutter-small;
+    border-radius: $border-radius;
+    background-color: lighten($color-info, 40%);
+    margin-bottom: $grid-gutter * 2;
+    box-shadow: inset 0 3px 0 0 $color-info,
+                inset 0 0 0 0 transparent,
+                0 0 0 1px rgba(63,63,68,0.05),
+                0 1px 3px 0 rgba(63,63,68,0.15);
+    opacity: 0.8;
+    @include media-query($small) {
+      width: 100%;
+    }
+  }
+}
+
+form.grid-form {
+  margin-left: - $grid-gutter / 2;
+  margin-right: - $grid-gutter / 2;
+  @include media-query($small) {
+    margin: 0 auto;
+  }
+  .form-success, .errors, .form-info {
+    margin-left: $grid-gutter / 2;
+    margin-right: $grid-gutter / 2;
+  }
+  .form-item {
+    padding: 0 $grid-gutter / 2;
+    @include media-query($small) {
+      padding: 0;
+    }
+  }
+  .grid-form-inner {
+    display: flex;
+    flex-wrap: wrap;
+    .form-item {
+      margin: 0;
+      flex: 0 0 50%;
+      @include media-query($small) {
+        flex: 1 1 100%;
+        width: 100%;
+      }
+      &.full-wide {
+        flex: 1 1 100%;
+        width: 100%;
+      }
+    }
+  }
+}
+
+a,
+area,
+button,
+[role='button'],
+input,
+label,
+select,
+summary,
+textarea {
+  touch-action: manipulation;
+}
+/* stylelint-disable declaration-no-important */
+input,
+textarea,
+select {
+  font-size: 1.6rem;
+  max-width: 100%;
+  border: 1px solid $color-border;
+  border-radius: 0;
+  appearance: none !important;
+  outline: none;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+  }
+  &[disabled] {
+    border-color: $color-border-disabled !important;
+    background-color: $color-bg-disabled !important;
+    color: $color-disabled !important;
+    cursor: auto !important;
+  }
+}
+/* stylelint-enable */
+
+button,
+input[type='submit'],
+label[for] {
+  appearance: none;
+  cursor: pointer;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+// Force option color (affects IE only)
+option {
+  background-color: $color-body;
+  color: $color-body-text;
+}
+
+.input-error {
+  border-color: $color-error;
+  background-color: $color-error-bg;
+  color: $color-body-text;
+}
+
+.label--hidden {
+  position: absolute;
+  height: 0;
+  width: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+
+  // No placeholders, so force show labels
+  .ie9 & {
+    position: static;
+    height: auto;
+    width: auto;
+    margin-bottom: 2px;
+    overflow: visible;
+    clip: initial;
+  }
+}
+
+.form-checkbox {
+  input[type='checkbox'] {
+    position: relative;
+    border: 1px solid $color-border;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: $grid-gutter-small / 2;
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 4px;
+      left: 4px;
+      width: 10px;
+      height: 7px;
+      border: 2px solid transparent;
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
+    }
+    &:checked {
+      &::after {
+        border-color: $color-primary;
+        opacity: 1;
+      }
+    }
+  }
+  label {
+    user-select: none;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 22px;
+    margin: 0;
+  }
+  &:hover {
+    input[type='checkbox']:not(:checked)::after {
+      border-color: $color-border;
+      opacity: 0.7;
+    }
+  }
+}
