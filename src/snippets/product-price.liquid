@@ -31,39 +31,33 @@
 {% endcapture %}
 
 {% if compare_at_price > price %}
-  {% if available %}
-    {% if price_varies %}
-      <span class="text-accent text-large">
-        {%- assign sale_price = product.price | money -%}
-        {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
-      </span>
-    {% else %}
-      <span class="visually-hidden visually-hidden--inline">
-        {{ 'products.product.regular_price' | t }}
-      </span>
-      <span class="product-price__price product-price__sale text-accent">
-        <span class="product-price__sale-label" aria-hidden="true">
-          {{ 'products.product.on_sale' | t }}
-        </span>
-        {{ price_tag }}
-      </span>
-      <s class="product-price__price text-muted">
-        {{ compare_at_price | money }}
-      </s>
-    {% endif %}
-  {% else %}
-    <span class="product-price__sold-out text-muted">
-      {{ 'products.product.sold_out' | t }}
+  {% if price_varies %}
+    <span class="text-accent text-large">
+      {%- assign sale_price = product.price | money -%}
+      {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
     </span>
-  {% endif %}
-{% else %}
-  {% if available %}
-    <span class="product-price__price text-price">
+  {% else %}
+    <span class="visually-hidden visually-hidden--inline">
+      {{ 'products.product.regular_price' | t }}
+    </span>
+    <span class="product-price__price product-price__sale text-accent">
+      <span class="product-price__sale-label" aria-hidden="true">
+        {{ 'products.product.on_sale' | t }}
+      </span>
       {{ price_tag }}
     </span>
-  {% else %}
-    <span class="product-price__sold-out text-muted">
+    <s class="product-price__price text-muted">
+      {{ compare_at_price | money }}
+    </s>
+  {% endif %}
+  <span class="product-price__sold-out text-muted visually-hidden">
+    {{ 'products.product.sold_out' | t }}
+  </span>
+{% else %}
+    <span class="product-price__price text-price{% unless available %} text-muted{% endunless %}">
+      {{ price_tag }}
+    </span>
+    <span class="product-price__sold-out text-muted visually-hidden">
       {{ 'products.product.sold_out' | t }}
     </span>
-  {% endif %}
 {% endif %}

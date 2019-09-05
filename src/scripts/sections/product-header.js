@@ -29,6 +29,7 @@ const selectors = {
   addToCartQuantity: '[data-quantity-selector]',
   productOptBrief: '#ProductOptBrief-',
   productSku: '.product-sku',
+  buyOnAmazonBtn: '.buy-on-amazon-btn'
 };
 
 const cssClasses = {
@@ -75,6 +76,7 @@ export default register('product-header', {
 
     this.settings = {};
     this.variants = new Variants(options);
+    this.product = this.variants.product;
     this.$featuredImage = $(selectors.productFeaturedImage, this.$container);
 
     this.$container.on(
@@ -303,7 +305,26 @@ export default register('product-header', {
       .queue((next) => {
         $productSku.addClass('animated flipInX');
         const skus = variant.sku.split('G1029-');
-        $productSku.html(skus[1]);
+        let currentSku;
+        if (skus.length > 1) {
+          currentSku = skus[1];
+        } else {
+          currentSku = skus[0];
+        }
+        $productSku.html(currentSku);
+        const $buyOnAmazonBtn = $(selectors.buyOnAmazonBtn, this.$container);
+        let amazonSku = '';
+        this.product.variants.forEach( v => {
+          if (variant.option2 && v.option2 === variant.option2 && v.option1 === 'amazon') {
+            amazonSku = v.sku;
+          }
+          if (!variant.option2 && v.option1 === 'amazon') {
+            amazonSku = v.sku;
+          }
+        })
+        if ($buyOnAmazonBtn.length > 0 && amazonSku) {
+          $buyOnAmazonBtn.attr('href', `https://www.amazon.com/dp/${amazonSku}`);
+        }
         next();
       });
   },

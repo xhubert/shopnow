@@ -67,6 +67,7 @@
         {{ product.title | escape | truncate: 70 }}
       </div>
     </div>
+    {% include 'amazon-tag' with variants: product.variants, center: true %}
     <div class="product-item__price text-price text-large">
       {% include 'product-price' %}
     </div>

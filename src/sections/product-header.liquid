@@ -116,9 +116,10 @@
             </s>
           {% endif %}
         </div>
+        {% assign channels = "" %}
         {% unless product.has_only_default_variant %}
           {% for option in product.options_with_values %}
-            <div class="selector-wrapper js">
+            <div class="selector-wrapper js{% if option.name == 'channel' %} visually-hidden {% endif %}">
               <label class="text-muted text-small">
                 {{ option.name }}
               </label>
@@ -128,6 +129,9 @@
                 is_available: isAvailable
               %}
             </div>
+            {% if option.name == 'channel' %}
+              {% assign channels = option.values %}
+            {% endif %}
           {% endfor %}
         {% endunless %}
         <select name="id" class="no-js" data-product-select>
@@ -141,43 +145,54 @@
           {% endfor %}
         </select>
         <div class="add-to-cart__wrapper">
-          {% assign quantityInputId = 'quantity-' | append: product.id %}
-          {% assign quantityInputLabel = 'products.product.quantity' | t %}
-          {% include 'quantity-selector' whith
-            id: product.id,
-            input_name: 'quantity',
-            input_id: quantityInputId,
-            input_init_value: 1,
-            inventory_quantity: current_variant.inventory_quantity,
-            input_aria_label: quantityInputLabel
-          %}
-          <div class="product-opt__wrapper">
           {% if isAvailable %}
-          <div>
-            <strong class="text-success">In Stock.</strong>
-            <div>
-              <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
-              <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
-                <i class="iconfont icon-ios-info-outline"></i>
-              </a>
-            </div>
-          </div>
+            {% assign quantityInputId = 'quantity-' | append: product.id %}
+            {% assign quantityInputLabel = 'products.product.quantity' | t %}
+            {% include 'quantity-selector' whith
+              id: product.id,
+              input_name: 'quantity',
+              input_id: quantityInputId,
+              input_init_value: 1,
+              inventory_quantity: current_variant.inventory_quantity,
+              input_aria_label: quantityInputLabel
+            %}
           {% endif %}
-          <button
-            type="submit"
-            name="add"
-            class="btn button btn-primary large add-to-cart"
-            data-add-to-cart
-            {% unless isAvailable %}disabled="disabled"{% endunless %}
-          >
-            <span data-add-to-cart-text>
-              {% if isAvailable %}
-                {{ 'products.product.add_to_cart' | t }}
-              {% else %}
-                {{ 'products.product.sold_out' | t }}
-              {% endif %}
-            </span>
-          </button>
+          <div class="product-opt__wrapper">
+            {% if isAvailable %}
+              <div>
+                <strong class="text-success">In Stock.</strong>
+                <div>
+                  <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
+                  <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
+                    <i class="iconfont icon-ios-info-outline"></i>
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+            {%
+              include 'buy-on-button' with
+                buttons: channels,
+                initSku: current_variant.sku,
+                variants: product.variants
+            %}
+            <button
+              type="submit"
+              name="add"
+              class="btn button btn-primary large add-to-cart{% unless isAvailable %} visually-hidden{% endunless %}"
+              data-add-to-cart
+              {% unless isAvailable %}disabled="disabled"{% endunless %}
+            >
+              <span data-add-to-cart-text>
+                {% if isAvailable %}
+                  {{ 'products.product.add_to_cart' | t }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+            </button>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
           {% if section.settings.show_share_buttons %}
             <div class="social-sharing__wrapper">
               {% include 'social-sharing',
@@ -188,7 +203,6 @@
               %}
             </div>
           {% endif %}
-          </div>
         </div>
       </form>
     </div>

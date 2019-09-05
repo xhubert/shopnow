@@ -1183,7 +1183,7 @@ babel-code-frame@6.26.0, babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
-babel-core@^6.0.0, babel-core@^6.26.0, babel-core@^6.26.3:
+babel-core@6.26.3, babel-core@^6.0.0, babel-core@^6.26.0:
   version "6.26.3"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.26.3.tgz#b2e2f09e342d0f0c88e2f02e067794125e75c207"
   integrity sha512-6jyFLuDmeidKmUEb3NM+/yawG0M2bDZ9Z1qbZP59cyHLz8kYGKYwpJP0UwUKKUiTRNvxfLesJnTedqczP7cTDA==
@@ -1854,7 +1854,7 @@ babel-preset-react@^6.24.1:
     babel-plugin-transform-react-jsx-source "^6.22.0"
     babel-preset-flow "^6.23.0"
 
-babel-preset-shopify@^16.2.0:
+babel-preset-shopify@16.7.0:
   version "16.7.0"
   resolved "https://registry.yarnpkg.com/babel-preset-shopify/-/babel-preset-shopify-16.7.0.tgz#b88b7ce0cb4f57082f5b4f3d956e1875b80d2cfe"
   integrity sha512-KRi2zijluq1M3DzTObtupkngGaAG8bln6FKxM/nJXu4uI3EtDLOitZnQPj8a0/1XBX3aqG84RURhIpbo3lQ0tA==

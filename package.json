@@ -46,8 +46,8 @@
   "devDependencies": {
     "@shopify/slate-cssvar-loader": "^1.0.0-beta.15",
     "@shopify/slate-tools": "1.0.0-beta.18",
-    "babel-core": "^6.26.3",
-    "babel-preset-shopify": "^16.2.0",
+    "babel-core": "6.26.3",
+    "babel-preset-shopify": "16.7.0",
     "eslint": "^6.3.0",
     "eslint-plugin-shopify": "^30.0.1",
     "lodash-es": "^4.17.11",

@@ -1,0 +1,51 @@
+<!-- snippets/amazon-tag.liquid -->
+
+{%- comment -%}
+  Accepts:
+  - variants: [Object] product.variants;
+  - center: [Boolean] center
+
+  Usage:
+  In your liquid template file, copy the following line
+  - {% include 'amazon-tag' with variants: product.variants %}
+{%- endcomment -%}
+
+<div
+  class="amazon-tag--snippet"
+  style="{% if center == true %}margin: 0 auto; {% endif %}width: 210px;"
+>
+  {% assign hasAmazonTag = false %}
+  {% for variant in variants %}
+    {% if variant.option1 == 'amazon' %}
+      {% assign hasAmazonTag = true %}
+    {% endif %}
+  {% endfor %}
+  {% if hasAmazonTag %}
+    <div style="background: #333333; border-radius: 6px; margin: 6px 0;">
+      <table style="width: 100%;">
+        <tr>
+          <td style="text-align: right;">
+            <span style="color: #FFFFFF; font-weight: 600;">
+              available on
+            </span>
+          </td>
+          <td style="text-align: left;">
+            {% include 'icon-amazon-btn' %}
+          </td>
+        </tr>
+      </table>
+    </div>
+  {% endif %}
+</div>
+<style>
+  .amazon-tag--snippet td {
+    vertical-align: middle;
+  }
+  .amazon-tag--snippet .icon-amazon {
+    vertical-align: middle;
+    height: 20px;
+  }
+  .amazon-tag--snippet .icon-amazon .text {
+    fill: #FFFFFF;
+  }
+</style>
