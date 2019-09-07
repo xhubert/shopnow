@@ -135,10 +135,9 @@
         "type": "header",
         "content": "Buy on button"
       }, {
-        "type": "checkbox",
-        "id": "buy_on_amazon",
-        "label": "Add a button to link customer to amazon.",
-        "default": true
+        "type": "text",
+        "id": "amazon_affiliate_code",
+        "label": "Your amazon affiliate code."
       },
       {
         "type": "header",

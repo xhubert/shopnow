@@ -18,15 +18,20 @@
     {% endif %}
   {% endfor %}
   {% for button in buttons %}
-    {% if settings.buy_on_amazon and button == 'amazon' %}
+    {% if button == 'amazon' %}
       {% for variant in variants %}
         {% if variant.option1 == 'amazon' and currentOption2 == variant.option2 %}
           {% assign amazonSku = variant.sku %}
         {% endif %}
       {% endfor %}
+      {% assign amazonUrl = 'https://www.amazon.com/dp/' | append: amazonSku %}
+      {% if settings.amazon_affiliate_code %}
+        {% assign amazonUrl = amazonUrl | append: '?tag=' %}
+        {% assign amazonUrl = amazonUrl | append: settings.amazon_affiliate_code %}
+      {% endif %}
       <a class="buy-on-amazon-btn btn"
         target="_blank"
-        href="{{ 'https://www.amazon.com/dp/' | append: amazonSku }}"
+        href="{{ amazonUrl }}"
       >
         {% include 'icon-amazon-btn' %}
         <span>
