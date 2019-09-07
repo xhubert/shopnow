@@ -3,6 +3,8 @@
 {%- endif -%}
 
 <div class="product-card--snippet grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %}">
+  {% assign firstOption = product.options_with_values | first %}
+  {% assign optionSize = product.options | size %}
   <a
     class="product-item__link mask-link hover-action"
     data-hoverin-action="fadeInDown"
@@ -11,21 +13,24 @@
     title="{{ product.title | escape }}"
   >
     {% unless product.has_only_default_variant %}
-    <div class="product-item__title hover-action-item animated">
-        <div class="more-options">
-          {% assign firstOption = product.options_with_values | first %}
-          <small class="more-options-info">
-            {{ 'products.product.more_options_html' | t: option: firstOption.name }}
-          </small>
+      {% if optionSize > 1 or firstOption.name != 'channel' %}
+        <div class="product-item__title hover-action-item animated">
+            <div class="more-options">
+              <small class="more-options-info">
+                {{ 'products.product.more_options_html' | t: option: '' }}
+              </small>
+            </div>
         </div>
-    </div>
+      {% endif %}
     {% endunless %}
   </a>
   <div class="product-item-top__wrapper match-height" data-mh="product-card-image">
     {% unless product.has_only_default_variant %}
+      {% if optionSize > 1 or firstOption.name != 'channel' %}
       <small class="more-options-tag">
         <i class="iconfont icon-more-outline"></i>
       </small>
+      {% endif %}
     {% endunless %}
     {% if product.compare_at_price > product.price %}
       <span class="on-sale-tag">
