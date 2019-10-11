@@ -1,5 +1,5 @@
 /**
- * Product Template Script
+ * Product Header Template Script
  * ------------------------------------------------------------------------------
  * A file that contains scripts highly couple code to the Product template.
  *
@@ -25,11 +25,13 @@ const selectors = {
   productJson: '[data-product-json]',
   productPrice: '[data-product-price]',
   productThumbs: '[data-product-single-thumbnail]',
+  addToCartWrapper: '.add-to-cart__wrapper',
   singleOptionSelector: '[data-single-option-selector]',
   addToCartQuantity: '[data-quantity-selector]',
+  fulfillmentTips: '.fulfillment-tips',
   productOptBrief: '#ProductOptBrief-',
   productSku: '.product-sku',
-  buyOnAmazonBtn: '.buy-on-amazon-btn'
+  buyOnAmazonBtn: '.buy-on-amazon-btn',
 };
 
 const cssClasses = {
@@ -81,21 +83,20 @@ export default register('product-header', {
 
     this.$container.on(
       `variantChange${this.namespace}`,
-      this._updateAddToCartState.bind(this),
-      this._updateProductSku.bind(this),
+      this.updateVariant.bind(this),
     );
     this.$container.on(
       `variantPriceChange${this.namespace}`,
-      this._updateProductPrices.bind(this),
+      this.updateProductPrices.bind(this),
     );
 
     if (this.$featuredImage.length > 0) {
       this.$container.on(
         `variantImageChange${this.namespace}`,
-        this._updateImages.bind(this),
+        this.updateImages.bind(this),
       );
     }
-    this._initSlides();
+    this.initSlides();
 
     const isDisabled = $(selectors.addToCart, this.$container).prop('disabled');
     if (isDisabled) {
@@ -103,10 +104,93 @@ export default register('product-header', {
     } else {
       setEnabled(this.productSingleObject.id);
     }
-    this._updateProductOptBrief(this.productSingleObject);
+    this.updateProductOptBrief(this.productSingleObject);
   },
 
-  _initSlides() {
+  updateVariant(evt) {
+    // 1. Update Product Sku
+    const $productSku = $(selectors.productSku, this.$container);
+    if ($productSku.length === 0) {
+      return;
+    }
+    const variant = evt.variant;
+    $productSku
+      .removeClass('animated flipInX')
+      .delay(200)
+      .queue((next) => {
+        $productSku.addClass('animated flipInX');
+        const skus = variant.sku.split('G1029-');
+        let currentSku;
+        if (skus.length > 1) {
+          currentSku = skus[1];
+        } else {
+          currentSku = skus[0];
+        }
+        $productSku.html(currentSku);
+        const $buyOnAmazonBtn = $(selectors.buyOnAmazonBtn, this.$container);
+        let amazonSku = '';
+        this.product.variants.forEach((item) => {
+          if (variant.option2 && item.option2 === variant.option2 && item.option1 === 'amazon') {
+            amazonSku = item.sku;
+          }
+          if (!variant.option2 && item.option1 === 'amazon') {
+            amazonSku = item.sku;
+          }
+        });
+        if ($buyOnAmazonBtn.length > 0 && amazonSku) {
+          $buyOnAmazonBtn.attr('href', `https://www.amazon.com/dp/${amazonSku}`);
+        }
+        next();
+      });
+    this._updateAddToCartState(evt);
+  },
+
+  /**
+   * Updates the DOM with specified prices
+   *
+   * @param {string} productPrice - The current price of the product
+   * @param {string} comparePrice - The original price of the product
+   */
+  updateProductPrices(evt) {
+    const variant = evt.variant;
+    const $priceWrapper = $(selectors.priceWrapper, this.$container);
+    const $comparePrice = $(selectors.comparePrice, this.$container);
+    const $compareEls = $comparePrice.add(
+      selectors.comparePriceText,
+      this.$container,
+    );
+
+    $priceWrapper
+      .removeClass('animated flipInX')
+      .delay(200)
+      .queue((next) => {
+        $priceWrapper.addClass('animated flipInX');
+        $(selectors.productPrice, this.$container).html(
+          formatMoney(variant.price, theme.moneyFormat),
+        );
+
+        if (variant.compare_at_price > variant.price) {
+          $comparePrice.html(
+            formatMoney(variant.compare_at_price, theme.moneyFormat),
+          );
+          $compareEls.removeClass(cssClasses.hide);
+        } else {
+          $comparePrice.html('');
+          $compareEls.addClass(cssClasses.hide);
+        }
+        next();
+      });
+  },
+
+  updateImages(evt) {
+    const variant = evt.variant;
+    const imageId = variant.featured_image.id;
+
+    this._switchImage(imageId);
+    this._setActiveThumbnail(imageId);
+  },
+
+  initSlides() {
     productGalleryTop = new Swiper('.product-header-gallery-top', {
       spaceBetween: 10,
       pagination: {
@@ -127,6 +211,21 @@ export default register('product-header', {
     });
     productGalleryTop.controller.control = productGalleryThumbs;
     productGalleryThumbs.controller.control = productGalleryTop;
+  },
+
+  updateProductOptBrief(product) {
+    const $elDesc = $(product.description);
+    if ($elDesc.length === 0) {
+      return;
+    }
+    const $brief = $(`${selectors.productOptBrief}${product.id}`);
+    if ($brief.length === 0) {
+      return;
+    }
+
+    if ($elDesc[0].className === 'product-brief-hidden') {
+      $brief.append($elDesc[0]);
+    }
   },
 
   _setActiveThumbnail(imageId) {
@@ -166,7 +265,6 @@ export default register('product-header', {
    */
   _updateAddToCartState(evt) {
     const variant = evt.variant;
-
     if (variant) {
       $(selectors.priceWrapper, this.$container).removeClass(cssClasses.hide);
     } else {
@@ -179,60 +277,16 @@ export default register('product-header', {
     }
 
     const isAvailable = this._isAvailable(variant);
-
     if (isAvailable) {
       $(selectors.addToCart, this.$container).prop('disabled', false);
+      $(selectors.fulfillmentTips, this.$container).removeClass('visually-hidden');
       $(selectors.addToCartText, this.$container).html(theme.strings.addToCart);
     } else {
       $(selectors.addToCart, this.$container).prop('disabled', true);
+      $(selectors.fulfillmentTips, this.$container).addClass('visually-hidden');
       $(selectors.addToCartText, this.$container).html(theme.strings.soldOut);
     }
     this._switchProductInventory(evt, isAvailable);
-  },
-
-  _updateImages(evt) {
-    const variant = evt.variant;
-    const imageId = variant.featured_image.id;
-
-    this._switchImage(imageId);
-    this._setActiveThumbnail(imageId);
-  },
-
-  /**
-   * Updates the DOM with specified prices
-   *
-   * @param {string} productPrice - The current price of the product
-   * @param {string} comparePrice - The original price of the product
-   */
-  _updateProductPrices(evt) {
-    const variant = evt.variant;
-    const $priceWrapper = $(selectors.priceWrapper, this.$container);
-    const $comparePrice = $(selectors.comparePrice, this.$container);
-    const $compareEls = $comparePrice.add(
-      selectors.comparePriceText,
-      this.$container,
-    );
-
-    $priceWrapper
-      .removeClass('animated flipInX')
-      .delay(200)
-      .queue((next) => {
-        $priceWrapper.addClass('animated flipInX');
-        $(selectors.productPrice, this.$container).html(
-          formatMoney(variant.price, theme.moneyFormat),
-        );
-
-        if (variant.compare_at_price > variant.price) {
-          $comparePrice.html(
-            formatMoney(variant.compare_at_price, theme.moneyFormat),
-          );
-          $compareEls.removeClass(cssClasses.hide);
-        } else {
-          $comparePrice.html('');
-          $compareEls.addClass(cssClasses.hide);
-        }
-        next();
-      });
   },
 
   _switchProductInventory(evt, isAvailable) {
@@ -276,57 +330,6 @@ export default register('product-header', {
       }
     }
     return variant.available;
-  },
-
-  _updateProductOptBrief(product) {
-    const $elDesc = $(product.description);
-    if ($elDesc.length === 0) {
-      return;
-    }
-    const $brief = $(`${selectors.productOptBrief}${product.id}`);
-    if ($brief.length === 0) {
-      return;
-    }
-
-    if ($elDesc[0].className === 'product-brief-hidden') {
-      $brief.append($elDesc[0]);
-    }
-  },
-
-  _updateProductSku(evt) {
-    const $productSku = $(selectors.productSku, this.$container);
-    if ($productSku.length === 0) {
-      return;
-    }
-    const variant = evt.variant;
-    $productSku
-      .removeClass('animated flipInX')
-      .delay(200)
-      .queue((next) => {
-        $productSku.addClass('animated flipInX');
-        const skus = variant.sku.split('G1029-');
-        let currentSku;
-        if (skus.length > 1) {
-          currentSku = skus[1];
-        } else {
-          currentSku = skus[0];
-        }
-        $productSku.html(currentSku);
-        const $buyOnAmazonBtn = $(selectors.buyOnAmazonBtn, this.$container);
-        let amazonSku = '';
-        this.product.variants.forEach( v => {
-          if (variant.option2 && v.option2 === variant.option2 && v.option1 === 'amazon') {
-            amazonSku = v.sku;
-          }
-          if (!variant.option2 && v.option1 === 'amazon') {
-            amazonSku = v.sku;
-          }
-        })
-        if ($buyOnAmazonBtn.length > 0 && amazonSku) {
-          $buyOnAmazonBtn.attr('href', `https://www.amazon.com/dp/${amazonSku}`);
-        }
-        next();
-      });
   },
 
   /**

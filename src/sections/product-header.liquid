@@ -158,17 +158,15 @@
             %}
           {% endif %}
           <div class="product-opt__wrapper">
-            {% if isAvailable %}
+            <div class="fulfillment-tips{% unless isAvailable %} visually-hidden{% endunless %}">
+              <strong class="text-success">In Stock.</strong>
               <div>
-                <strong class="text-success">In Stock.</strong>
-                <div>
-                  <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
-                  <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
-                    <i class="iconfont icon-ios-info-outline"></i>
-                  </a>
-                </div>
+                <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
+                <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
+                  <i class="iconfont icon-ios-info-outline"></i>
+                </a>
               </div>
-            {% endif %}
+            </div>
             {%
               include 'buy-on-button' with
                 buttons: channels,
@@ -178,7 +176,7 @@
             <button
               type="submit"
               name="add"
-              class="btn button btn-primary large add-to-cart{% unless isAvailable %} visually-hidden{% endunless %}"
+              class="btn button btn-primary large add-to-cart"
               data-add-to-cart
               {% unless isAvailable %}disabled="disabled"{% endunless %}
             >

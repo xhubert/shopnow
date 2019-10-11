@@ -1,8 +1,6 @@
 {
   "extends": [
-    "plugin:shopify/esnext",
-    "plugin:shopify/jquery",
-    "plugin:shopify/node"
+    "plugin:shopify/esnext"
   ],
   "env": {
     "jest": true
