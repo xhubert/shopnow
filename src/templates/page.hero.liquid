@@ -54,7 +54,9 @@
               </div>
 
               <div class="form-item">
-                <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+                <label for="ContactFormPhone">
+                  {{ 'contact.form.phone' | t }}
+                </label>
                 <input type="tel"
                   name="contact[phone]"
                   class="large"
@@ -64,6 +66,26 @@
                   pattern="[0-9\-]*"
                 >
               </div>
+
+              <div class="form-item full-wide">
+                <label for="ContactFormOrderid">#Order ID</label>
+                <input
+                  type="text"
+                  name="contact[orderid]"
+                  class="large"
+                  style="width: 70%; margin-bottom: 2px;"
+                  id="ContactFormOrderId"
+                  placeholder="{{ 'contact.form.orderid' | t }}"
+                  value="{% if form[orderid] %}{{ form[orderid] }}{% elsif customer %}{{ customer.orderid }}{% endif %}"
+                >
+                <div class="fulfillment-tips" style="margin-bottom: 5px;">
+                  <small style="color: #898E98;">
+                    Input the Order ID if you have purchased our product.
+                  </small>
+                </div>
+              </div>
+
+              <hr />
 
               <div class="form-item full-wide">
                 <label for="ContactFormMessage">
