@@ -1,0 +1,33 @@
+{% assign amazonUrl = 'https://www.amazon.com/stores/node/20695108011' %}
+{% if settings.amazon_affiliate_code %}
+  {% assign amazonUrl = amazonUrl | append: '?tag=' %}
+  {% assign amazonUrl = amazonUrl | append: settings.amazon_affiliate_code %}
+{% endif %}
+
+<div class="h5 nav-title text-uppercase" style="padding-top: 8px;">
+  ALSO AVALIABLE ON (OFFICIAL CHANNELS)
+</div>
+<div class="friend-links--snippet {{wrapper_cls}}">
+  <table style="margin-top: -10px;">
+    <tr class="friend-icon-links">
+      <td style="padding-top: 13px;">
+        <a
+          href="{{amazonUrl}}"
+          target="_blank"
+          title="Cloudy Bay Lighting on Amazon"
+        >
+          {% include 'icon-amazon-btn' %}
+        </a>
+      </td>
+      <td style="padding-left: 8px;">
+        <a
+          href="https://www.wayfair.com"
+          target="_blank"
+          title="Cloudy Bay Lighting on Wayfair"
+        >
+          {% include 'icon-wayfair' %}
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>

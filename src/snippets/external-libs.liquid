@@ -40,9 +40,9 @@
 {% capture swiperLib %}
   {% case type %}
     {% when 'script' %}
-      {{ 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js' | script_tag }}
+      {{ '//cdn.jsdelivr.net/npm/swiper@5.2.1/js/swiper.min.js' | script_tag }}
     {% when 'style' %}
-      {{ 'https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css' | stylesheet_tag }}
+      {{ '//cdn.jsdelivr.net/npm/swiper@5.2.1/css/swiper.min.css' | stylesheet_tag }}
   {% endcase %}
 {% endcapture %}
 
@@ -80,9 +80,9 @@
 {% capture jarallaxLib %}
   {% case type %}
     {% when 'script' %}
-      {{ '//cdnjs.cloudflare.com/ajax/libs/jarallax/1.11.1/jarallax.min.js' | script_tag }}
+      {{ '//cdn.jsdelivr.net/npm/jarallax@1.12.0/index.min.js' | script_tag }}
     {% when 'style' %}
-      {{ '//cdnjs.cloudflare.com/ajax/libs/jarallax/1.11.1/jarallax.css' | stylesheet_tag }}
+      {{ '//cdn.jsdelivr.net/npm/jarallax@1.12.0/src/jarallax.css' | stylesheet_tag }}
   {% endcase %}
 {% endcapture %}
 

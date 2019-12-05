@@ -36,19 +36,13 @@ $quantity-height: 32px;
       border-style: solid;
       border-color: $color-border;
       border-width: 1px 0 1px 1px;
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-radius: $border-radius 0 0 $border-radius;
     }
     &.product-plus {
       border-style: solid;
       border-color: $color-border;
       border-width: 1px 1px 1px 0;
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-radius: 0 $border-radius $border-radius 0;
     }
     .iconfont {
       margin: 0 auto;
