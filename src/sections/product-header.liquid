@@ -100,8 +100,8 @@
         </a>
       </div>
       <br />
-      {% if product.price > 0 and current_variant.price > 0 %}
       <form action="/cart/add" method="post" enctype="multipart/form-data">
+        {% if product.price > 0 and current_variant.price > 0 %}
         <div data-price-wrapper class="text-price text-xl">
           <span data-product-price>
             {{ current_variant.price | money }}
@@ -117,6 +117,7 @@
             </s>
           {% endif %}
         </div>
+        {% endif %}
         {% assign channels = "" %}
         {% unless product.has_only_default_variant %}
           {% for option in product.options_with_values %}
@@ -204,7 +205,6 @@
           {% endif %}
         </div>
       </form>
-      {% endif %}
     </div>
   </div>
 
