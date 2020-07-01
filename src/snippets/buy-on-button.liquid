@@ -2,9 +2,8 @@
 
 {%- comment -%}
   Accepts:
-  - buttons: [String] button;
+  - type: [String] button type;
   - initSku: {String} Initial sku;
-  - variants: [Object] product.variants;
 
   Usage:
   In your liquid template file, copy the following line
@@ -12,35 +11,25 @@
 {%- endcomment -%}
 
 <div class="buy-on-button--snippet">
-  {% for variant in variants %}
-    {% if initSku == variant.sku %}
-      {% assign currentOption2 = variant.option2 %}
+  {% if type == 'amazon' %}
+    {% assign amazonUrl = 'https://www.amazon.com/dp/' | append: initSku %}
+    {% if settings.amazon_affiliate_code %}
+      {% assign amazonUrl = amazonUrl | append: '?tag=' %}
+      {% assign amazonUrl = amazonUrl | append: settings.amazon_affiliate_code %}
     {% endif %}
-  {% endfor %}
-  {% for button in buttons %}
-    {% if button == 'amazon' %}
-      {% for variant in variants %}
-        {% if variant.option1 == 'amazon' and currentOption2 == variant.option2 %}
-          {% assign amazonSku = variant.sku %}
-        {% endif %}
-      {% endfor %}
-      {% assign amazonUrl = 'https://www.amazon.com/dp/' | append: amazonSku %}
-      {% if settings.amazon_affiliate_code %}
-        {% assign amazonUrl = amazonUrl | append: '?tag=' %}
-        {% assign amazonUrl = amazonUrl | append: settings.amazon_affiliate_code %}
-      {% endif %}
-      <a class="buy-on-amazon-btn btn"
-        target="_blank"
-        href="{{ amazonUrl }}"
-      >
-        {% include 'icon-amazon-btn' %}
-        <span>
-          BUY ON
-        </span>
-      </a>
-    {% endif %}
-  {% endfor %}
+    <a type="button" class="buy-on-amazon-btn btn" href="{{ amazonUrl }}">
+      {% include 'icon-amazon-btn' %}
+      <span>
+        VIEW ON
+      </span>
+    </a>
+  {% endif %}
 </div>
+<script type='text/javascript'>
+  function openUrl(url){ 
+    window.open(url,'_blank')
+  }
+</script>
 <style>
 .buy-on-button--snippet {
   display: inline-block;
@@ -68,7 +57,7 @@
   color: #FF9900 !important;
 }
 .icon-amazon {
-  margin-left: 28px;
+  margin-left: 36px;
 }
 .icon-amazon .text {
   fill: #FFFFFF;

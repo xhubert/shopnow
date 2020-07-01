@@ -1,8 +1,4 @@
 {% assign amazonUrl = 'https://www.amazon.com/stores/node/20695108011' %}
-{% if settings.amazon_affiliate_code %}
-  {% assign amazonUrl = amazonUrl | append: '?tag=' %}
-  {% assign amazonUrl = amazonUrl | append: settings.amazon_affiliate_code %}
-{% endif %}
 
 <div class="h5 nav-title text-uppercase" style="padding-top: 8px;">
   ALSO AVALIABLE ON

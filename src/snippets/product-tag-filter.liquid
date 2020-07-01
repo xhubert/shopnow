@@ -11,7 +11,7 @@
   - {% include 'product-tag-filter' with option wrapper_class: "wrapper-css-class" %}
 {%- endcomment -%}
 
-{%- assign unshown_tags = 'energy-star, 5-year-warranty' | split: ', ' -%}
+{%- assign unshown_tags = 'energy-star, 5-year-warranty, amazon-import' | split: ', ' -%}
 {%- assign no_filter_text = 'collections.filters.no_filter' | t | append: ' --' | prepend: '-- ' -%}
 
 {% if current_tags == blank %}

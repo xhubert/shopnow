@@ -80,7 +80,7 @@
 
       {% if section.settings.show_product_tag_icons %}
         <div class="product-tag-icons_wrapper">
-          {% include 'product-tag-icons' with tags: product.tags%}
+          {% include 'product-tag-icons' with tags: product.tags %}
         </div>
       {% endif %}
 
@@ -101,110 +101,116 @@
       </div>
       <br />
       <form action="/cart/add" method="post" enctype="multipart/form-data">
-        {% if product.price > 0 and current_variant.price > 0 %}
-        <div data-price-wrapper class="text-price text-xl">
-          <span data-product-price>
-            {{ current_variant.price | money }}
-          </span>
-          {% if product.compare_at_price_max > product.price %}
-            <span class="visually-hidden" data-compare-text>
-              {{ 'products.product.regular_price' | t }}
+        {% assign isAmazon = false %}
+        {%- if product.tags contains 'amazon-import' -%}
+          {% assign isAmazon = true %}
+        {%- endif -%}
+        {% if isAmazon == false %}
+          <div data-price-wrapper class="text-price text-xl">
+            <span data-product-price>
+              {{ current_variant.price | money }}
             </span>
-            <s data-compare-price class="compare-price">
-              {% if current_variant.compare_at_price > current_variant.price %}
-                {{ current_variant.compare_at_price | money }}
-              {% endif %}
-            </s>
-          {% endif %}
-        </div>
-        {% endif %}
-        {% assign channels = "" %}
-        {% unless product.has_only_default_variant %}
-          {% for option in product.options_with_values %}
-            <div class="selector-wrapper js{% if option.name == 'channel' %} visually-hidden {% endif %}">
-              <label class="text-muted text-small">
-                {{ option.name }}
-              </label>
-              {% include 'radio-btn-group' with
-                option: option,
-                active_class: 'btn-radio-active'
-                is_available: isAvailable
-              %}
-            </div>
-            {% if option.name == 'channel' %}
-              {% assign channels = option.values %}
-            {% endif %}
-          {% endfor %}
-        {% endunless %}
-        <select name="id" class="no-js" data-product-select>
-          {% for variant in product.variants %}
-            <option
-              {% if variant == current_variant %}selected="selected"{% endif %}
-              {% unless isAvailable %}disabled="disabled"{% endunless %}
-              value="{{ variant.id }}">
-                {{ variant.title }}
-            </option>
-          {% endfor %}
-        </select>
-        <div class="add-to-cart__wrapper">
-          {% if isAvailable %}
-            {% assign quantityInputId = 'quantity-' | append: product.id %}
-            {% assign quantityInputLabel = 'products.product.quantity' | t %}
-            {% include 'quantity-selector' whith
-              id: product.id,
-              input_name: 'quantity',
-              input_id: quantityInputId,
-              input_init_value: 1,
-              inventory_quantity: current_variant.inventory_quantity,
-              input_aria_label: quantityInputLabel
-            %}
-          {% endif %}
-          <div class="product-opt__wrapper">
-            <div class="fulfillment-tips{% unless isAvailable %} visually-hidden{% endunless %}">
-              <strong class="text-success">In Stock.</strong>
-              <div>
-                <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
-                <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
-                  <i class="iconfont icon-ios-info-outline"></i>
-                </a>
-              </div>
-            </div>
-            {%
-              include 'buy-on-button' with
-                buttons: channels,
-                initSku: current_variant.sku,
-                variants: product.variants
-            %}
-            <button
-              type="submit"
-              name="add"
-              class="btn button btn-primary large add-to-cart"
-              data-add-to-cart
-              {% unless isAvailable %}disabled="disabled"{% endunless %}
-            >
-              <span data-add-to-cart-text>
-                {% if isAvailable %}
-                  {{ 'products.product.add_to_cart' | t }}
-                {% else %}
-                  {{ 'products.product.sold_out' | t }}
-                {% endif %}
+            {% if product.compare_at_price_max > product.price %}
+              <span class="visually-hidden" data-compare-text>
+                {{ 'products.product.regular_price' | t }}
               </span>
-            </button>
+              <s data-compare-price class="compare-price">
+                {% if current_variant.compare_at_price > current_variant.price %}
+                  {{ current_variant.compare_at_price | money }}
+                {% endif %}
+              </s>
+            {% endif %}
           </div>
-        </div>
-        <div style="margin-top: 16px;">
-          {% if section.settings.show_share_buttons %}
-            <div class="social-sharing__wrapper">
-              {% include 'social-sharing',
-                share_title: product.title,
-                share_permalink: product.url,
-                share_image: product,
-                h_alignment: 'left'
+          {% assign channels = "" %}
+          {% unless product.has_only_default_variant %}
+            {% for option in product.options_with_values %}
+              <div class="selector-wrapper js{% if option.name == 'channel' %} visually-hidden {% endif %}">
+                <label class="text-muted text-small">
+                  {{ option.name }}
+                </label>
+                {% include 'radio-btn-group' with
+                  option: option,
+                  active_class: 'btn-radio-active'
+                  is_available: isAvailable
+                %}
+              </div>
+              {% if option.name == 'channel' %}
+                {% assign channels = option.values %}
+              {% endif %}
+            {% endfor %}
+          {% endunless %}
+          <select name="id" class="no-js" data-product-select>
+            {% for variant in product.variants %}
+              <option
+                {% if variant == current_variant %}selected="selected"{% endif %}
+                {% unless isAvailable %}disabled="disabled"{% endunless %}
+                value="{{ variant.id }}">
+                  {{ variant.title }}
+              </option>
+            {% endfor %}
+          </select>
+          <div class="add-to-cart__wrapper">
+            {% if isAvailable %}
+              {% assign quantityInputId = 'quantity-' | append: product.id %}
+              {% assign quantityInputLabel = 'products.product.quantity' | t %}
+              {% include 'quantity-selector' whith
+                id: product.id,
+                input_name: 'quantity',
+                input_id: quantityInputId,
+                input_init_value: 1,
+                inventory_quantity: current_variant.inventory_quantity,
+                input_aria_label: quantityInputLabel
               %}
+            {% endif %}
+            <div class="product-opt__wrapper">
+              <div class="fulfillment-tips{% unless isAvailable %} visually-hidden{% endunless %}">
+                <strong class="text-success">In Stock.</strong>
+                <div>
+                  <span>Place the order now, we will fulfill it in 24 hours, and you will get the item(s) in 2-7 days.</span>
+                  <a href="https://cloudybaylighting.com/pages/shipping-policy" target="_blank" rel="nofollow">
+                    <i class="iconfont icon-ios-info-outline"></i>
+                  </a>
+                </div>
+              </div>
+              <button
+                type="submit"
+                name="add"
+                class="btn button btn-primary large add-to-cart"
+                data-add-to-cart
+                {% unless isAvailable %}disabled="disabled"{% endunless %}
+              >
+                <span data-add-to-cart-text>
+                  {% if isAvailable %}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% endif %}
+                </span>
+              </button>
             </div>
-          {% endif %}
-        </div>
+          </div>
+        {% else if %}
+          <div>
+          {%
+            include 'buy-on-button' with
+              type: 'amazon',
+              initSku: current_variant.sku
+          %}
+          </div>
+        {% endif %}
       </form>
+      <div style="margin-top: 16px;">
+        {% if section.settings.show_share_buttons %}
+          <div class="social-sharing__wrapper">
+            {% include 'social-sharing',
+              share_title: product.title,
+              share_permalink: product.url,
+              share_image: product,
+              h_alignment: 'left'
+            %}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 

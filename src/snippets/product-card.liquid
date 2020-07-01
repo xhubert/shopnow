@@ -3,6 +3,10 @@
 {%- endif -%}
 
 <div class="product-card--snippet grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %}">
+  {% assign isAmazon = false %}
+  {%- if product.tags contains 'amazon-import' -%}
+    {% assign isAmazon = true %}
+  {%- endif -%}
   {% assign firstOption = product.options_with_values | first %}
   {% assign optionSize = product.options | size %}
   <a
@@ -72,9 +76,10 @@
         {{ product.title | escape | truncate: 70 }}
       </div>
     </div>
-    {% include 'amazon-tag' with variants: product.variants, center: true %}
+    {% if isAmazon == false %}
     <div class="product-item__price text-price text-large">
       {% include 'product-price' %}
     </div>
+    {% endif %}
   </div>
 </div>

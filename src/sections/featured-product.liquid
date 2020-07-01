@@ -61,8 +61,13 @@
             %}
           </div>
         {% endif %}
-        {% include 'amazon-tag' with variants: product.variants %}
-        {% include 'product-price' with wrapper_class: 'large' %}
+        {% assign isAmazon = false %}
+        {%- if product.tags contains 'amazon-import' -%}
+          {% assign isAmazon = true %}
+        {%- endif -%}
+        {% if isAmazon == false %}
+          {% include 'product-price' with wrapper_class: 'large' %}
+        {% endif %}
 
         <div class="product-title" style="max-height: {{max_height | divided_by: 2}}px">
           <h4>
